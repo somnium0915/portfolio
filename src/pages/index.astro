@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CardGrid from '../components/CardGrid.astro';
+import { SITE, SECTIONS } from '../consts';
+import { loadSection, loadFeatured } from '../lib/content';
+import { withBase } from '../lib/path';
+
+const featured = await loadFeatured();
+
+const sections = await Promise.all(
+  SECTIONS.map(async (s) => ({
+    def: s,
+    entries: (await loadSection(s.collection)).slice(0, 3),
+  })),
+);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <h1>{SITE.tagline}</h1>
+    <p>{SITE.intro}</p>
+  </section>
+
+  {
+    featured.length > 0 && (
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <h2>주요 작업</h2>
+            <p>frontmatter 에 <code>featured: true</code> 로 지정한 항목</p>
+          </div>
+        </div>
+        <CardGrid entries={featured} />
+      </div>
+    )
+  }
+
+  {
+    sections.map(({ def, entries }) => (
+      <div class="section-block">
+        <div class="section-head">
+          <div>
+            <h2>{def.label}</h2>
+            <p>{def.description}</p>
+          </div>
+          <a href={withBase(def.slug)}>전체 보기 →</a>
+        </div>
+        <CardGrid
+          entries={entries}
+          showSection={false}
+          emptyText={`${def.label} 항목이 아직 없습니다.`}
+        />
+      </div>
+    ))
+  }
+</BaseLayout>

@@ -1,0 +1,25 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FilterableGrid from '../../components/FilterableGrid.astro';
+import { SECTIONS } from '../../consts';
+import { loadSection } from '../../lib/content';
+
+export const getStaticPaths = (() =>
+  SECTIONS.map((s) => ({ params: { section: s.slug }, props: { section: s } }))) satisfies GetStaticPaths;
+
+const { section } = Astro.props;
+const entries = await loadSection(section.collection);
+---
+
+<BaseLayout title={section.label} description={section.description}>
+  <div class="page-intro">
+    <h1>{section.label}</h1>
+    <p>{section.description}</p>
+  </div>
+
+  <FilterableGrid
+    entries={entries}
+    emptyText={`${section.label} 항목이 아직 없습니다. src/content/${section.collection}/ 에 마크다운을 추가하세요.`}
+  />
+</BaseLayout>

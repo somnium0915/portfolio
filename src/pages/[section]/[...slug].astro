@@ -1,0 +1,114 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render, type CollectionKey } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SECTIONS, getSection } from '../../consts';
+import { formatDate, LINK_META } from '../../lib/content';
+import { withBase, resolveMedia } from '../../lib/path';
+
+export const getStaticPaths = (async () => {
+  const paths = [];
+  for (const s of SECTIONS) {
+    const entries = await getCollection(s.collection as CollectionKey, ({ data }) =>
+      import.meta.env.PROD ? data.status !== 'draft' : true,
+    );
+    for (const entry of entries) {
+      paths.push({
+        params: { section: s.slug, slug: entry.id },
+        props: { entry, sectionSlug: s.slug },
+      });
+    }
+  }
+  return paths;
+}) satisfies GetStaticPaths;
+
+const { entry, sectionSlug } = Astro.props;
+const section = getSection(sectionSlug)!;
+const { data } = entry;
+const { Content } = await render(entry as Parameters<typeof render>[0]);
+const cover = resolveMedia(data.cover);
+
+const links = Object.entries(data.links ?? {}).filter(([, v]) => Boolean(v)) as [string, string][];
+const notionUrl = (data as Record<string, unknown>).notionUrl as string | undefined;
+
+// 상세 상단 "정보" 표에 넣을 항목 (컬렉션마다 다른 필드를 자동 수집)
+const factKeys: [string, string][] = [
+  ['role', '역할'],
+  ['team', '팀'],
+  ['period', '기간'],
+  ['game', '대상 게임'],
+  ['subject', '분석 대상'],
+  ['platform', '플랫폼'],
+  ['docType', '문서 유형'],
+  ['sourceCategory', '분류'],
+];
+const facts = factKeys
+  .map(([key, label]) => [label, (data as Record<string, unknown>)[key]] as const)
+  .filter(([, v]) => typeof v === 'string' && v.length > 0) as [string, string][];
+
+const stack = ((data as Record<string, unknown>).stack as string[] | undefined) ?? [];
+---
+
+<BaseLayout title={data.title} description={data.summary} image={data.cover}>
+  <a class="backlink" href={withBase(section.slug)}>← {section.label}</a>
+
+  <header class="article-header">
+    <span class="kicker">{section.label}</span>
+    <h1>{data.title}</h1>
+    {data.summary && <p class="lede">{data.summary}</p>}
+
+    <div class="card__meta" style="font-size:0.82rem">
+      <time datetime={new Date(data.date).toISOString()}>{formatDate(data.date)}</time>
+      {data.updated && <span>· 수정 {formatDate(data.updated)}</span>}
+      {(data.tags ?? []).map((t) => <span class="tag">#{t}</span>)}
+    </div>
+
+    {
+      (facts.length > 0 || stack.length > 0) && (
+        <dl class="article-facts">
+          {facts.map(([label, value]) => (
+            <>
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+            </>
+          ))}
+          {stack.length > 0 && (
+            <>
+              <dt>스택</dt>
+              <dd>{stack.join(' · ')}</dd>
+            </>
+          )}
+        </dl>
+      )
+    }
+
+    {
+      links.length > 0 && (
+        <div class="linkpills" style="margin-top:1rem">
+          {links.map(([key, href]) => (
+            <a class="linkpill" href={href} target="_blank" rel="noopener">
+              {LINK_META[key]?.label ?? key} ↗
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </header>
+
+  {cover && <img src={cover} alt="" style="border-radius:12px;border:1px solid var(--border);margin-bottom:2rem" />}
+
+  {
+    notionUrl && (
+      <p class="notion-note">
+        이 문서는 노션에서 자동으로 가져왔습니다.{' '}
+        <a href={notionUrl} target="_blank" rel="noopener">
+          노션 원본 열기 ↗
+        </a>
+      </p>
+    )
+  }
+
+  <article class="prose">
+    <Content />
+  </article>
+</BaseLayout>

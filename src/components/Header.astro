@@ -1,0 +1,41 @@
+---
+import { SITE, SECTIONS } from '../consts';
+import { withBase } from '../lib/path';
+
+const current = Astro.url.pathname.replace(/\/+$/, '');
+const isActive = (slug: string) => current === withBase(slug) || current.startsWith(withBase(slug) + '/');
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href={withBase()}>{SITE.author}</a>
+
+    <nav class="nav" aria-label="주요 섹션">
+      {
+        SECTIONS.map((s) => (
+          <a href={withBase(s.slug)} aria-current={isActive(s.slug) ? 'page' : undefined}>
+            {s.label}
+          </a>
+        ))
+      }
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="라이트/다크 테마 전환"
+        data-theme-toggle
+      >
+        <span aria-hidden="true">◐</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector('[data-theme-toggle]');
+  btn?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  });
+</script>

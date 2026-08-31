@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://somnium0915.github.io/portfolio/sitemap-index.xml

@@ -1,0 +1,24 @@
+---
+import type { DecoratedEntry } from '../lib/content';
+import Card from './Card.astro';
+
+interface Props {
+  entries: DecoratedEntry[];
+  showSection?: boolean;
+  emptyText?: string;
+}
+
+const { entries, showSection = true, emptyText = '아직 등록된 항목이 없습니다.' } = Astro.props;
+---
+
+{
+  entries.length === 0 ? (
+    <p class="empty">{emptyText}</p>
+  ) : (
+    <div class="card-grid">
+      {entries.map((entry) => (
+        <Card entry={entry} showSection={showSection} />
+      ))}
+    </div>
+  )
+}

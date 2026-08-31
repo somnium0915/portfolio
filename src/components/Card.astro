@@ -1,0 +1,46 @@
+---
+import type { DecoratedEntry } from '../lib/content';
+import { formatDate, LINK_META } from '../lib/content';
+import { resolveMedia } from '../lib/path';
+
+interface Props {
+  entry: DecoratedEntry;
+  /** 카드에 섹션 배지를 표시할지 (섹션 전용 목록에서는 끄면 됨) */
+  showSection?: boolean;
+}
+
+const { entry, showSection = true } = Astro.props;
+const { data } = entry;
+const cover = resolveMedia(data.cover);
+const links = Object.entries(data.links ?? {}).filter(([, v]) => Boolean(v)) as [string, string][];
+const tags = (data.tags ?? []).slice(0, 3);
+---
+
+<article class="card">
+  <a href={entry.href} aria-label={data.title}>
+    {cover && <img class="card__cover" src={cover} alt="" loading="lazy" />}
+  </a>
+  <div class="card__body">
+    <div class="card__meta">
+      {showSection && <span class="card__badge">{entry.sectionLabel}</span>}
+      <time datetime={new Date(data.date).toISOString()}>{formatDate(data.date)}</time>
+    </div>
+
+    <h3 class="card__title">
+      <a href={entry.href}>{data.title}</a>
+    </h3>
+
+    {data.summary && <p class="card__summary">{data.summary}</p>}
+
+    <div class="card__footer">
+      {tags.map((t) => <span class="tag">#{t}</span>)}
+      {
+        links.slice(0, 3).map(([key, href]) => (
+          <a class="linkpill" href={href} target="_blank" rel="noopener">
+            {LINK_META[key]?.label ?? key}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</article>

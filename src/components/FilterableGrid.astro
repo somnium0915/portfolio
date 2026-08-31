@@ -1,0 +1,70 @@
+---
+import type { DecoratedEntry } from '../lib/content';
+import { tagCounts } from '../lib/content';
+import Card from './Card.astro';
+
+interface Props {
+  entries: DecoratedEntry[];
+  showSection?: boolean;
+  emptyText?: string;
+}
+
+const { entries, showSection = false, emptyText = '아직 등록된 항목이 없습니다.' } = Astro.props;
+const tags = tagCounts(entries);
+---
+
+{
+  entries.length === 0 ? (
+    <p class="empty">{emptyText}</p>
+  ) : (
+    <div data-filterable>
+      {tags.length > 0 && (
+        <div class="tag-filter" role="group" aria-label="태그로 거르기">
+          <button type="button" data-tag="*" aria-pressed="true">
+            전체 <span aria-hidden="true">· {entries.length}</span>
+          </button>
+          {tags.map(([tag, count]) => (
+            <button type="button" data-tag={tag} aria-pressed="false">
+              #{tag} <span aria-hidden="true">· {count}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div class="card-grid" data-grid>
+        {entries.map((entry) => (
+          <div data-item data-tags={(entry.data.tags ?? []).join('|')}>
+            <Card entry={entry} showSection={showSection} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+<style>
+  [data-item] {
+    display: contents;
+  }
+  [data-item][hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-filterable]').forEach((root) => {
+    const buttons = root.querySelectorAll<HTMLButtonElement>('.tag-filter button');
+    const items = root.querySelectorAll<HTMLElement>('[data-item]');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tag = btn.dataset.tag ?? '*';
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        items.forEach((item) => {
+          const tags = (item.dataset.tags ?? '').split('|').filter(Boolean);
+          item.hidden = tag !== '*' && !tags.includes(tag);
+        });
+      });
+    });
+  });
+</script>
