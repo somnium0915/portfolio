@@ -101,18 +101,44 @@ links:                      # 선택. 있는 것만 적으면 버튼으로 노�
 
 ## 3. 노션 문서 추가하기
 
-`notion.config.json` 의 `pages` 배열에 항목을 추가합니다:
+노션 문서는 **분석서 섹션**(`/portfolio/analyses/<slug>`)으로 들어갑니다. `notion.config.json` 에서 두 방식을 지원합니다.
+
+### 방식 A — 폴더 통째로 (권장)
+
+부모 페이지 하나만 등록하면, 그 아래 자식 페이지를 **전부 자동으로** 가져옵니다.
+노션에서 자식 페이지를 새로 만들면 config 수정 없이 다음 배포 때 사이트에 자동 반영됩니다.
+
+```json
+{
+  "folders": [
+    {
+      "parentPageId": "부모-페이지-ID-32자리",
+      "category": "레퍼런스 분석",
+      "recursive": true,
+      "enabled": true
+    }
+  ]
+}
+```
+
+- 부모 페이지 **및 모든 자식 페이지**를 `portfolio` 연결에 공유해야 합니다 (부모에 공유하면 대개 자식도 상속).
+- slug 는 각 페이지 제목에서 자동 생성됩니다 (한글 유지, 공백·기호는 `-`). 예: `키우기(방치형) 게임 장르 정리` → `/portfolio/analyses/키우기-방치형-게임-장르-정리`
+- `recursive: false` 로 두면 바로 아래 1단계만 가져옵니다.
+- `slugPrefix`: 모든 slug 앞에 접두어를 붙이고 싶을 때 (선택).
+
+### 방식 B — 개별 페이지 지정
+
+slug 를 직접 정하거나 특정 페이지만 골라 넣을 때:
 
 ```json
 {
   "pages": [
     {
-      "slug": "axis7-sound-design",
-      "pageId": "여기에-노션-페이지-ID-32자리",
-      "title": "AXIS7 사운드 설계",
-      "summary": "효과음/BGM 정리",
-      "category": "사운드",
-      "tags": ["사운드", "AXIS7"],
+      "slug": "idle-game-genre",
+      "pageId": "노션-페이지-ID-32자리",
+      "title": "키우기(방치형) 게임 장르 정리",
+      "category": "레퍼런스 분석",
+      "tags": ["방치형", "장르분석"],
       "featured": false,
       "enabled": true
     }
@@ -120,15 +146,12 @@ links:                      # 선택. 있는 것만 적으면 버튼으로 노�
 }
 ```
 
-- `pageId`: 노션 페이지 URL 끝의 32자리 문자열 (`https://notion.so/제목-**32자리**`). 하이픈은 있어도 됩니다.
-- `slug`: 사이트 주소에 쓰일 영문 이름. **노션 문서는 분석서 섹션으로 들어갑니다** → `/portfolio/analyses/<slug>`.
-- `category`: 상세 페이지의 "분류" 값으로 표시됩니다.
-- `enabled: false` 로 두면 그 항목만 건너뜁니다.
+두 방식은 함께 써도 됩니다. `enabled: false` 인 항목은 건너뜁니다.
 
-그다음:
+### 반영
 
-- 로컬: `npm run sync:notion` → `src/content/analyses/<slug>.md` 생성됨 → 커밋
-- 배포: push 하면 CI 가 빌드 전에 자동으로 다시 가져옵니다 (`NOTION_TOKEN` secret 필요).
+- 로컬 테스트: `.env` 에 `NOTION_TOKEN` 넣고 `npm run sync:notion` → `src/content/analyses/*.md` 생성 확인
+- 배포: commit & push → CI 가 빌드 전에 자동으로 다시 가져옵니다 (`NOTION_TOKEN` secret 필요)
 
 > 자동 생성 파일에는 `generator: notion-sync` 프론트매터가 붙습니다. 스크립트는 이 마커가 있는 파일만
 > 갱신·삭제하므로, 손으로 쓴 분석서 `.md` 와 같은 폴더에 있어도 안전합니다. 자동 생성 파일은 직접 수정하지 마세요 — 다음 동기화 때 덮어써집니다.
