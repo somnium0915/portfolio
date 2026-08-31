@@ -121,15 +121,17 @@ links:                      # 선택. 있는 것만 적으면 버튼으로 노�
 ```
 
 - `pageId`: 노션 페이지 URL 끝의 32자리 문자열 (`https://notion.so/제목-**32자리**`). 하이픈은 있어도 됩니다.
-- `slug`: 사이트 주소에 쓰일 영문 이름 (`/portfolio/notion/<slug>`).
+- `slug`: 사이트 주소에 쓰일 영문 이름. **노션 문서는 분석서 섹션으로 들어갑니다** → `/portfolio/analyses/<slug>`.
+- `category`: 상세 페이지의 "분류" 값으로 표시됩니다.
 - `enabled: false` 로 두면 그 항목만 건너뜁니다.
 
 그다음:
 
-- 로컬: `npm run sync:notion` → `src/content/notion/<slug>.md` 생성됨 → 커밋
+- 로컬: `npm run sync:notion` → `src/content/analyses/<slug>.md` 생성됨 → 커밋
 - 배포: push 하면 CI 가 빌드 전에 자동으로 다시 가져옵니다 (`NOTION_TOKEN` secret 필요).
 
-> 자동 생성된 `src/content/notion/*.md` 는 직접 수정하지 마세요. 다음 동기화 때 덮어써집니다.
+> 자동 생성 파일에는 `generator: notion-sync` 프론트매터가 붙습니다. 스크립트는 이 마커가 있는 파일만
+> 갱신·삭제하므로, 손으로 쓴 분석서 `.md` 와 같은 폴더에 있어도 안전합니다. 자동 생성 파일은 직접 수정하지 마세요 — 다음 동기화 때 덮어써집니다.
 
 ---
 
@@ -145,11 +147,11 @@ links:                      # 선택. 있는 것만 적으면 버튼으로 노�
 3. `src/content.config.ts` 에 컬렉션 정의 추가 (기존 `designs` 블록 복사해서 이름만 변경):
    ```ts
    const levels = defineCollection({
-     loader: glob({ pattern: '**/*.md', base: './src/content/levels' }),
+     loader: glob({ pattern: ['**/*.md', '!**/_*.md'], base: './src/content/levels' }),
      schema: base.extend({ /* 필요한 추가 필드 */ }),
    });
    // ...
-   export const collections = { projects, designs, analyses, notion, levels };
+   export const collections = { projects, designs, analyses, levels };
    ```
 
 목록 페이지·상세 페이지·헤더 메뉴·홈 노출은 자동으로 따라갑니다.
@@ -172,13 +174,13 @@ links:                      # 선택. 있는 것만 적으면 버튼으로 노�
 portfolio/
 ├─ .github/workflows/deploy.yml   # push → 자동 빌드·배포
 ├─ astro.config.mjs               # site / base 설정
-├─ notion.config.json             # 가져올 노션 페이지 목록
-├─ scripts/fetch-notion.mjs       # 노션 → 마크다운 변환
+├─ notion.config.json             # 가져올 노션 페이지 목록 (→ 분석서 섹션으로 통합)
+├─ scripts/fetch-notion.mjs       # 노션 → src/content/analyses/*.md 변환
 ├─ public/                        # 정적 파일(images/, favicon 등)
 └─ src/
    ├─ consts.ts                   # 사이트 이름·소개·섹션 정의
    ├─ content.config.ts           # 컬렉션 스키마(프론트매터 규칙)
-   ├─ content/{projects,designs,analyses,notion}/
+   ├─ content/{projects,designs,analyses}/   # analyses 에 노션 동기화 문서도 포함
    ├─ components/                 # Card, CardGrid, FilterableGrid, Header, Footer
    ├─ layouts/BaseLayout.astro
    ├─ lib/                        # 경로 헬퍼, 콘텐츠 로더

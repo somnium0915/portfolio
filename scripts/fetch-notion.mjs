@@ -1,10 +1,14 @@
 /**
- * 노션 페이지 → src/content/notion/<slug>.md 변환 스크립트.
+ * 노션 페이지 → src/content/analyses/<slug>.md 변환 스크립트.
+ * (노션 문서는 분석서 섹션으로 통합됩니다)
  *
  * - `npm run build` 전에 자동 실행됩니다 (package.json 의 prebuild).
  * - 수동 실행: `npm run sync:notion`
  * - NOTION_TOKEN 이 없거나 notion.config.json 에 활성 페이지가 없으면
  *   경고만 남기고 조용히 종료합니다 (사이트 빌드는 계속 진행).
+ *
+ * 생성 파일에는 `generator: notion-sync` 프론트매터가 붙습니다. 이 스크립트는
+ * 그 마커가 있는 파일만 관리(갱신·삭제)하므로, 손으로 쓴 분석서 .md 는 건드리지 않습니다.
  *
  * 실패해도 전체 빌드를 막지 않도록 기본적으로 exit 0 으로 끝냅니다.
  * CI 에서 노션 오류 시 빌드를 실패시키고 싶으면 STRICT_NOTION=1 환경변수를 주세요.
@@ -14,7 +18,7 @@ import path from 'node:path';
 import process from 'node:process';
 
 const ROOT = process.cwd();
-const OUT_DIR = path.join(ROOT, 'src', 'content', 'notion');
+const OUT_DIR = path.join(ROOT, 'src', 'content', 'analyses');
 const CONFIG_PATH = path.join(ROOT, 'notion.config.json');
 const STRICT = process.env.STRICT_NOTION === '1';
 

@@ -56,17 +56,13 @@ const analyses = defineCollection({
   schema: base.extend({
     subject: z.string().optional(),
     platform: z.string().optional(),
-  }),
-});
-
-const notion = defineCollection({
-  loader: glob({ pattern: ['**/*.md', '!**/_*.md'], base: './src/content/notion' }),
-  schema: base.extend({
+    /** 노션에서 가져온 문서의 원본 링크 (있으면 상세 페이지에 "노션 원본" 배너 표시) */
     notionUrl: z.string().url().optional(),
+    /** 노션 문서 분류 (notion.config.json 의 category) */
     sourceCategory: z.string().optional(),
     /** notion-sync 스크립트가 생성한 파일 표시 (수동 작성 파일과 구분) */
     generator: z.string().optional(),
   }),
 });
 
-export const collections = { projects, designs, analyses, notion };
+export const collections = { projects, designs, analyses };

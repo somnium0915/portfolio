@@ -50,13 +50,7 @@ export const SECTIONS = [
     slug: 'analyses',
     collection: 'analyses',
     label: '분석서',
-    description: '레퍼런스 게임 분석 · 시장 조사 · 시스템 리버스 엔지니어링',
-  },
-  {
-    slug: 'notion',
-    collection: 'notion',
-    label: 'Notion',
-    description: '노션에 작성한 문서를 그대로 가져온 아카이브',
+    description: '레퍼런스 게임 분석 · 시장 조사 · 시스템 리버스 엔지니어링 (노션 문서 포함)',
   },
 ] as const;
 

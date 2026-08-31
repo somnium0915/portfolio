@@ -1,13 +1,12 @@
 {
-  "$schema": "./notion.config.schema.json",
-  "_comment": "임베드할 노션 페이지 목록. pageId 는 노션 페이지 URL 끝의 32자리 hex (하이픈 있어도 됨). slug 는 사이트 주소에 쓰일 영문 이름. 아래 pages 배열에 항목을 추가하기만 하면 됩니다.",
+  "_comment": "가져올 노션 페이지 목록. 여기 추가된 페이지는 '분석서(analyses)' 섹션의 문서로 변환됩니다 (/portfolio/analyses/<slug>). pageId 는 노션 페이지 URL 끝의 32자리 hex(하이픈 있어도 됨). enabled:false 인 항목은 건너뜁니다.",
   "pages": [
     {
       "slug": "example-doc",
       "pageId": "00000000000000000000000000000000",
       "title": "예시 노션 문서",
-      "summary": "notion.config.json 에 실제 pageId 를 넣으면 이 자리에서 노션 본문이 자동 변환됩니다.",
-      "category": "기획",
+      "summary": "실제 pageId 를 넣고 enabled 를 true 로 바꾸면 노션 본문이 분석서 문서로 자동 변환됩니다.",
+      "category": "분석",
       "tags": ["예시"],
       "featured": false,
       "enabled": false
