@@ -319,10 +319,42 @@ img {
 
 .card__footer {
   margin-top: auto;
-  padding-top: 0.5rem;
+  padding-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.card__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.3rem;
+}
+
+.card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.9rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--border);
+}
+
+.card__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  transition: color 0.15s;
+}
+
+.card__links a:hover {
+  color: var(--accent);
+}
+
+.card__links a span {
+  font-size: 0.9em;
+  opacity: 0.65;
 }
 
 /* ============================================================
