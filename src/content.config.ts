@@ -31,6 +31,22 @@ const base = z.object({
       docs: z.string().url().optional(),
     })
     .default({}),
+  /**
+   * 첨부 PDF. 상세 페이지에 "미리보기(클릭 시 로드) + 새 탭 + 다운로드" 로 렌더됩니다.
+   * 값: Google Drive 링크/파일 ID (권장, 대용량), 또는 public 경로/절대 URL.
+   * 문자열 하나, 또는 { url, label } 배열.
+   */
+  pdf: z
+    .union([
+      z.string(),
+      z.array(
+        z.union([
+          z.string(),
+          z.object({ url: z.string(), label: z.string().optional() }),
+        ]),
+      ),
+    ])
+    .optional(),
 });
 
 const projects = defineCollection({

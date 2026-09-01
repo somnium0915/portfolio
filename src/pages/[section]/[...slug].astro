@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render, type CollectionKey } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PdfEmbed from '../../components/PdfEmbed.astro';
 import { SECTIONS, getSection } from '../../consts';
 import { formatDate, LINK_META } from '../../lib/content';
 import { withBase, resolveMedia } from '../../lib/path';
@@ -111,4 +112,6 @@ const stack = ((data as Record<string, unknown>).stack as string[] | undefined) 
   <article class="prose">
     <Content />
   </article>
+
+  <PdfEmbed pdf={(data as Record<string, unknown>).pdf} />
 </BaseLayout>

@@ -24,6 +24,7 @@ links:
   # figma: https://www.figma.com/design/xxx
   # drive: https://drive.google.com/drive/folders/xxx
   # video: https://youtu.be/xxx
+# pdf: https://drive.google.com/file/d/FILE_ID/view   # 첨부 PDF (대용량은 Drive 링크 권장)
 ---
 
 ## 개요

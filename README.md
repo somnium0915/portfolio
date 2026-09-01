@@ -89,6 +89,7 @@ links:                      # 선택. 있는 것만 적으면 버튼으로 노�
   video: https://...
   notion: https://...
   docs: https://...
+pdf: https://drive.google.com/file/d/FILE_ID/view   # 선택. 아래 "PDF 첨부" 참고
 ```
 
 섹션별 추가 필드는 각 `_template.md` 참고 (프로젝트: `role`/`team`/`period`/`stack`, 기획서: `game`/`docType`, 분석서: `subject`/`platform`).
@@ -96,6 +97,30 @@ links:                      # 선택. 있는 것만 적으면 버튼으로 노�
 ### 이미지 넣기
 
 `public/images/` 에 파일을 두고 `cover: images/파일명.png` 또는 본문에서 `![설명](/portfolio/images/파일명.png)` 로 참조합니다.
+
+### PDF 첨부
+
+상세 페이지 하단에 **[새 탭에서 열기] · [다운로드] + 클릭 시 로드되는 미리보기 패널**이 붙습니다.
+미리보기 iframe 은 "미리보기 열기" 를 누르기 전까지 로드되지 않으므로 대용량 PDF 도 페이지 진입 속도에 영향이 없습니다.
+
+**대용량(수십 MB)·다수 파일은 Google Drive 를 쓰세요.** 저장소에 커밋하면 히스토리가 영구히 커지고 GitHub 파일/대역폭 제한에 걸립니다.
+
+```yaml
+# 1) Drive 링크 하나 (권장) — 파일을 "링크가 있는 모든 사용자: 뷰어" 로 공유해야 함
+pdf: https://drive.google.com/file/d/1AbCd.../view
+
+# 2) 여러 개 + 라벨
+pdf:
+  - url: https://drive.google.com/file/d/1AbCd.../view
+    label: 기획서 본편
+  - url: https://drive.google.com/file/d/1EfGh.../view
+    label: 부록 - 채보 데이터
+
+# 3) 작은 파일이면 저장소에 직접 (public/docs/ 에 두고)
+pdf: docs/summary.pdf
+```
+
+Drive 링크는 `/view`, `/preview`, `open?id=`, 순수 파일 ID 아무 형식이나 인식합니다.
 
 ---
 

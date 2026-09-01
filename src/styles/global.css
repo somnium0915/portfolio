@@ -544,6 +544,92 @@ img {
   color: var(--accent);
 }
 
+/* ============================================================
+   PDF embed
+   ============================================================ */
+.pdf-embed {
+  margin: 2.5rem 0 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.pdf-doc {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elev);
+  overflow: hidden;
+}
+
+.pdf-doc__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  padding: 0.7rem 1rem;
+}
+
+.pdf-doc__name {
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.pdf-doc__links {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.84rem;
+}
+
+.pdf-doc__links a {
+  color: var(--accent);
+}
+
+.pdf-doc__links a:hover {
+  text-decoration: underline;
+}
+
+.pdf-doc__preview {
+  border-top: 1px solid var(--border);
+}
+
+.pdf-doc__preview summary {
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  user-select: none;
+}
+
+.pdf-doc__preview summary:hover {
+  color: var(--fg);
+}
+
+.pdf-doc__preview[open] summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.pdf-doc__frame {
+  position: relative;
+  width: 100%;
+  height: min(75vh, 820px);
+  background: var(--code-bg);
+}
+
+.pdf-doc__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.pdf-doc__hint {
+  margin: 0;
+  padding: 0.5rem 1rem 0.8rem;
+  font-size: 0.78rem;
+  color: var(--fg-subtle);
+}
+
 /* Back link */
 .backlink {
   display: inline-flex;

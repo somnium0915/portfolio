@@ -10,6 +10,7 @@ subject: 분석 대상 (게임/시스템 이름)
 platform: PC / 모바일 / 콘솔
 links:
   docs: https://...
+# pdf: https://drive.google.com/file/d/FILE_ID/view   # 첨부 PDF (대용량은 Drive 링크 권장)
 ---
 
 ## 분석 목적

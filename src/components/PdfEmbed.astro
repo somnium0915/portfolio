@@ -1,0 +1,59 @@
+---
+import { toPdfDocs } from '../lib/pdf';
+
+interface Props {
+  pdf: unknown;
+}
+
+const docs = toPdfDocs(Astro.props.pdf);
+---
+
+{
+  docs.length > 0 && (
+    <section class="pdf-embed" aria-label="첨부 문서">
+      {docs.map((d) => (
+        <div class="pdf-doc">
+          <div class="pdf-doc__bar">
+            <span class="pdf-doc__name">📄 {d.label}</span>
+            <span class="pdf-doc__links">
+              <a href={d.open} target="_blank" rel="noopener">
+                새 탭에서 열기 ↗
+              </a>
+              <a href={d.download} target="_blank" rel="noopener">
+                다운로드
+              </a>
+            </span>
+          </div>
+          <details class="pdf-doc__preview">
+            <summary>미리보기 열기</summary>
+            <div class="pdf-doc__frame">
+              <iframe
+                data-src={d.preview}
+                loading="lazy"
+                title={`${d.label} 미리보기`}
+                referrerpolicy="no-referrer"
+              />
+            </div>
+            <p class="pdf-doc__hint">
+              미리보기가 안 보이면 위의 “새 탭에서 열기”를 사용하세요 (특히 모바일).
+            </p>
+          </details>
+        </div>
+      ))}
+    </section>
+  )
+}
+
+<script>
+  // 대용량 PDF 를 페이지 진입 시 받지 않도록, <details> 를 처음 열 때만 iframe src 를 채운다.
+  document.querySelectorAll<HTMLDetailsElement>('.pdf-doc__preview').forEach((d) => {
+    d.addEventListener('toggle', () => {
+      if (!d.open) return;
+      const frame = d.querySelector<HTMLIFrameElement>('iframe[data-src]');
+      if (frame?.dataset.src) {
+        frame.src = frame.dataset.src;
+        frame.removeAttribute('data-src');
+      }
+    });
+  });
+</script>
