@@ -4,8 +4,37 @@
 [Astro](https://astro.build) 로 만들었고 GitHub Pages 로 배포됩니다.
 
 - **배포 주소**: https://somnium0915.github.io/portfolio/
-- **콘텐츠 추가 = 마크다운 파일 1개 추가** (아래 참고)
+- **웹 편집기**: https://somnium0915.github.io/portfolio/admin/ (아래 0번)
+- **콘텐츠 추가 = 마크다운 파일 1개 추가** (아래 2번)
 - **노션 문서**는 빌드할 때 자동으로 가져와 사이트에 포함됩니다.
+
+---
+
+## 0. 웹에서 편집하기 (설치 불필요)
+
+**https://somnium0915.github.io/portfolio/admin/** 에서 프로젝트·기획서·분석서를 GUI 로
+작성/수정할 수 있습니다. ([Sveltia CMS](https://github.com/sveltia/sveltia-cms) — 저장하면
+저장소에 커밋되고 1~2분 뒤 사이트에 반영됩니다.)
+
+### 최초 1회: 로그인용 토큰 만들기
+
+1. GitHub → Settings → Developer settings → **Personal access tokens → Fine-grained tokens** → **Generate new token**
+   - Token name: `portfolio-cms` (아무거나)
+   - Expiration: 원하는 기간 (만료되면 다시 발급)
+   - **Repository access → Only select repositories → `portfolio`**
+   - **Permissions → Repository permissions → Contents → Read and write**
+   - Generate → 토큰 문자열(`github_pat_...`) 복사
+2. `admin/` 접속 → **"액세스 토큰으로 로그인"** → 붙여넣기
+
+토큰은 이 브라우저에만 저장됩니다. 다른 기기/브라우저에서는 다시 붙여넣으면 됩니다.
+
+### 쓰는 법
+
+- 왼쪽에서 **프로젝트 / 기획서 / 분석서** 선택 → 기존 글 클릭해 수정, 또는 우측 상단 **New** 로 새 글
+- 채우고 **Publish** → 저장소에 커밋 → 자동 배포
+- 이미지: 커버·본문에서 파일 선택 시 `public/images/` 에 함께 커밋됨
+- 노션에서 자동 생성된 분석서는 편집기에 안 나옵니다 (노션에서 수정하세요)
+- 로컬에서 `npm run dev` 중이라면 `admin/` 이 **로컬 파일**을 직접 편집합니다 (토큰 불필요)
 
 ---
 
@@ -64,10 +93,10 @@ npm run dev
 | 기획서 | `src/content/designs/` | `/portfolio/designs/<파일명>` |
 | 분석서 | `src/content/analyses/` | `/portfolio/analyses/<파일명>` |
 
-**추가 방법**: 각 폴더의 `_template.md` 를 복사해서 `영문-이름.md` 로 저장하고 내용을 채웁니다.
-파일명이 그대로 URL 이 됩니다. 저장하면 목록/홈/태그 필터에 자동으로 반영됩니다.
+**방법 A — 웹 편집기** (아래 "0. 웹에서 편집하기" 참고): `/portfolio/admin/` 접속 → GUI 로 작성/수정.
 
-밑줄(`_`)로 시작하는 파일은 빌드에서 무시됩니다 (템플릿 보관용).
+**방법 B — 파일 직접**: `templates/` 폴더의 양식(`project.md` / `design.md` / `analysis.md`)을 복사해
+`src/content/<섹션>/영문-이름.md` 로 저장하고 내용을 채웁니다. 파일명이 그대로 URL 이 됩니다.
 
 ### 프론트매터 필드 (모든 섹션 공통)
 
@@ -92,7 +121,7 @@ links:                      # 선택. 있는 것만 적으면 버튼으로 노�
 pdf: https://drive.google.com/file/d/FILE_ID/view   # 선택. 아래 "PDF 첨부" 참고
 ```
 
-섹션별 추가 필드는 각 `_template.md` 참고 (프로젝트: `role`/`team`/`period`/`stack`, 기획서: `game`/`docType`, 분석서: `subject`/`platform`).
+섹션별 추가 필드는 `templates/` 의 양식 참고 (프로젝트: `role`/`team`/`period`/`stack`, 기획서: `game`/`docType`, 분석서: `subject`/`platform`).
 
 ### 이미지 넣기
 

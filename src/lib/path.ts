@@ -18,9 +18,11 @@ export function asset(pathname = ''): string {
   return withBase(pathname);
 }
 
-/** cover 값이 절대 URL 이면 그대로, 아니면 public 기준으로 변환 */
+/** cover/미디어 경로를 렌더용 URL 로 변환 */
 export function resolveMedia(src?: string): string | undefined {
   if (!src) return undefined;
   if (/^https?:\/\//.test(src) || src.startsWith('data:')) return src;
+  // 이미 base(/portfolio/…) 가 붙어 있으면 (예: CMS 가 넣은 경로) 그대로 사용
+  if (src.startsWith(BASE)) return src;
   return asset(src.replace(/^\//, ''));
 }

@@ -1,0 +1,162 @@
+backend:
+  name: github
+  repo: somnium0915/portfolio
+  branch: main
+  # OAuth 앱 없이 GitHub 개인 액세스 토큰(PAT)으로 로그인합니다.
+  # (Sveltia CMS 로그인 화면에서 "Use a personal access token")
+
+# 로컬(npm run dev)에서 admin 을 열면 로컬 파일을 직접 편집
+local_backend: true
+
+# 이미지 업로드 위치 (저장소 public/images/, 사이트에선 /portfolio/images/... 로 참조됨)
+media_folder: "public/images"
+public_folder: "/portfolio/images"
+
+# 파일명(슬러그)에 한글 허용
+slug:
+  encoding: unicode
+  clean_accents: false
+  sanitize_replacement: "-"
+
+# 저장 전 실시간 미리보기 패널은 끔 (실제 미리보기는 사이트/`npm run dev` 에서)
+editor:
+  preview: false
+
+collections:
+  # ─────────────────────────────  프로젝트  ─────────────────────────────
+  - name: projects
+    label: 프로젝트
+    label_singular: 프로젝트
+    folder: "src/content/projects"
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{fields.title}}"
+    summary: "{{title}}"
+    fields:
+      - { name: title, label: 제목, widget: string }
+      - { name: summary, label: 요약(카드·검색 미리보기), widget: text, required: false }
+      - { name: date, label: 날짜, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { name: updated, label: 수정일, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { name: tags, label: 태그, widget: list, required: false }
+      - { name: cover, label: 커버 이미지, widget: image, required: false, choose_url: true }
+      - { name: status, label: 상태, widget: select, options: ["published", "draft"], default: "published" }
+      - { name: featured, label: 홈 상단 "주요 작업" 에 노출, widget: boolean, default: false }
+      - { name: order, label: 정렬 우선순위(작을수록 위, 비우면 날짜순), widget: number, required: false, value_type: int }
+      - name: links
+        label: 바로가기 링크
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: demo, label: 데모, widget: string, required: false }
+          - { name: repo, label: 저장소, widget: string, required: false }
+          - { name: figma, label: Figma, widget: string, required: false }
+          - { name: drive, label: Drive, widget: string, required: false }
+          - { name: video, label: 영상, widget: string, required: false }
+          - { name: notion, label: Notion, widget: string, required: false }
+          - { name: docs, label: 문서, widget: string, required: false }
+      - name: pdf
+        label: 첨부 PDF (Drive 파일/폴더 링크)
+        widget: list
+        required: false
+        summary: "{{fields.label}} {{fields.url}}"
+        fields:
+          - { name: url, label: URL, widget: string }
+          - { name: label, label: 라벨, widget: string, required: false }
+      - { name: role, label: 역할, widget: string, required: false }
+      - { name: team, label: 팀, widget: string, required: false }
+      - { name: period, label: 기간, widget: string, required: false }
+      - { name: stack, label: 스택, widget: list, required: false }
+      - { name: body, label: 본문, widget: markdown }
+
+  # ─────────────────────────────  기획서  ─────────────────────────────
+  - name: designs
+    label: 기획서
+    label_singular: 기획서
+    folder: "src/content/designs"
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{fields.title}}"
+    summary: "{{title}}"
+    fields:
+      - { name: title, label: 제목, widget: string }
+      - { name: summary, label: 요약(카드·검색 미리보기), widget: text, required: false }
+      - { name: date, label: 날짜, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { name: updated, label: 수정일, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { name: tags, label: 태그, widget: list, required: false }
+      - { name: cover, label: 커버 이미지, widget: image, required: false, choose_url: true }
+      - { name: status, label: 상태, widget: select, options: ["published", "draft"], default: "published" }
+      - { name: featured, label: 홈 상단 "주요 작업" 에 노출, widget: boolean, default: false }
+      - { name: order, label: 정렬 우선순위(작을수록 위, 비우면 날짜순), widget: number, required: false, value_type: int }
+      - name: links
+        label: 바로가기 링크
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: demo, label: 데모, widget: string, required: false }
+          - { name: repo, label: 저장소, widget: string, required: false }
+          - { name: figma, label: Figma, widget: string, required: false }
+          - { name: drive, label: Drive, widget: string, required: false }
+          - { name: video, label: 영상, widget: string, required: false }
+          - { name: notion, label: Notion, widget: string, required: false }
+          - { name: docs, label: 문서, widget: string, required: false }
+      - name: pdf
+        label: 첨부 PDF (Drive 파일/폴더 링크)
+        widget: list
+        required: false
+        summary: "{{fields.label}} {{fields.url}}"
+        fields:
+          - { name: url, label: URL, widget: string }
+          - { name: label, label: 라벨, widget: string, required: false }
+      - { name: game, label: 대상 게임, widget: string, required: false }
+      - { name: docType, label: 문서 유형, widget: string, default: "기획서", required: false }
+      - { name: body, label: 본문, widget: markdown }
+
+  # ─────────────────────────────  분석서  ─────────────────────────────
+  - name: analyses
+    label: 분석서
+    label_singular: 분석서
+    folder: "src/content/analyses"
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{fields.title}}"
+    summary: "{{title}}"
+    # 참고: 노션에서 자동 생성된 분석서는 저장소에 없으므로 여기 안 보입니다 (노션에서 편집).
+    fields:
+      - { name: title, label: 제목, widget: string }
+      - { name: summary, label: 요약(카드·검색 미리보기), widget: text, required: false }
+      - { name: date, label: 날짜, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { name: updated, label: 수정일, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { name: tags, label: 태그, widget: list, required: false }
+      - { name: cover, label: 커버 이미지, widget: image, required: false, choose_url: true }
+      - { name: status, label: 상태, widget: select, options: ["published", "draft"], default: "published" }
+      - { name: featured, label: 홈 상단 "주요 작업" 에 노출, widget: boolean, default: false }
+      - { name: order, label: 정렬 우선순위(작을수록 위, 비우면 날짜순), widget: number, required: false, value_type: int }
+      - name: links
+        label: 바로가기 링크
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: demo, label: 데모, widget: string, required: false }
+          - { name: repo, label: 저장소, widget: string, required: false }
+          - { name: figma, label: Figma, widget: string, required: false }
+          - { name: drive, label: Drive, widget: string, required: false }
+          - { name: video, label: 영상, widget: string, required: false }
+          - { name: notion, label: Notion, widget: string, required: false }
+          - { name: docs, label: 문서, widget: string, required: false }
+      - name: pdf
+        label: 첨부 PDF (Drive 파일/폴더 링크)
+        widget: list
+        required: false
+        summary: "{{fields.label}} {{fields.url}}"
+        fields:
+          - { name: url, label: URL, widget: string }
+          - { name: label, label: 라벨, widget: string, required: false }
+      - { name: subject, label: 분석 대상, widget: string, required: false }
+      - { name: platform, label: 플랫폼, widget: string, required: false }
+      - { name: body, label: 본문, widget: markdown }
