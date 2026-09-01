@@ -85,12 +85,17 @@ async function main() {
         warn(`folders: ${parentId} 하위에서 자식 페이지를 못 찾았습니다. 연결(Connections) 공유를 확인하세요.`);
       }
       for (const child of found) {
+        // overrides: 노션 페이지 제목(또는 페이지 ID)을 키로 title/summary/slug/tags/featured 를 덮어씀
+        const ov = matchOverride(folder.overrides, child);
+        const title = ov.title || child.title;
+        const base = ov.slug ? slugify(ov.slug) : slugify(title);
         await emitPage(child.id, {
-          slug: folder.slugPrefix ? `${folder.slugPrefix}-${slugify(child.title)}` : slugify(child.title),
-          title: child.title,
-          category: folder.category,
-          tags: folder.tags,
-          featured: false,
+          slug: folder.slugPrefix ? `${folder.slugPrefix}-${base}` : base,
+          title,
+          summary: ov.summary,
+          category: ov.category || folder.category,
+          tags: ov.tags || folder.tags,
+          featured: ov.featured ?? false,
         });
       }
     } catch (err) {
@@ -159,6 +164,17 @@ async function main() {
       console.error(`[notion] ✗ ${slug}: ${err.message}`);
     }
   }
+}
+
+/** folder.overrides 에서 이 자식 페이지에 해당하는 항목 찾기 (제목 또는 페이지 ID 키) */
+function matchOverride(overrides, child) {
+  if (!overrides || typeof overrides !== 'object') return {};
+  return (
+    overrides[child.id] ||
+    overrides[clean(child.id)] ||
+    overrides[String(child.title).trim()] ||
+    {}
+  );
 }
 
 /** parentId 하위의 child_page 블록을 depth 까지 재귀 수집 */
