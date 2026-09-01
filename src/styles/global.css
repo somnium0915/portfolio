@@ -615,6 +615,10 @@ img {
   background: var(--code-bg);
 }
 
+.pdf-doc__frame[data-folder] {
+  height: min(55vh, 480px);
+}
+
 .pdf-doc__frame iframe {
   position: absolute;
   inset: 0;

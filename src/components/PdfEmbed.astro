@@ -14,28 +14,34 @@ const docs = toPdfDocs(Astro.props.pdf);
       {docs.map((d) => (
         <div class="pdf-doc">
           <div class="pdf-doc__bar">
-            <span class="pdf-doc__name">📄 {d.label}</span>
+            <span class="pdf-doc__name">
+              {d.isFolder ? '📁' : '📄'} {d.label}
+            </span>
             <span class="pdf-doc__links">
               <a href={d.open} target="_blank" rel="noopener">
-                새 탭에서 열기 ↗
+                {d.isFolder ? 'Drive 폴더 열기' : '새 탭에서 열기'} ↗
               </a>
-              <a href={d.download} target="_blank" rel="noopener">
-                다운로드
-              </a>
+              {d.download && (
+                <a href={d.download} target="_blank" rel="noopener">
+                  다운로드
+                </a>
+              )}
             </span>
           </div>
           <details class="pdf-doc__preview">
-            <summary>미리보기 열기</summary>
-            <div class="pdf-doc__frame">
+            <summary>{d.isFolder ? '파일 목록 열기' : '미리보기 열기'}</summary>
+            <div class="pdf-doc__frame" data-folder={d.isFolder ? '' : undefined}>
               <iframe
                 data-src={d.preview}
                 loading="lazy"
-                title={`${d.label} 미리보기`}
+                title={`${d.label} ${d.isFolder ? '파일 목록' : '미리보기'}`}
                 referrerpolicy="no-referrer"
               />
             </div>
             <p class="pdf-doc__hint">
-              미리보기가 안 보이면 위의 “새 탭에서 열기”를 사용하세요 (특히 모바일).
+              {d.isFolder
+                ? '파일을 클릭하면 Google Drive 에서 열립니다. 이 폴더에 파일을 추가하면 자동으로 여기 나타납니다.'
+                : '미리보기가 안 보이면 위의 “새 탭에서 열기”를 사용하세요 (특히 모바일).'}
             </p>
           </details>
         </div>
@@ -45,7 +51,7 @@ const docs = toPdfDocs(Astro.props.pdf);
 }
 
 <script>
-  // 대용량 PDF 를 페이지 진입 시 받지 않도록, <details> 를 처음 열 때만 iframe src 를 채운다.
+  // 대용량 PDF / 폴더 뷰를 페이지 진입 시 받지 않도록, <details> 를 처음 열 때만 iframe src 를 채운다.
   document.querySelectorAll<HTMLDetailsElement>('.pdf-doc__preview').forEach((d) => {
     d.addEventListener('toggle', () => {
       if (!d.open) return;

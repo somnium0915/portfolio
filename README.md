@@ -106,7 +106,7 @@ pdf: https://drive.google.com/file/d/FILE_ID/view   # 선택. 아래 "PDF 첨부
 **대용량(수십 MB)·다수 파일은 Google Drive 를 쓰세요.** 저장소에 커밋하면 히스토리가 영구히 커지고 GitHub 파일/대역폭 제한에 걸립니다.
 
 ```yaml
-# 1) Drive 링크 하나 (권장) — 파일을 "링크가 있는 모든 사용자: 뷰어" 로 공유해야 함
+# 1) Drive 파일 링크 하나 — 파일(또는 상위 폴더)을 "링크가 있는 모든 사용자: 뷰어" 로 공유
 pdf: https://drive.google.com/file/d/1AbCd.../view
 
 # 2) 여러 개 + 라벨
@@ -116,11 +116,24 @@ pdf:
   - url: https://drive.google.com/file/d/1EfGh.../view
     label: 부록 - 채보 데이터
 
-# 3) 작은 파일이면 저장소에 직접 (public/docs/ 에 두고)
+# 3) Drive 폴더 링크 → 폴더 안 파일 목록이 통째로 임베드됨.
+#    폴더에 파일을 추가하면 config 수정 없이 자동으로 나타남 (자료실 용도).
+pdf: https://drive.google.com/drive/folders/1aaWZ...
+
+# 4) 작은 파일이면 저장소에 직접 (public/docs/ 에 두고)
 pdf: docs/summary.pdf
+
+# 섞어 써도 됨
+pdf:
+  - url: https://drive.google.com/drive/folders/1aaWZ...
+    label: 전체 문서 폴더
+  - url: https://drive.google.com/file/d/1AbCd.../view
+    label: 핵심 요약본
 ```
 
-Drive 링크는 `/view`, `/preview`, `open?id=`, 순수 파일 ID 아무 형식이나 인식합니다.
+- **파일 링크** (`/file/d/<id>`, `open?id=`, 순수 ID) → 페이지 안에서 인라인 PDF 미리보기
+- **폴더 링크** (`/drive/folders/<id>`) → Google 파일 탐색기 형태로 목록 임베드, 클릭 시 Drive 에서 열림
+- 미리보기 iframe 은 "열기" 를 누르기 전까지 로드되지 않음 (대용량 대비)
 
 ---
 
