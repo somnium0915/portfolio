@@ -1,21 +1,35 @@
 ---
 title: AXIS7 — 7키 리듬게임
-summary: Unity로 개발한 7키 건반형 리듬게임. Figma UI를 씬으로 옮기는 파이프라인, 그루브 게이지, 튜토리얼, 자체 채보 에디터까지 직접 구현하고 WebGL로 배포했습니다.
+summary: Unity로 개발한 7키 건반형 리듬게임. Figma UI를 씬으로 옮기는 파이프라인, 그루브 게이지, 튜토리얼, 자체 채보 에디터를 AI를 활용해 구현하고 WebGL로 배포했습니다.
 date: 2026-08-10
 updated: 2026-08-10
-tags: [Unity, 리듬게임, WebGL, 개인프로젝트]
+tags:
+  - Unity
+  - 리듬게임
+  - WebGL
+  - 개인프로젝트
+cover: ''
 status: published
 featured: true
 order: 1
-role: 프로그래밍 · 시스템 구현 · 빌드/배포 · 버전관리
-team: 7emp0 (2인) — 원성민(프로그래밍), 박원균(UI/UX·채보·사운드)
-period: 2026.07 – 2026.08 · NAN 2026 해커톤 제출
-stack: [Unity 6000.3, C#, URP, WebGL, Figma]
 links:
   demo: https://somnium0915.github.io/AXIS7/
   repo: https://github.com/somnium0915/AXIS7
   figma: https://www.figma.com/design/D8hQ2C0kmarTMOXhGqyT0C/AXIS7_UI
   drive: https://drive.google.com/drive/folders/1LLfjBaMB5DJTLN7imjUIXZKXqKIb0LwV
+  video: ''
+  notion: ''
+  docs: ''
+pdf: []
+role: 프로그래밍 · 시스템 구현 · 빌드/배포 · 버전관리
+team: 7emp0 (2인) — 원성민(기획·프로그래밍), 박원균(UI/UX·채보·사운드)
+period: 2026.07 – 2026.08 · NAN 2026 해커톤 제출
+stack:
+  - Unity 6000.3
+  - C#
+  - URP
+  - WebGL
+  - Figma
 ---
 
 ## 개요
@@ -27,7 +41,7 @@ links:
 ## 맡은 역할
 
 - **Figma → Unity UI 파이프라인**: 디자인 시안의 절대 좌표(1920×1080)를 `Canvas_Gameplay` 자식의 앵커 비율로 환산해 배치. SVG 시안을 브라우저 canvas로 PNG 래스터화해 기존 노트 이미지와 동일한 파이프라인으로 임포트.
-- **노트/판정 시스템**: `NoteSpawner`·`NoteView` 계열. 레인별 이미지 노트, 롱노트 9-Slice, 슬라이드 궤적을 커스텀 `UI.Graphic` 메쉬(`SlideTrailQuad`)로 직접 렌더링.
+- **노트/판정 시스템**: `NoteSpawner`·`NoteView` 계열. 레인별 이미지 노트, 롱노트 9-Slice, 슬라이드 궤적을 커스텀 `UI.Graphic` 메쉬(`SlideTrailQuad`)로 렌더링.
 - **그루브 게이지**: EZ2ON식 체력 증감(`RhythmEngine.Life` / `OnFail`), 실패 화면. 진행바는 스프라이트 없는 `Filled` 타입의 렌더링 이슈를 피해 `RectTransform` 앵커를 직접 조절하는 방식으로 구현.
 - **튜토리얼**: 첫 실행(`PlayerPrefs`) 시 곡 선택 대신 튜토리얼 채보 자동 재생, 인트로 구간 레인별 키 가이드 표시, 연타로 인한 화면 스킵 방지용 입력 유예.
 - **채보 에디터 툴**: 외부 라이브러리 없는 단일 HTML(`Tools/ChartEditor`). BPM 스냅 그리드(12/24비트 포함), 4종 노트 편집, Unity가 읽는 ChartData JSON 내보내기.
