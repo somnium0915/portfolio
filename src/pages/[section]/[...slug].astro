@@ -5,7 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PdfEmbed from '../../components/PdfEmbed.astro';
 import { SECTIONS, getSection } from '../../consts';
 import { formatDate, LINK_META } from '../../lib/content';
-import { withBase, resolveMedia } from '../../lib/path';
+import { withBase } from '../../lib/path';
 
 export const getStaticPaths = (async () => {
   const paths = [];
@@ -27,7 +27,7 @@ const { entry, sectionSlug } = Astro.props;
 const section = getSection(sectionSlug)!;
 const { data } = entry;
 const { Content } = await render(entry as Parameters<typeof render>[0]);
-const cover = resolveMedia(data.cover);
+// cover 는 카드 썸네일 / OG 이미지로만 사용. 상세 페이지 본문에는 표시하지 않는다.
 
 const notionUrl = (data as Record<string, unknown>).notionUrl as string | undefined;
 
@@ -109,8 +109,6 @@ const stack = ((data as Record<string, unknown>).stack as string[] | undefined) 
       )
     }
   </header>
-
-  {cover && <img src={cover} alt="" style="border-radius:12px;border:1px solid var(--border);margin-bottom:2rem" />}
 
   <article class="prose" id="doc-body">
     <Content />
