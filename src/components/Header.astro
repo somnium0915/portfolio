@@ -3,6 +3,8 @@ import { SITE, SECTIONS } from '../consts';
 import { withBase } from '../lib/path';
 
 const current = Astro.url.pathname.replace(/\/+$/, '');
+const home = withBase().replace(/\/$/, '');
+const isHome = current === home;
 const isActive = (slug: string) => current === withBase(slug) || current.startsWith(withBase(slug) + '/');
 ---
 
@@ -11,6 +13,7 @@ const isActive = (slug: string) => current === withBase(slug) || current.startsW
     <a class="brand" href={withBase()}>{SITE.author}</a>
 
     <nav class="nav" aria-label="주요 섹션">
+      <a href={withBase()} aria-current={isHome ? 'page' : undefined}>홈</a>
       {
         SECTIONS.map((s) => (
           <a href={withBase(s.slug)} aria-current={isActive(s.slug) ? 'page' : undefined}>
