@@ -5,6 +5,9 @@ node_modules/
 dist/
 .astro/
 
+# 노션 동기화가 빌드 시 생성 (커밋하지 않음)
+public/images/notion/
+
 # env
 .env
 .env.local

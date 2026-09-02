@@ -18,12 +18,15 @@
  * 실패해도 전체 빌드를 막지 않도록 기본적으로 exit 0 으로 끝냅니다.
  * CI 에서 노션 오류 시 빌드를 실패시키고 싶으면 STRICT_NOTION=1 환경변수를 주세요.
  */
-import { readFile, writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, unlink, rm } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import { Buffer } from 'node:buffer';
 
 const ROOT = process.cwd();
 const OUT_DIR = path.join(ROOT, 'src', 'content', 'analyses');
+const IMG_ROOT = path.join(ROOT, 'public', 'images', 'notion');
+const SITE_BASE = '/portfolio'; // astro.config.mjs 의 base 와 일치해야 함
 const CONFIG_PATH = path.join(ROOT, 'notion.config.json');
 const STRICT = process.env.STRICT_NOTION === '1';
 const MAX_DEPTH = 4;
@@ -142,7 +145,9 @@ async function main() {
     try {
       const meta = await notion.pages.retrieve({ page_id: pageId });
       const blocks = await n2m.pageToMarkdown(pageId);
-      const body = n2m.toMarkdownString(blocks).parent ?? '';
+      const rawBody = n2m.toMarkdownString(blocks).parent ?? '';
+      // 노션 이미지는 만료되는 S3 서명 URL → 로컬로 내려받아 교체
+      const body = await localizeImages(rawBody, slug);
 
       const frontmatter = buildFrontmatter({
         title: opts.title || notionTitle(meta) || slug,
@@ -164,6 +169,67 @@ async function main() {
       console.error(`[notion] ✗ ${slug}: ${err.message}`);
     }
   }
+}
+
+/**
+ * 마크다운 본문의 노션 이미지(만료되는 S3 서명 URL)를 내려받아
+ * public/images/notion/<slug>/ 아래에 저장하고 링크를 로컬 경로로 교체.
+ * 외부(직접 URL) 이미지는 그대로 둔다.
+ */
+async function localizeImages(markdown, slug) {
+  const re = /!\[[^\]]*\]\((https?:\/\/[^)\s]+)\)/g;
+  const urls = [...new Set([...markdown.matchAll(re)].map((m) => m[1]))].filter((u) =>
+    /amazonaws\.com|notion-static\.com|notion\.so\/|X-Amz-|attachment%3A/i.test(u),
+  );
+  const dir = path.join(IMG_ROOT, slug);
+  // 이 slug 의 이전 이미지 폴더는 매번 새로 만든다
+  await rm(dir, { recursive: true, force: true });
+  if (urls.length === 0) return markdown;
+  await mkdir(dir, { recursive: true });
+
+  const map = new Map();
+  await Promise.all(
+    urls.map(async (url, i) => {
+      try {
+        const res = await fetch(url, { redirect: 'follow' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const buf = Buffer.from(await res.arrayBuffer());
+        const ext = extFromType(res.headers.get('content-type')) || extFromUrl(url) || 'png';
+        const file = `img-${i + 1}.${ext}`;
+        await writeFile(path.join(dir, file), buf);
+        map.set(url, `${SITE_BASE}/images/notion/${slug}/${file}`);
+        log(`  ↳ 이미지 ${slug}/${file} (${(buf.length / 1024).toFixed(0)}KB)`);
+      } catch (err) {
+        warn(`이미지 다운로드 실패 (${slug}): ${err.message}`);
+      }
+    }),
+  );
+
+  return markdown.replace(re, (whole, url) => {
+    const local = map.get(url);
+    return local ? whole.replace(url, local) : whole;
+  });
+}
+
+function extFromType(ct) {
+  if (!ct) return null;
+  const t = ct.split(';')[0].trim().toLowerCase();
+  return (
+    {
+      'image/png': 'png',
+      'image/jpeg': 'jpg',
+      'image/jpg': 'jpg',
+      'image/gif': 'gif',
+      'image/webp': 'webp',
+      'image/svg+xml': 'svg',
+      'image/avif': 'avif',
+    }[t] || null
+  );
+}
+
+function extFromUrl(u) {
+  const m = u.split('?')[0].match(/\.(png|jpe?g|gif|webp|svg|avif)$/i);
+  return m ? m[1].toLowerCase().replace('jpeg', 'jpg') : null;
 }
 
 /** folder.overrides 에서 이 자식 페이지에 해당하는 항목 찾기 (제목 또는 페이지 ID 키) */
