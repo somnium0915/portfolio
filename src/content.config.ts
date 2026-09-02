@@ -12,6 +12,10 @@ const opt = <T extends z.ZodTypeAny>(schema: T) =>
 const optArray = <T extends z.ZodTypeAny>(schema: T) =>
   z.preprocess((v) => (v == null || v === '' ? [] : v), z.array(schema));
 
+/** null / '' / 없음 이면 fallback 으로 대체한 뒤 schema 로 파싱 */
+const withFallback = <T extends z.ZodTypeAny>(schema: T, fallback: unknown) =>
+  z.preprocess((v) => (v == null || v === '' ? fallback : v), schema);
+
 /**
  * 모든 섹션이 공유하는 프론트매터 스키마.
  * 여기 필드를 추가하면 모든 컬렉션에서 바로 쓸 수 있습니다.
@@ -25,14 +29,14 @@ const base = z.object({
   /** public/images/... 기준 경로, /portfolio/… 절대경로, 또는 https:// URL */
   cover: opt(z.string()),
   /** draft 는 프로덕션 빌드에서 목록/상세 모두 제외됩니다 */
-  status: z.enum(['published', 'draft']).default('published'),
+  status: withFallback(z.enum(['published', 'draft']), 'published'),
   /** 홈 상단 "주요 작업" 에 노출 */
-  featured: z.boolean().default(false),
+  featured: z.preprocess((v) => (typeof v === 'boolean' ? v : false), z.boolean()),
   /** 목록 정렬 우선순위 (작을수록 먼저, 없으면 날짜 내림차순) */
   order: opt(z.number()),
-  /** 상세 페이지 상단 및 카드에 표시되는 바로가기 링크 */
-  links: z
-    .object({
+  /** 상세 페이지 상단 및 카드에 표시되는 바로가기 링크 (CMS 가 비우면 null 로 저장 → {} 처리) */
+  links: withFallback(
+    z.object({
       demo: opt(z.string().url()),
       repo: opt(z.string().url()),
       notion: opt(z.string().url()),
@@ -40,8 +44,9 @@ const base = z.object({
       drive: opt(z.string().url()),
       video: opt(z.string().url()),
       docs: opt(z.string().url()),
-    })
-    .default({}),
+    }),
+    {},
+  ),
   /**
    * 첨부 PDF. 상세 페이지에 "미리보기(클릭 시 로드) + 새 탭 + 다운로드" 로 렌더됩니다.
    * 값: Google Drive 링크/파일 ID/폴더 링크, 또는 public 경로/절대 URL.
