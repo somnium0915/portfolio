@@ -7,7 +7,7 @@ tags:
   - 리듬게임
   - 시스템기획
   - 채보설계
-cover: ''
+cover: /portfolio/images/Image_Title_Logo.png
 status: published
 featured: false
 order: 1
