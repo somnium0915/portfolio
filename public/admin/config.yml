@@ -49,13 +49,13 @@ collections:
         required: false
         collapsed: true
         fields:
-          - { name: demo, label: 데모, widget: string, required: false }
-          - { name: repo, label: 저장소, widget: string, required: false }
+          - { name: demo, label: Demo, widget: string, required: false }
+          - { name: repo, label: Repo, widget: string, required: false }
           - { name: figma, label: Figma, widget: string, required: false }
           - { name: drive, label: Drive, widget: string, required: false }
-          - { name: video, label: 영상, widget: string, required: false }
+          - { name: video, label: Video, widget: string, required: false }
           - { name: notion, label: Notion, widget: string, required: false }
-          - { name: docs, label: 문서, widget: string, required: false }
+          - { name: docs, label: Docs, widget: string, required: false }
       - name: pdf
         label: 첨부 PDF (Drive 파일/폴더 링크)
         widget: list
@@ -96,13 +96,13 @@ collections:
         required: false
         collapsed: true
         fields:
-          - { name: demo, label: 데모, widget: string, required: false }
-          - { name: repo, label: 저장소, widget: string, required: false }
+          - { name: demo, label: Demo, widget: string, required: false }
+          - { name: repo, label: Repo, widget: string, required: false }
           - { name: figma, label: Figma, widget: string, required: false }
           - { name: drive, label: Drive, widget: string, required: false }
-          - { name: video, label: 영상, widget: string, required: false }
+          - { name: video, label: Video, widget: string, required: false }
           - { name: notion, label: Notion, widget: string, required: false }
-          - { name: docs, label: 문서, widget: string, required: false }
+          - { name: docs, label: Docs, widget: string, required: false }
       - name: pdf
         label: 첨부 PDF (Drive 파일/폴더 링크)
         widget: list
@@ -146,13 +146,13 @@ collections:
         required: false
         collapsed: true
         fields:
-          - { name: demo, label: 데모, widget: string, required: false }
-          - { name: repo, label: 저장소, widget: string, required: false }
+          - { name: demo, label: Demo, widget: string, required: false }
+          - { name: repo, label: Repo, widget: string, required: false }
           - { name: figma, label: Figma, widget: string, required: false }
           - { name: drive, label: Drive, widget: string, required: false }
-          - { name: video, label: 영상, widget: string, required: false }
+          - { name: video, label: Video, widget: string, required: false }
           - { name: notion, label: Notion, widget: string, required: false }
-          - { name: docs, label: 문서, widget: string, required: false }
+          - { name: docs, label: Docs, widget: string, required: false }
       - name: pdf
         label: 첨부 PDF (Drive 파일/폴더 링크)
         widget: list

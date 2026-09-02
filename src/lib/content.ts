@@ -74,12 +74,13 @@ export function formatDate(value: Date | string): string {
   ).padStart(2, '0')}`;
 }
 
+// 링크 라벨은 영어로 통일한다.
 export const LINK_META: Record<string, { label: string }> = {
-  demo: { label: '데모' },
-  repo: { label: '저장소' },
+  demo: { label: 'Demo' },
+  repo: { label: 'Repo' },
   notion: { label: 'Notion' },
   figma: { label: 'Figma' },
   drive: { label: 'Drive' },
-  video: { label: '영상' },
-  docs: { label: '문서' },
+  video: { label: 'Video' },
+  docs: { label: 'Docs' },
 };
