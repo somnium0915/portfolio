@@ -199,12 +199,14 @@ img {
   line-height: 1.25;
   letter-spacing: -0.02em;
   margin: 0 0 0.75rem;
+  text-wrap: balance;
 }
 
 .hero p {
   color: var(--fg-muted);
-  max-width: 44ch;
+  max-width: 40rem;
   margin: 0;
+  text-wrap: pretty;
 }
 
 /* ============================================================
