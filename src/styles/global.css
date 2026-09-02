@@ -586,20 +586,6 @@ img {
   margin-block: 2rem;
 }
 
-.notion-note {
-  margin: 0 0 2rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--bg-elev);
-  font-size: 0.85rem;
-  color: var(--fg-muted);
-}
-
-.notion-note a {
-  color: var(--accent);
-}
-
 /* ============================================================
    PDF embed
    ============================================================ */

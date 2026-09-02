@@ -29,8 +29,13 @@ const { data } = entry;
 const { Content } = await render(entry as Parameters<typeof render>[0]);
 const cover = resolveMedia(data.cover);
 
-const links = Object.entries(data.links ?? {}).filter(([, v]) => Boolean(v)) as [string, string][];
 const notionUrl = (data as Record<string, unknown>).notionUrl as string | undefined;
+
+const links = Object.entries(data.links ?? {}).filter(([, v]) => Boolean(v)) as [string, string][];
+// 노션에서 가져온 문서는 "노션 원본" 도 다른 링크와 같은 버튼으로 노출
+if (notionUrl && !links.some(([key]) => key === 'notion')) {
+  links.push(['notion', notionUrl]);
+}
 
 // 상세 상단 "정보" 표에 넣을 항목 (컬렉션마다 다른 필드를 자동 수집)
 const factKeys: [string, string][] = [
@@ -106,17 +111,6 @@ const stack = ((data as Record<string, unknown>).stack as string[] | undefined) 
   </header>
 
   {cover && <img src={cover} alt="" style="border-radius:12px;border:1px solid var(--border);margin-bottom:2rem" />}
-
-  {
-    notionUrl && (
-      <p class="notion-note">
-        이 문서는 노션에서 자동으로 가져왔습니다.{' '}
-        <a href={notionUrl} target="_blank" rel="noopener">
-          노션 원본 열기 ↗
-        </a>
-      </p>
-    )
-  }
 
   <article class="prose">
     <Content />
