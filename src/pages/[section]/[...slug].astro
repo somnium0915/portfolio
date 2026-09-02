@@ -61,8 +61,17 @@ const stack = ((data as Record<string, unknown>).stack as string[] | undefined) 
     <div class="card__meta" style="font-size:0.82rem">
       <time datetime={new Date(data.date).toISOString()}>{formatDate(data.date)}</time>
       {data.updated && <span>· 수정 {formatDate(data.updated)}</span>}
-      {(data.tags ?? []).map((t) => <span class="tag">#{t}</span>)}
     </div>
+
+    {
+      (data.tags ?? []).length > 0 && (
+        <div class="article-tags">
+          {(data.tags ?? []).map((t) => (
+            <span class="tag">#{t}</span>
+          ))}
+        </div>
+      )
+    }
 
     {
       (facts.length > 0 || stack.length > 0) && (
