@@ -2,17 +2,29 @@
 title: AXIS7 리듬게임 기획서
 summary: 7키 건반형 리듬게임 AXIS7의 게임 디자인 문서 — 노트 규격, 판정, 그루브 게이지, 수록곡/채보 설계 방향.
 date: 2026-08-07
-tags: [리듬게임, 시스템기획, 채보설계]
+updated: ''
+tags:
+  - 리듬게임
+  - 시스템기획
+  - 채보설계
+cover: ''
 status: published
 featured: true
+order: 1
+links:
+  demo: ''
+  repo: ''
+  figma: ''
+  drive: https://drive.google.com/drive/folders/1LLfjBaMB5DJTLN7imjUIXZKXqKIb0LwV
+  video: ''
+  notion: ''
+  docs: ''
+pdf: []
 game: AXIS7
 docType: 기획서
-links:
-  drive: https://drive.google.com/drive/folders/1LLfjBaMB5DJTLN7imjUIXZKXqKIb0LwV
-  figma: https://www.figma.com/design/D8hQ2C0kmarTMOXhGqyT0C/AXIS7_UI
 ---
 
-> 이 페이지는 요약본입니다. 전체 문서(수록곡·채보 설계 포함)는 위 **Drive** 링크의 *리듬게임_기획서* 를 참고하세요.
+> 이 페이지는 요약본입니다. 전체 문서(수록곡·채보 설계 포함)는 위 **Drive** 링크의 _리듬게임_기획서_ 를 참고하세요.
 
 ## 조작
 
