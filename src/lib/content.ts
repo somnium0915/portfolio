@@ -77,7 +77,7 @@ export function formatDate(value: Date | string): string {
 export const LINK_META: Record<string, { label: string }> = {
   demo: { label: '데모' },
   repo: { label: '저장소' },
-  notion: { label: '노션 원본' },
+  notion: { label: 'Notion' },
   figma: { label: 'Figma' },
   drive: { label: 'Drive' },
   video: { label: '영상' },
