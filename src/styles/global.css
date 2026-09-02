@@ -138,21 +138,18 @@ img {
 }
 
 .nav a {
-  padding: 0.35rem 0.6rem;
-  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.4rem;
   color: var(--fg-muted);
   font-size: 0.92rem;
-  transition: background 0.15s, color 0.15s;
+  transition: color 0.15s;
 }
 
 .nav a:hover {
   color: var(--fg);
-  background: var(--tag-bg);
 }
 
 .nav a[aria-current='page'] {
   color: var(--fg);
-  background: transparent;
   font-weight: 700;
 }
 
