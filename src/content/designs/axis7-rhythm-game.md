@@ -9,7 +9,7 @@ tags:
   - 채보설계
 cover: ''
 status: published
-featured: true
+featured: false
 order: 1
 links:
   demo: ''
