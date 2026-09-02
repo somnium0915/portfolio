@@ -6,11 +6,11 @@ tags: [UI분석, 수집형RPG, 레퍼런스분석]
 status: published
 subject: "몬스터 길들이기: 스타다이브"
 platform: 모바일
+links:
+  drive: https://drive.google.com/drive/folders/1aaWZyGDd50P_d7hkd-KsE6REHrzrdGqI
 pdf:
   - url: https://drive.google.com/file/d/1eRIcWN7vePxRdbyr5oK_eov9VwCs9DEm/view
-    label: UI 분석서 본편
-  - url: https://drive.google.com/drive/folders/1aaWZyGDd50P_d7hkd-KsE6REHrzrdGqI
-    label: 관련 문서 폴더
+    label: UI 분석서 (PDF)
 ---
 
 ## 개요
