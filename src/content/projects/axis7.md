@@ -8,7 +8,7 @@ tags:
   - 리듬게임
   - WebGL
   - 개인프로젝트
-cover: ''
+cover: /portfolio/images/Image_Title_Logo.png
 status: published
 featured: true
 order: 1
