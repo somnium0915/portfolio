@@ -1,16 +1,29 @@
 ---
-title: "몬스터 길들이기: 스타다이브 — UI 분석"
+title: '몬스터 길들이기: 스타다이브 — UI 분석'
 summary: "수집형 RPG '몬스터 길들이기: 스타다이브'의 화면 구성과 UI 흐름 분석. 전체 분석서는 첨부 PDF."
 date: 2026-09-01
-tags: [UI분석, 수집형RPG, 레퍼런스분석]
+updated: ''
+tags:
+  - UI분석
+  - 수집형RPG
+  - 레퍼런스분석
+cover: /portfolio/images/unnamed11.jpg
 status: published
-subject: "몬스터 길들이기: 스타다이브"
-platform: 모바일
+featured: false
+order: null
 links:
+  demo: ''
+  repo: ''
+  figma: ''
   drive: https://drive.google.com/drive/folders/1aaWZyGDd50P_d7hkd-KsE6REHrzrdGqI
+  video: ''
+  notion: ''
+  docs: ''
 pdf:
   - url: https://drive.google.com/file/d/1eRIcWN7vePxRdbyr5oK_eov9VwCs9DEm/view
     label: UI 분석서 (PDF)
+subject: '몬스터 길들이기: 스타다이브'
+platform: 모바일
 ---
 
 ## 개요
