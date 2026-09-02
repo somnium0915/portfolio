@@ -23,6 +23,38 @@ editor:
   preview: false
 
 collections:
+  # ─────────────────────────────  사이트 설정  ─────────────────────────────
+  - name: settings
+    label: 사이트 설정
+    editable: true
+    files:
+      - name: home
+        label: 메인 화면 · 사이트 정보
+        file: "src/data/site.json"
+        fields:
+          - { name: title, label: "브라우저 탭 / 공유 제목", widget: string }
+          - { name: description, label: "메타 설명 (검색·SNS 미리보기)", widget: text }
+          - { name: author, label: "이름 (헤더·푸터)", widget: string }
+          - name: hero
+            label: 상단 큰 영역
+            widget: object
+            fields:
+              - { name: tagline, label: 큰 문구, widget: string }
+              - { name: intro, label: 소개 문단, widget: text }
+          - name: featured
+            label: "'주요 작업' 블록"
+            widget: object
+            fields:
+              - { name: title, label: 제목, widget: string }
+              - { name: note, label: 부제, widget: string, required: false }
+          - name: sections
+            label: 섹션별 한 줄 설명
+            widget: object
+            fields:
+              - { name: projects, label: 프로젝트, widget: string }
+              - { name: designs, label: 기획서, widget: string }
+              - { name: analyses, label: 분석서, widget: string }
+
   # ─────────────────────────────  프로젝트  ─────────────────────────────
   - name: projects
     label: 프로젝트

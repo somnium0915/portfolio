@@ -1,56 +1,62 @@
 /**
- * 사이트 전역 설정. 대부분의 "내용" 수정은 이 파일과 src/content/ 안의 마크다운만 건드리면 됩니다.
+ * 사이트 전역 설정.
+ * 화면에 보이는 문구(제목·소개·섹션 설명 등)는 `src/data/site.json` 에 있고,
+ * 웹 편집기(/admin/ → "사이트 설정 · 메인 화면")에서 수정할 수 있습니다.
  */
+import site from './data/site.json';
 
 export const SITE = {
   /** <title> 및 OG 에 쓰이는 사이트 이름 */
-  title: '원성민 · 포트폴리오',
+  title: site.title,
   /** 메타 설명 (검색결과/SNS 미리보기) */
-  description: '게임 기획서, 분석서, 프로젝트 아카이브',
-  /** 홈 화면 상단에 크게 표시되는 소개 문구 */
-  tagline: '게임을 기획하고, 시스템으로 구현합니다.',
-  intro:
-    '기획 문서부터 Unity 구현, 빌드·배포까지 직접 다루며 만든 결과물을 모아둔 공간입니다. 아래 섹션에서 프로젝트와 문서를 살펴볼 수 있습니다.',
-  author: '원성민',
+  description: site.description,
+  /** 홈 화면 상단에 크게 표시되는 문구 */
+  tagline: site.hero.tagline,
+  /** 홈 화면 상단 소개 문단 */
+  intro: site.hero.intro,
+  /** 헤더/푸터에 표시되는 이름 */
+  author: site.author,
   /** 배포 최종 주소 (RSS/OG 절대경로 계산용). astro.config.mjs 의 site + base 와 일치해야 함 */
   url: 'https://somnium0915.github.io/portfolio',
   lang: 'ko',
 } as const;
 
+/** 홈의 "주요 작업" 블록 제목/부제 */
+export const FEATURED = site.featured;
+
 /** 헤더/푸터에 노출할 외부 링크. 필요 없으면 줄을 지우세요. */
 export const SOCIALS: { label: string; href: string }[] = [
   { label: 'GitHub', href: 'https://github.com/Somnium0915' },
   // { label: 'Email', href: 'mailto:you@example.com' },
-  // { label: 'Blog', href: 'https://...' },
 ];
 
 /**
- * 포트폴리오 섹션 정의.
+ * 포트폴리오 섹션 정의. label(메뉴 이름)·slug(주소)는 구조라 여기서 고정,
+ * description(한 줄 설명)은 site.json 에서 편집합니다.
  *
  * 새 카테고리를 추가하려면:
- *   1) 여기에 항목 추가 (slug = 주소, collection = 아래 3번의 폴더/키 이름)
- *   2) src/content/<collection>/ 폴더 생성 + 마크다운 파일 추가
- *   3) src/content.config.ts 에 같은 이름의 컬렉션 정의 추가
- * 목록 페이지·상세 페이지·홈 노출은 자동으로 따라갑니다.
+ *   1) 여기에 항목 추가 (slug = 주소, collection = 폴더/컬렉션 이름)
+ *   2) src/content/<collection>/ 폴더 + 마크다운
+ *   3) src/content.config.ts 에 같은 이름의 컬렉션 정의
  */
 export const SECTIONS = [
   {
     slug: 'projects',
     collection: 'projects',
     label: '프로젝트',
-    description: '직접 만들었거나 참여한 게임 · 툴 프로젝트',
+    description: site.sections.projects,
   },
   {
     slug: 'designs',
     collection: 'designs',
     label: '기획서',
-    description: '게임 디자인 문서 · 시스템 기획 · 채보/레벨 설계',
+    description: site.sections.designs,
   },
   {
     slug: 'analyses',
     collection: 'analyses',
     label: '분석서',
-    description: '레퍼런스 게임 분석 · 시장 조사 · 시스템 리버스 엔지니어링 (노션 문서 포함)',
+    description: site.sections.analyses,
   },
 ] as const;
 

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CardGrid from '../components/CardGrid.astro';
-import { SITE, SECTIONS } from '../consts';
+import { SITE, SECTIONS, FEATURED } from '../consts';
 import { loadSection, loadFeatured } from '../lib/content';
 import { withBase } from '../lib/path';
 
@@ -26,8 +26,8 @@ const sections = await Promise.all(
       <section class="section-block" id="featured">
         <div class="section-head">
           <div>
-            <h2>주요 작업</h2>
-            <p>frontmatter 에 <code>featured: true</code> 로 지정한 항목</p>
+            <h2>{FEATURED.title}</h2>
+            {FEATURED.note && <p>{FEATURED.note}</p>}
           </div>
         </div>
         <CardGrid entries={featured} />
