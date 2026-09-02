@@ -53,6 +53,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* 스크롤바 유무와 상관없이 콘텐츠가 좌우로 안 밀리도록 항상 스크롤바 공간 확보 */
+  scrollbar-gutter: stable;
 }
 
 body {
