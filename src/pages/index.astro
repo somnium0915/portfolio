@@ -16,14 +16,14 @@ const sections = await Promise.all(
 ---
 
 <BaseLayout>
-  <section class="hero">
+  <section class="hero" id="intro">
     <h1>{SITE.tagline}</h1>
     <p>{SITE.intro}</p>
   </section>
 
   {
     featured.length > 0 && (
-      <div class="section-block">
+      <section class="section-block" id="featured">
         <div class="section-head">
           <div>
             <h2>주요 작업</h2>
@@ -31,13 +31,13 @@ const sections = await Promise.all(
           </div>
         </div>
         <CardGrid entries={featured} />
-      </div>
+      </section>
     )
   }
 
   {
     sections.map(({ def, entries }) => (
-      <div class="section-block">
+      <section class="section-block" id={`home-${def.slug}`}>
         <div class="section-head">
           <div>
             <h2>{def.label}</h2>
@@ -50,7 +50,7 @@ const sections = await Promise.all(
           showSection={false}
           emptyText={`${def.label} 항목이 아직 없습니다.`}
         />
-      </div>
+      </section>
     ))
   }
 </BaseLayout>

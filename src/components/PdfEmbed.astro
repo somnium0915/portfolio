@@ -13,7 +13,7 @@ const openByDefault = (d: (typeof docs)[number]) => d.isDrive && !d.isFolder;
 
 {
   docs.length > 0 && (
-    <section class="pdf-embed" aria-label="첨부 문서">
+    <section class="pdf-embed" id="attachments" aria-label="첨부 문서">
       {docs.map((d) => (
         <div class="pdf-doc">
           <div class="pdf-doc__bar">

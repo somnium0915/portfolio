@@ -13,13 +13,15 @@ const entries = await loadSection(section.collection);
 ---
 
 <BaseLayout title={section.label} description={section.description}>
-  <div class="page-intro">
-    <h1>{section.label}</h1>
-    <p>{section.description}</p>
-  </div>
+  <section id={section.slug}>
+    <div class="page-intro">
+      <h1>{section.label}</h1>
+      <p>{section.description}</p>
+    </div>
 
-  <FilterableGrid
-    entries={entries}
-    emptyText={`${section.label} 항목이 아직 없습니다. src/content/${section.collection}/ 에 마크다운을 추가하세요.`}
-  />
+    <FilterableGrid
+      entries={entries}
+      emptyText={`${section.label} 항목이 아직 없습니다. src/content/${section.collection}/ 에 마크다운을 추가하세요.`}
+    />
+  </section>
 </BaseLayout>

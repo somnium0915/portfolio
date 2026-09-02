@@ -7,13 +7,13 @@
     <title>방문 통계 · 원성민 포트폴리오</title>
     <style>
       :root {
-        --bg: #fbfbfa; --elev: #fff; --fg: #1a1a1a; --muted: #6b6b6b;
-        --border: #e6e4e0; --accent: #2f6f4f; --accent-fg: #fff;
+        --bg: #fbfbfa; --elev: #fff; --fg: #1a1a1a; --muted: #6b6b6b; --subtle: #8f8f8f;
+        --border: #e6e4e0; --accent: #2f6f4f; --accent-fg: #fff; --bar: #cfe6da;
       }
       @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #16161a; --elev: #1e1e24; --fg: #ececec; --muted: #a0a0a8;
-          --border: #2c2c34; --accent: #5fb98a; --accent-fg: #10231a;
+          --bg: #16161a; --elev: #1e1e24; --fg: #ececec; --muted: #a0a0a8; --subtle: #7a7a84;
+          --border: #2c2c34; --accent: #5fb98a; --accent-fg: #10231a; --bar: #2f4a3d;
         }
       }
       * { box-sizing: border-box; }
@@ -23,89 +23,352 @@
           'Segoe UI', 'Malgun Gothic', sans-serif;
         line-height: 1.6; word-break: keep-all;
       }
-      .bar {
+      a { color: var(--accent); }
+      .bar-top {
         display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
         padding: 0.9rem 1.25rem; border-bottom: 1px solid var(--border); background: var(--elev);
       }
-      .bar strong { font-size: 1rem; margin-right: auto; }
-      .bar a {
+      .bar-top strong { font-size: 1rem; margin-right: auto; }
+      .bar-top a, .bar-top button.link {
         color: var(--muted); text-decoration: none; font-size: 0.9rem;
-        padding: 0.35rem 0.6rem; border-radius: 8px;
+        padding: 0.35rem 0.6rem; border-radius: 8px; border: 0; background: none;
+        cursor: pointer; font-family: inherit;
       }
-      .bar a:hover { color: var(--fg); background: var(--border); }
-      .wrap { max-width: 44rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-      h1 { font-size: 1.35rem; margin: 0 0 0.3rem; }
-      p.sub { color: var(--muted); margin: 0 0 2rem; font-size: 0.92rem; }
-      .cards { display: grid; gap: 0.9rem; }
-      a.card {
-        display: block; text-decoration: none; color: inherit;
-        border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.25rem;
-        background: var(--elev); transition: border-color 0.15s, transform 0.1s;
+      .bar-top a:hover, .bar-top button.link:hover { color: var(--fg); background: var(--border); }
+      .wrap { max-width: 60rem; margin: 0 auto; padding: 1.5rem 1.25rem 5rem; }
+      h1 { font-size: 1.3rem; margin: 0.3rem 0 1.25rem; }
+      h2 { font-size: 1rem; margin: 2.2rem 0 0.7rem; }
+      .center { text-align: center; padding: 5rem 1rem; color: var(--muted); }
+      button.primary {
+        font: inherit; font-weight: 650; cursor: pointer;
+        padding: 0.7rem 1.4rem; border-radius: 999px; border: 1px solid var(--accent);
+        background: var(--accent); color: var(--accent-fg);
       }
-      a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
-      a.card .t { font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem; }
-      a.card .t .go { margin-left: auto; color: var(--accent); font-weight: 600; font-size: 0.85rem; }
-      a.card .d { color: var(--muted); font-size: 0.88rem; margin-top: 0.35rem; }
-      .note {
-        margin-top: 1.75rem; padding: 0.9rem 1.1rem; border: 1px solid var(--border);
-        border-radius: 10px; background: var(--elev); color: var(--muted); font-size: 0.84rem;
+      button.primary:hover { filter: brightness(1.05); }
+
+      .ranges { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+      .ranges button {
+        font: inherit; font-size: 0.85rem; cursor: pointer;
+        padding: 0.35rem 0.9rem; border-radius: 999px;
+        border: 1px solid var(--border); background: var(--elev); color: var(--muted);
       }
-      .note b { color: var(--fg); }
-      details { margin-top: 1rem; font-size: 0.84rem; color: var(--muted); }
-      details summary { cursor: pointer; }
-      details code {
-        background: color-mix(in srgb, var(--fg) 8%, transparent);
-        padding: 0.1em 0.4em; border-radius: 5px;
+      .ranges button[aria-pressed='true'] {
+        background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-weight: 650;
       }
+
+      .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.8rem; }
+      .tile { border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; background: var(--elev); }
+      .tile .n { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+      .tile .l { font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; }
+
+      table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+      th, td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--border); }
+      th { color: var(--subtle); font-weight: 600; font-size: 0.8rem; }
+      td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+      .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--elev); }
+      .tbl-wrap table { min-width: 30rem; }
+      .path { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.82rem; }
+
+      .barlist { display: grid; gap: 0.35rem; }
+      .barrow { display: grid; grid-template-columns: 8rem 1fr 3rem; align-items: center; gap: 0.6rem; font-size: 0.84rem; }
+      .barrow .track { background: var(--border); border-radius: 5px; height: 0.85rem; overflow: hidden; }
+      .barrow .fill { background: var(--bar); height: 100%; }
+      .barrow .v { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.5rem 2rem; }
+      .muted { color: var(--muted); font-size: 0.85rem; }
+      .err { color: #c0392b; font-size: 0.85rem; }
+      @media (prefers-color-scheme: dark) { .err { color: #ff8a80; } }
     </style>
   </head>
   <body>
-    <div class="bar">
+    <div class="bar-top">
       <strong>방문 통계</strong>
       <a href="./">← 콘텐츠 편집</a>
       <a href="../" target="_blank" rel="noopener">사이트 ↗</a>
+      <button class="link" id="signout" hidden>로그아웃</button>
     </div>
 
     <div class="wrap">
-      <h1>방문 통계</h1>
-      <p class="sub">
-        아래 버튼을 누르면 Google 대시보드가 열립니다. 본인 Google 계정으로 로그인돼 있으면
-        바로 보입니다 — 별도 설정 불필요.
-      </p>
-
-      <div class="cards">
-        <a class="card" href="https://console.firebase.google.com/project/portfolio-b4bc3/analytics/realtime" target="_blank" rel="noopener">
-          <div class="t">실시간 방문자 <span class="go">열기 ↗</span></div>
-          <div class="d">지금 접속 중인 사용자 수·지역·보고 있는 페이지. 방금 내 접속이 잡히는지 확인할 때.</div>
-        </a>
-        <a class="card" href="https://console.firebase.google.com/project/portfolio-b4bc3/analytics" target="_blank" rel="noopener">
-          <div class="t">Firebase Analytics 대시보드 <span class="go">열기 ↗</span></div>
-          <div class="d">일/주별 사용자 추이, 신규·재방문, 이벤트, 국가·기기 요약.</div>
-        </a>
-        <a class="card" href="https://analytics.google.com/analytics/web/#/p552191211/reports/reportinghub" target="_blank" rel="noopener">
-          <div class="t">GA4 — 페이지별 조회수·체류시간 <span class="go">열기 ↗</span></div>
-          <div class="d">
-            열리면 왼쪽 <b>보고서 → 참여도 → 페이지 및 화면</b>. 페이지 경로별 조회수와
-            <b>평균 참여 시간</b>(머문 시간)이 여기 나옵니다.
-          </div>
-        </a>
+      <div id="gate" class="center">불러오는 중…</div>
+      <div id="dash" hidden>
+        <h1>방문 통계 <span class="muted" id="who"></span></h1>
+        <div class="ranges" id="ranges">
+          <button data-r="1" aria-pressed="false">오늘</button>
+          <button data-r="7" aria-pressed="true">7일</button>
+          <button data-r="30" aria-pressed="false">30일</button>
+          <button data-r="0" aria-pressed="false">전체</button>
+        </div>
+        <div id="body"></div>
       </div>
-
-      <div class="note">
-        표준 보고서(페이지별·체류시간)는 첫 데이터가 쌓이는 데 <b>24~48시간</b> 걸립니다.
-        그 전엔 <b>실시간 방문자</b>로만 확인됩니다. 광고 차단기가 켜진 브라우저에서의 내 방문은
-        집계되지 않을 수 있습니다.
-      </div>
-
-      <details>
-        <summary>이 페이지에 대시보드를 직접 띄우고 싶다면 (선택)</summary>
-        <p>
-          Google 콘솔 화면은 외부 사이트에 임베드가 불가능해서, <a href="https://lookerstudio.google.com" target="_blank" rel="noopener">Looker Studio</a>
-          보고서를 만들어 <b>"링크가 있는 모든 사용자 · 뷰어"</b> 로 공유 + <b>삽입 사용</b> 을 켜야 합니다.
-          그러면 URL 을 아는 사람은 통계를 볼 수 있게 됩니다. 그 URL 을 저에게 주면
-          <code>public/admin/stats.html</code> 에 넣어 임베드해 드립니다.
-        </p>
-      </details>
     </div>
+
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+      import {
+        getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged,
+      } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
+      import {
+        getFirestore, collection, query, orderBy, limit, getDocs,
+      } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+
+      const CONFIG = {
+        apiKey: 'AIzaSyA_PytDMagpwyaM7OWda73TPDyMLvIv5GM',
+        authDomain: 'portfolio-b4bc3.firebaseapp.com',
+        projectId: 'portfolio-b4bc3',
+        storageBucket: 'portfolio-b4bc3.firebasestorage.app',
+        messagingSenderId: '1024523366807',
+        appId: '1:1024523366807:web:0a6d0f7cce13f136fd54d2',
+      };
+      const OWNER_EMAIL = 'dnjstjdals0915@gmail.com';
+      const SITE = 'somnium0915-portfolio';
+
+      const SECTION_LABELS = {
+        intro: '소개',
+        featured: '주요 작업',
+        'home-projects': '홈 · 프로젝트',
+        'home-designs': '홈 · 기획서',
+        'home-analyses': '홈 · 분석서',
+        projects: '프로젝트 목록',
+        designs: '기획서 목록',
+        analyses: '분석서 목록',
+        'doc-body': '문서 본문',
+        attachments: '첨부 문서',
+      };
+
+      const app = initializeApp(CONFIG);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+
+      const $ = (s) => document.querySelector(s);
+      const gate = $('#gate'), dash = $('#dash'), body = $('#body');
+
+      $('#signout').addEventListener('click', () => signOut(auth));
+
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          $('#signout').hidden = true;
+          dash.hidden = true;
+          gate.hidden = false;
+          gate.innerHTML =
+            '<p class="muted" style="margin-bottom:1.2rem">이 통계는 소유자만 볼 수 있습니다.</p>';
+          const b = document.createElement('button');
+          b.className = 'primary';
+          b.textContent = 'Google로 로그인';
+          b.onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch((e) => {
+            gate.querySelector('.err')?.remove();
+            const p = document.createElement('p');
+            p.className = 'err';
+            p.textContent = '로그인 실패: ' + (e.code || e.message);
+            gate.appendChild(p);
+          });
+          gate.appendChild(b);
+          return;
+        }
+        if (user.email !== OWNER_EMAIL) {
+          gate.hidden = false;
+          dash.hidden = true;
+          $('#signout').hidden = false;
+          gate.innerHTML =
+            '<p class="err">권한 없음: ' + user.email + ' 계정으로는 볼 수 없습니다.</p>';
+          return;
+        }
+        gate.hidden = true;
+        dash.hidden = false;
+        $('#signout').hidden = false;
+        $('#who').textContent = '· ' + user.email;
+        await loadAndRender();
+      });
+
+      let ALL = [];
+      let range = 7;
+
+      async function loadAndRender() {
+        body.innerHTML = '<p class="muted">데이터 불러오는 중…</p>';
+        try {
+          const snap = await getDocs(
+            query(collection(db, 'visits'), orderBy('ts', 'desc'), limit(5000)),
+          );
+          ALL = [];
+          snap.forEach((d) => {
+            const x = d.data();
+            if (!x || (x.site && x.site !== SITE)) return;
+            ALL.push(x);
+          });
+          render();
+        } catch (e) {
+          body.innerHTML =
+            '<p class="err">데이터를 불러오지 못했습니다: ' +
+            (e.code || e.message) +
+            '</p><p class="muted">Firestore 보안 규칙에서 이 계정의 read 가 허용됐는지 확인하세요.</p>';
+        }
+      }
+
+      $('#ranges').addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-r]');
+        if (!btn) return;
+        range = +btn.dataset.r;
+        [...$('#ranges').children].forEach((b) =>
+          b.setAttribute('aria-pressed', String(b === btn)),
+        );
+        render();
+      });
+
+      function kstDay(d = new Date()) {
+        return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(d);
+      }
+      function cutoff() {
+        if (!range) return '0000-00-00';
+        const d = new Date();
+        d.setDate(d.getDate() - (range - 1));
+        return kstDay(d);
+      }
+      function fmtSecs(s) {
+        s = Math.round(s || 0);
+        if (s < 60) return s + '초';
+        return Math.floor(s / 60) + '분 ' + (s % 60) + '초';
+      }
+      function esc(s) {
+        return String(s ?? '').replace(/[<>&"]/g, (c) =>
+          ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' })[c],
+        );
+      }
+      function topMap(m, n = 12) {
+        return [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, n);
+      }
+      function barlist(pairs, fmt = (v) => v) {
+        const max = pairs.reduce((a, [, v]) => Math.max(a, v), 0) || 1;
+        return (
+          '<div class="barlist">' +
+          pairs
+            .map(
+              ([k, v]) =>
+                `<div class="barrow"><span title="${esc(k)}">${esc(k)}</span>` +
+                `<span class="track"><span class="fill" style="width:${(v / max) * 100}%"></span></span>` +
+                `<span class="v">${fmt(v)}</span></div>`,
+            )
+            .join('') +
+          '</div>'
+        );
+      }
+
+      function render() {
+        const from = cutoff();
+        const rows = ALL.filter((x) => (x.day || '') >= from);
+
+        if (!rows.length) {
+          body.innerHTML =
+            '<p class="muted">이 기간에 기록이 없습니다. (배포 후 실제 방문이 있어야 합니다. 표준 반영까지 몇 분 걸릴 수 있어요.)</p>';
+          return;
+        }
+
+        const uniq = new Set(rows.map((x) => x.vid)).size;
+        const withTime = rows.filter((x) => (x.secs || 0) > 0);
+        const avgSecs = withTime.length
+          ? withTime.reduce((a, x) => a + x.secs, 0) / withTime.length
+          : 0;
+        const newV = rows.filter((x) => x.newVisitor).length;
+
+        // daily
+        const byDay = new Map();
+        rows.forEach((x) => byDay.set(x.day, (byDay.get(x.day) || 0) + 1));
+        const days = [...byDay.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1)).slice(-30);
+
+        // pages
+        const pg = new Map();
+        rows.forEach((x) => {
+          const p = x.path || '/';
+          const o = pg.get(p) || { c: 0, v: new Set(), s: 0, sc: 0, t: new Map() };
+          o.c++;
+          o.v.add(x.vid);
+          if ((x.secs || 0) > 0) {
+            o.s += x.secs;
+            o.sc++;
+          }
+          if (x.title) o.t.set(x.title, (o.t.get(x.title) || 0) + 1);
+          pg.set(p, o);
+        });
+        const pages = [...pg.entries()]
+          .sort((a, b) => b[1].c - a[1].c)
+          .slice(0, 20)
+          .map(([p, o]) => ({
+            p,
+            c: o.c,
+            u: o.v.size,
+            avg: o.sc ? o.s / o.sc : 0,
+            title: [...o.t.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || '',
+          }));
+
+        // referrers
+        const refT = new Map(),
+          refH = new Map();
+        rows.forEach((x) => {
+          refT.set(x.refType || '직접 방문', (refT.get(x.refType || '직접 방문') || 0) + 1);
+          if (x.refHost) refH.set(x.refHost, (refH.get(x.refHost) || 0) + 1);
+        });
+
+        // sections
+        const sec = new Map();
+        rows.forEach((x) =>
+          (x.views || []).forEach((id) => {
+            const k = SECTION_LABELS[id] || id;
+            sec.set(k, (sec.get(k) || 0) + 1);
+          }),
+        );
+
+        const dev = new Map(),
+          osm = new Map(),
+          brm = new Map(),
+          reg = new Map();
+        rows.forEach((x) => {
+          dev.set(x.device || '?', (dev.get(x.device || '?') || 0) + 1);
+          osm.set(x.os || '?', (osm.get(x.os || '?') || 0) + 1);
+          brm.set(x.browser || '?', (brm.get(x.browser || '?') || 0) + 1);
+          reg.set(x.region || '?', (reg.get(x.region || '?') || 0) + 1);
+        });
+
+        body.innerHTML = `
+          <div class="tiles">
+            <div class="tile"><div class="n">${rows.length.toLocaleString()}</div><div class="l">방문 수</div></div>
+            <div class="tile"><div class="n">${uniq.toLocaleString()}</div><div class="l">순 방문자</div></div>
+            <div class="tile"><div class="n">${fmtSecs(avgSecs)}</div><div class="l">평균 체류</div></div>
+            <div class="tile"><div class="n">${Math.round((newV / rows.length) * 100)}%</div><div class="l">신규 방문자</div></div>
+          </div>
+
+          <h2>일별 방문</h2>
+          ${barlist(days)}
+
+          <h2>인기 페이지</h2>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>경로 / 제목</th><th class="num">방문</th><th class="num">순방문</th><th class="num">평균 체류</th></tr></thead>
+            <tbody>${pages
+              .map(
+                (r) =>
+                  `<tr><td><div class="path">${esc(r.p)}</div><div class="muted">${esc(r.title)}</div></td>` +
+                  `<td class="num">${r.c}</td><td class="num">${r.u}</td><td class="num">${fmtSecs(r.avg)}</td></tr>`,
+              )
+              .join('')}</tbody>
+          </table></div>
+
+          <div class="cols">
+            <div><h2>유입 경로</h2>${barlist(topMap(refT))}
+              ${refH.size ? '<h2>유입 사이트</h2>' + barlist(topMap(refH)) : ''}</div>
+            <div><h2>본 구역</h2>${
+              sec.size ? barlist(topMap(sec)) : '<p class="muted">아직 기록 없음</p>'
+            }</div>
+          </div>
+
+          <div class="cols">
+            <div><h2>기기</h2>${barlist(topMap(dev))}</div>
+            <div><h2>OS</h2>${barlist(topMap(osm))}</div>
+            <div><h2>브라우저</h2>${barlist(topMap(brm))}</div>
+            <div><h2>지역</h2>${barlist(topMap(reg))}</div>
+          </div>
+
+          <p class="muted" style="margin-top:2rem">
+            데이터 ${ALL.length.toLocaleString()}건 로드됨 · 사이트 <code>${esc(SITE)}</code> ·
+            체류 시간은 탭이 보이는 동안만, 종료 시 기록됩니다.
+          </p>`;
+      }
+    </script>
   </body>
 </html>
