@@ -6,6 +6,9 @@ interface Props {
 }
 
 const docs = toPdfDocs(Astro.props.pdf);
+// Drive 개별 파일은 뷰어가 페이지 단위로 스트리밍하므로 처음부터 펼쳐서 바로 보여준다.
+// 폴더(단순 목록)·직접 URL(대용량 통다운 위험)은 접어 둔다.
+const openByDefault = (d: (typeof docs)[number]) => d.isDrive && !d.isFolder;
 ---
 
 {
@@ -28,14 +31,15 @@ const docs = toPdfDocs(Astro.props.pdf);
               )}
             </span>
           </div>
-          <details class="pdf-doc__preview">
-            <summary>{d.isFolder ? '파일 목록 열기' : '미리보기 열기'}</summary>
+          <details class="pdf-doc__preview" open={openByDefault(d)}>
+            <summary>{d.isFolder ? '파일 목록 열기' : '미리보기'}</summary>
             <div class="pdf-doc__frame" data-folder={d.isFolder ? '' : undefined}>
               <iframe
                 data-src={d.preview}
                 loading="lazy"
                 title={`${d.label} ${d.isFolder ? '파일 목록' : '미리보기'}`}
                 referrerpolicy="no-referrer"
+                allow="autoplay"
               />
             </div>
             <p class="pdf-doc__hint">
@@ -51,15 +55,17 @@ const docs = toPdfDocs(Astro.props.pdf);
 }
 
 <script>
-  // 대용량 PDF / 폴더 뷰를 페이지 진입 시 받지 않도록, <details> 를 처음 열 때만 iframe src 를 채운다.
+  // 대용량 PDF / 폴더 뷰를 페이지 진입 시 받지 않도록, <details> 가 열릴 때만 iframe src 를 채운다.
   document.querySelectorAll<HTMLDetailsElement>('.pdf-doc__preview').forEach((d) => {
-    d.addEventListener('toggle', () => {
+    const fill = () => {
       if (!d.open) return;
       const frame = d.querySelector<HTMLIFrameElement>('iframe[data-src]');
       if (frame?.dataset.src) {
         frame.src = frame.dataset.src;
         frame.removeAttribute('data-src');
       }
-    });
+    };
+    d.addEventListener('toggle', fill);
+    fill(); // 처음부터 open 상태면 즉시 로드
   });
 </script>

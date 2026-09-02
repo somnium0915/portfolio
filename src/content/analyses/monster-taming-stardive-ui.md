@@ -7,8 +7,10 @@ status: published
 subject: "몬스터 길들이기: 스타다이브"
 platform: 모바일
 pdf:
+  - url: https://drive.google.com/file/d/1eRIcWN7vePxRdbyr5oK_eov9VwCs9DEm/view
+    label: UI 분석서 본편
   - url: https://drive.google.com/drive/folders/1aaWZyGDd50P_d7hkd-KsE6REHrzrdGqI
-    label: UI 분석서 (PDF)
+    label: 관련 문서 폴더
 ---
 
 ## 개요
