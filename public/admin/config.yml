@@ -125,7 +125,8 @@ collections:
     create: true
     slug: "{{fields.title}}"
     summary: "{{title}}"
-    # 참고: 노션에서 자동 생성된 분석서는 저장소에 없으므로 여기 안 보입니다 (노션에서 편집).
+    # 노션에서 가져온 분석서(mode: import-once)도 저장소에 커밋되므로 여기서 편집됩니다.
+    # notionUrl / sourceCategory / generator 는 노션 출처 표시용 — 편집 시 값이 유지되도록 hidden 으로 둡니다.
     fields:
       - { name: title, label: 제목, widget: string }
       - { name: summary, label: 요약(카드·검색 미리보기), widget: text, required: false }
@@ -136,6 +137,9 @@ collections:
       - { name: status, label: 상태, widget: select, options: ["published", "draft"], default: "published" }
       - { name: featured, label: 홈 상단 "주요 작업" 에 노출, widget: boolean, default: false }
       - { name: order, label: 정렬 우선순위(작을수록 위, 비우면 날짜순), widget: number, required: false, value_type: int }
+      - { name: notionUrl, widget: hidden, required: false }
+      - { name: sourceCategory, widget: hidden, required: false }
+      - { name: generator, widget: hidden, required: false }
       - name: links
         label: 바로가기 링크
         widget: object

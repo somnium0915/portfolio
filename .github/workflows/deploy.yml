@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write  # 노션에서 새로 가져온 분석서 .md 를 저장소에 되커밋하기 위함
   pages: write
   id-token: write
 
@@ -36,6 +36,23 @@ jobs:
           # 저장소 Settings → Secrets and variables → Actions 에 등록.
           # 없으면 노션 동기화만 건너뛰고 나머지는 정상 빌드됩니다.
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+
+      # 노션에서 새로 가져온(import-once) 분석서 .md 를 저장소에 커밋해 둔다.
+      # → 웹 편집기(CMS)에서 보이고 편집 가능해진다. 이미 있는 파일은 스크립트가 건드리지 않으므로
+      #   여기서 변경으로 잡히지도 않는다. [skip ci] 로 재배포 루프를 막는다.
+      - name: Persist imported Notion docs
+        run: |
+          git add src/content/analyses || true
+          [ -d public/images/notion ] && git add public/images/notion || true
+          if git diff --cached --quiet; then
+            echo "가져온 새 문서 없음 — 커밋 생략"
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore(notion): import analyses docs [skip ci]"
+            git pull --rebase --autostash origin main || true
+            git push || echo "push 생략 (동시 변경 충돌 — 다음 실행에서 재시도)"
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

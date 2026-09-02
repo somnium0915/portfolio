@@ -5,8 +5,8 @@ node_modules/
 dist/
 .astro/
 
-# 노션 동기화가 빌드 시 생성 (커밋하지 않음)
-public/images/notion/
+# 참고: public/images/notion/ 는 이제 커밋됩니다 (import-once 문서의 이미지를 보존해야 함).
+#       CI 가 새로 가져온 문서와 함께 되커밋합니다.
 
 # env
 .env

@@ -12,6 +12,13 @@
  *                  → 노션에서 페이지만 추가하면 사이트에 자동 반영 (config 수정 불필요)
  *   2) pages[]   : { slug, pageId } 로 개별 페이지를 콕 집어 지정
  *
+ * mode:
+ *   - "sync" (기본) : 매번 노션에서 다시 가져와 덮어씀. 노션이 원본.
+ *   - "import-once" : 파일이 없을 때만 생성. 이미 있으면 건드리지 않음.
+ *                     → 최초 1회 가져온 뒤 웹 편집기(CMS)에서 자유롭게 수정 가능.
+ *                       이후 노션 쪽 변경은 반영 안 됨(다시 가져오려면 파일 삭제 후 재실행).
+ *                       이 모드가 하나라도 있으면 자동 삭제도 비활성화됨.
+ *
  * 생성 파일에는 `generator: notion-sync` 프론트매터가 붙습니다. 이 스크립트는
  * 그 마커가 있는 파일만 관리(갱신·삭제)하므로, 손으로 쓴 분석서 .md 는 건드리지 않습니다.
  *
@@ -19,6 +26,7 @@
  * CI 에서 노션 오류 시 빌드를 실패시키고 싶으면 STRICT_NOTION=1 환경변수를 주세요.
  */
 import { readFile, writeFile, mkdir, readdir, unlink, rm } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { Buffer } from 'node:buffer';
@@ -75,12 +83,17 @@ async function main() {
   await mkdir(OUT_DIR, { recursive: true });
 
   const written = new Set();
+  const kept = new Set(); // import-once: 이미 있어 건드리지 않은 파일
   const usedSlugs = new Set();
   let hadError = false;
+
+  const isImportOnce = (x) => x && x.mode === 'import-once';
+  const anyImportOnce = folders.some(isImportOnce) || explicitPages.some(isImportOnce);
 
   // ── 1) folders[]: 부모 페이지 하위의 자식 페이지 자동 수집 ────────────────
   for (const folder of folders) {
     const parentId = clean(folder.parentPageId);
+    const importOnce = isImportOnce(folder);
     try {
       const found = [];
       await collectChildPages(notion, parentId, folder.recursive === false ? 1 : MAX_DEPTH, found);
@@ -89,11 +102,21 @@ async function main() {
       }
       for (const child of found) {
         // overrides: 노션 페이지 제목(또는 페이지 ID)을 키로 title/summary/slug/tags/featured 를 덮어씀
+        // (import-once 에서는 최초 생성 시에만 반영됨)
         const ov = matchOverride(folder.overrides, child);
         const title = ov.title || child.title;
-        const base = ov.slug ? slugify(ov.slug) : slugify(title);
+        const b = ov.slug ? slugify(ov.slug) : slugify(title);
+        const slug = folder.slugPrefix ? `${folder.slugPrefix}-${b}` : b;
+
+        if (importOnce && existsSync(path.join(OUT_DIR, `${slug}.md`))) {
+          kept.add(`${slug}.md`);
+          usedSlugs.add(slug);
+          log(`· ${slug} (import-once — 기존 파일 유지, 덮어쓰지 않음)`);
+          continue;
+        }
+
         await emitPage(child.id, {
-          slug: folder.slugPrefix ? `${folder.slugPrefix}-${base}` : base,
+          slug,
           title,
           summary: ov.summary,
           category: ov.category || folder.category,
@@ -109,8 +132,15 @@ async function main() {
 
   // ── 2) pages[]: 개별 지정 ─────────────────────────────────────────────────
   for (const page of explicitPages) {
+    const slug = slugify(page.slug);
+    if (isImportOnce(page) && existsSync(path.join(OUT_DIR, `${slug}.md`))) {
+      kept.add(`${slug}.md`);
+      usedSlugs.add(slug);
+      log(`· ${slug} (import-once — 기존 파일 유지)`);
+      continue;
+    }
     await emitPage(clean(page.pageId), {
-      slug: slugify(page.slug),
+      slug,
       title: page.title,
       summary: page.summary,
       category: page.category,
@@ -120,18 +150,23 @@ async function main() {
   }
 
   // ── 3) config 에서 빠진 자동생성 파일 정리 (마커 있는 것만) ────────────────
-  for (const file of await readdir(OUT_DIR)) {
-    if (!file.endsWith('.md') || file.startsWith('_') || written.has(file)) continue;
-    const full = path.join(OUT_DIR, file);
-    const content = await readFile(full, 'utf8').catch(() => '');
-    if (/^generator:\s*["']?notion-sync/m.test(content)) {
-      await unlink(full);
-      log(`− ${file} (노션에서 사라짐 → 제거)`);
+  //    import-once 가 하나라도 있으면 CMS 로 편집됐을 수 있으므로 자동 삭제하지 않는다.
+  if (anyImportOnce) {
+    log('import-once 모드 — 자동 삭제 비활성 (문서 삭제는 편집기에서 직접).');
+  } else {
+    for (const file of await readdir(OUT_DIR)) {
+      if (!file.endsWith('.md') || file.startsWith('_') || written.has(file) || kept.has(file)) continue;
+      const full = path.join(OUT_DIR, file);
+      const content = await readFile(full, 'utf8').catch(() => '');
+      if (/^generator:\s*["']?notion-sync/m.test(content)) {
+        await unlink(full);
+        log(`− ${file} (노션에서 사라짐 → 제거)`);
+      }
     }
   }
 
   if (hadError && STRICT) process.exitCode = 1;
-  log(`동기화 완료: ${written.size}개 문서`);
+  log(`동기화 완료: 생성/갱신 ${written.size}개, 유지(import-once) ${kept.size}개`);
 
   async function emitPage(pageId, opts) {
     let slug = opts.slug || pageId.slice(0, 8);

@@ -1,5 +1,5 @@
 {
-  "_comment": "노션 → 분석서(analyses) 동기화 설정. folders[] 는 부모 페이지 하위의 자식 페이지를 전부 자동 수집합니다(노션에서 페이지만 추가하면 사이트에 자동 반영). pages[] 는 개별 페이지를 콕 집어 지정할 때 씁니다. ID 는 노션 페이지 URL 끝의 32자리 hex(하이픈 있어도 됨). folders[].overrides 는 노션 페이지 제목(또는 ID)을 키로 title/summary/slug/tags/featured 를 사이트에서만 덮어씁니다(노션 원본은 그대로).",
+  "_comment": "노션 → 분석서(analyses) 동기화 설정. folders[] 는 부모 페이지 하위의 자식 페이지를 전부 자동 수집합니다. mode: 'import-once' 는 파일이 없을 때만 생성하고, 이후엔 웹 편집기에서 자유롭게 수정 가능(노션 변경은 반영 안 됨). mode 생략 시 'sync'(매번 덮어씀). overrides 는 노션 페이지 제목(또는 ID)을 키로 title/summary/slug/tags/featured 를 덮어쓰며, import-once 에서는 최초 생성 시에만 반영됩니다.",
 
   "folders": [
     {
@@ -7,6 +7,7 @@
       "parentPageId": "3bac11bdd7d181cd939effc6fc667ce9",
       "category": "레퍼런스 분석",
       "recursive": true,
+      "mode": "import-once",
       "enabled": true,
       "overrides": {
         "키우기(방치형) 게임 장르 정리": {
