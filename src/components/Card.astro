@@ -13,6 +13,11 @@ const { entry, showSection = true } = Astro.props;
 const { data } = entry;
 const cover = resolveMedia(data.cover);
 const links = Object.entries(data.links ?? {}).filter(([, v]) => Boolean(v)) as [string, string][];
+// 노션에서 가져온 문서는 notionUrl 을 "노션 원본" 바로가기로 카드에도 표시
+const notionUrl = (data as Record<string, unknown>).notionUrl as string | undefined;
+if (notionUrl && !links.some(([key]) => key === 'notion')) {
+  links.push(['notion', notionUrl]);
+}
 const tags = (data.tags ?? []).slice(0, 3);
 ---
 
