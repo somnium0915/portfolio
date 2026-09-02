@@ -152,8 +152,8 @@ img {
 
 .nav a[aria-current='page'] {
   color: var(--fg);
-  background: var(--tag-bg);
-  font-weight: 600;
+  background: transparent;
+  font-weight: 700;
 }
 
 .theme-toggle {
