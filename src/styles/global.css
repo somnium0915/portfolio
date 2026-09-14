@@ -358,13 +358,22 @@ a.skill:hover {
 }
 
 .skill__icon {
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.75rem;
+  height: 1.75rem;
   border-radius: 6px;
   object-fit: contain;
   flex: none;
 }
 
+/* 로고 이미지는 흰 타일 위에 올려 라이트/다크 모두에서 일관되게 보이게 한다
+   (투명 로고의 검은 부분이 다크 배경에 묻히거나, JPG 네모 배경이 튀는 문제 방지) */
+img.skill__icon {
+  background: #fff;
+  padding: 3px;
+  border: 1px solid var(--border);
+}
+
+/* 이니셜 플레이스홀더는 컬러 배경 유지 */
 .skill__icon--ph {
   display: grid;
   place-items: center;
