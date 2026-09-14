@@ -47,6 +47,20 @@ collections:
             fields:
               - { name: title, label: 제목, widget: string }
               - { name: note, label: 부제, widget: string, required: false }
+          - name: skills
+            label: "'보유 기술' 블록"
+            widget: object
+            fields:
+              - { name: title, label: 제목, widget: string }
+              - { name: note, label: 부제, widget: string, required: false }
+              - name: items
+                label: 기술 목록
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { name: name, label: 이름, widget: string }
+                  - { name: icon, label: 로고 이미지, widget: image, required: false, choose_url: true, hint: "비우면 이름 첫 글자로 표시됩니다" }
+                  - { name: url, label: 링크(선택), widget: string, required: false }
           - name: sections
             label: 섹션별 한 줄 설명
             widget: object

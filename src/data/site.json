@@ -10,6 +10,16 @@
     "title": "주요 작업",
     "note": "직접 고른 대표 작업들"
   },
+  "skills": {
+    "title": "보유 기술",
+    "note": "사용할 수 있는 툴",
+    "items": [
+      { "name": "Unity", "icon": "", "url": "" },
+      { "name": "Claude", "icon": "", "url": "" },
+      { "name": "Notion", "icon": "", "url": "" },
+      { "name": "GitHub", "icon": "", "url": "" }
+    ]
+  },
   "sections": {
     "projects": "직접 만들었거나 참여한 게임 · 툴 프로젝트",
     "designs": "게임 디자인 문서 · 시스템 기획 · 채보/레벨 설계",

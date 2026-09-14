@@ -326,6 +326,60 @@ img {
   gap: 0.55rem;
 }
 
+/* ============================================================
+   Skills
+   ============================================================ */
+.skill-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.skill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.95rem 0.5rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elev);
+  color: var(--fg);
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.1s, box-shadow 0.15s;
+}
+
+a.skill:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.skill__icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 6px;
+  object-fit: contain;
+  flex: none;
+}
+
+.skill__icon--ph {
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.skill__name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
 .card__tags {
   display: flex;
   flex-wrap: wrap;

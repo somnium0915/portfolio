@@ -1,0 +1,44 @@
+---
+import type { Skill } from '../consts';
+import { resolveMedia } from '../lib/path';
+
+interface Props {
+  items: Skill[];
+}
+
+const items = (Astro.props.items ?? []).filter((s) => s && s.name);
+
+// 이니셜 플레이스홀더 배경색 (이름 해시로 안정적으로 배정)
+const PALETTE = ['#2f6f4f', '#3d5a80', '#8a5a44', '#5b4b8a', '#7a2f4f', '#356859'];
+const colorFor = (name: string) => {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return PALETTE[h % PALETTE.length];
+};
+---
+
+{
+  items.length > 0 && (
+    <ul class="skill-grid">
+      {items.map((s) => {
+        const icon = resolveMedia(s.icon);
+        const Tag = s.url ? 'a' : 'div';
+        const attrs = s.url ? { href: s.url, target: '_blank', rel: 'noopener' } : {};
+        return (
+          <li>
+            <Tag class="skill" {...attrs}>
+              {icon ? (
+                <img class="skill__icon" src={icon} alt="" loading="lazy" />
+              ) : (
+                <span class="skill__icon skill__icon--ph" style={`background:${colorFor(s.name)}`}>
+                  {s.name.trim().charAt(0).toUpperCase()}
+                </span>
+              )}
+              <span class="skill__name">{s.name}</span>
+            </Tag>
+          </li>
+        );
+      })}
+    </ul>
+  )
+}

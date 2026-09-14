@@ -24,6 +24,20 @@ export const SITE = {
 /** 홈의 "주요 작업" 블록 제목/부제 */
 export const FEATURED = site.featured;
 
+/** 홈의 "보유 기술" 블록 (제목/부제/항목). site.json 에서 편집 */
+export interface Skill {
+  name: string;
+  /** 로고 이미지 경로(public 기준) 또는 절대 URL. 비우면 이니셜 플레이스홀더 */
+  icon?: string;
+  /** 클릭 시 이동할 링크(선택) */
+  url?: string;
+}
+export const SKILLS = site.skills as {
+  title: string;
+  note?: string;
+  items: Skill[];
+};
+
 /** 헤더/푸터에 노출할 외부 링크. 필요 없으면 줄을 지우세요. */
 export const SOCIALS: { label: string; href: string }[] = [
   { label: 'GitHub', href: 'https://github.com/Somnium0915' },

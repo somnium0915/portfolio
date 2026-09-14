@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CardGrid from '../components/CardGrid.astro';
-import { SITE, SECTIONS, FEATURED } from '../consts';
+import SkillGrid from '../components/SkillGrid.astro';
+import { SITE, SECTIONS, FEATURED, SKILLS } from '../consts';
 import { loadSection, loadFeatured } from '../lib/content';
 import { withBase } from '../lib/path';
 
@@ -20,6 +21,20 @@ const sections = await Promise.all(
     <h1>{SITE.tagline}</h1>
     <p>{SITE.intro}</p>
   </section>
+
+  {
+    SKILLS.items.length > 0 && (
+      <section class="section-block" id="skills">
+        <div class="section-head">
+          <div>
+            <h2>{SKILLS.title}</h2>
+            {SKILLS.note && <p>{SKILLS.note}</p>}
+          </div>
+        </div>
+        <SkillGrid items={SKILLS.items} />
+      </section>
+    )
+  }
 
   {
     featured.length > 0 && (
