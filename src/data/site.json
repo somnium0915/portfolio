@@ -14,10 +14,26 @@
     "title": "보유 기술",
     "note": "사용할 수 있는 툴",
     "items": [
-      { "name": "Unity", "icon": "", "url": "" },
-      { "name": "Claude", "icon": "", "url": "" },
-      { "name": "Notion", "icon": "", "url": "" },
-      { "name": "GitHub", "icon": "", "url": "" }
+      {
+        "name": "Unity",
+        "icon": "/portfolio/images/channels4_profile.jpg",
+        "url": ""
+      },
+      {
+        "name": "Claude",
+        "icon": "/portfolio/images/claude-color.svg",
+        "url": ""
+      },
+      {
+        "name": "Notion",
+        "icon": "/portfolio/images/Notion-logo.svg.webp",
+        "url": ""
+      },
+      {
+        "name": "GitHub",
+        "icon": "/portfolio/images/github.jpg",
+        "url": ""
+      }
     ]
   },
   "sections": {
