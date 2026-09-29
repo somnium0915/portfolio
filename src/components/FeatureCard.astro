@@ -1,0 +1,55 @@
+---
+import type { DecoratedEntry } from '../lib/content';
+import { formatDate, LINK_META } from '../lib/content';
+import { resolveMedia } from '../lib/path';
+
+interface Props {
+  entry: DecoratedEntry;
+}
+
+/** 홈 "대표 작업" 전용 가로형 대형 카드 (좌: 커버 / 우: 설명) */
+const { entry } = Astro.props;
+const { data } = entry;
+const cover = resolveMedia(data.cover);
+const links = Object.entries(data.links ?? {}).filter(([, v]) => Boolean(v)) as [string, string][];
+const tags = (data.tags ?? []).slice(0, 4);
+---
+
+<article class="feature-card">
+  {
+    cover && (
+      <a class="feature-card__media" href={entry.href} aria-label={data.title}>
+        <img src={cover} alt="" loading="lazy" />
+      </a>
+    )
+  }
+  <div class="feature-card__body">
+    <div class="feature-card__meta">
+      <span class="feature-card__badge">{entry.sectionLabel}</span>
+      <time datetime={new Date(data.date).toISOString()}>{formatDate(data.date)}</time>
+    </div>
+    <h3 class="feature-card__title">
+      <a href={entry.href}>{data.title}</a>
+    </h3>
+    {data.summary && <p class="feature-card__summary">{data.summary}</p>}
+    {
+      tags.length > 0 && (
+        <div class="card__tags">
+          {tags.map((t) => (
+            <span class="tag">#{t}</span>
+          ))}
+        </div>
+      )
+    }
+    <div class="feature-card__actions">
+      <a class="feature-card__cta" href={entry.href}>자세히 보기 →</a>
+      {
+        links.slice(0, 3).map(([key, href]) => (
+          <a class="feature-card__link" href={href} target="_blank" rel="noopener">
+            {LINK_META[key]?.label ?? key} <span aria-hidden="true">↗</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</article>

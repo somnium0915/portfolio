@@ -42,7 +42,7 @@ collections:
               - { name: tagline, label: 큰 문구, widget: string }
               - { name: intro, label: 소개 문단, widget: text }
           - name: featured
-            label: "'주요 작업' 블록"
+            label: "'대표 작업' 블록"
             widget: object
             fields:
               - { name: title, label: 제목, widget: string }
@@ -88,7 +88,7 @@ collections:
       - { name: tags, label: 태그, widget: list, required: false }
       - { name: cover, label: 커버 이미지, widget: image, required: false, choose_url: true }
       - { name: status, label: 상태, widget: select, options: ["published", "draft"], default: "published" }
-      - { name: featured, label: 홈 상단 "주요 작업" 에 노출, widget: boolean, default: false }
+      - { name: featured, label: 홈 상단 "대표 작업" 에 노출, widget: boolean, default: false }
       - { name: order, label: 정렬 우선순위(작을수록 위, 비우면 날짜순), widget: number, required: false, value_type: int }
       - name: links
         label: 바로가기 링크
@@ -135,7 +135,7 @@ collections:
       - { name: tags, label: 태그, widget: list, required: false }
       - { name: cover, label: 커버 이미지, widget: image, required: false, choose_url: true }
       - { name: status, label: 상태, widget: select, options: ["published", "draft"], default: "published" }
-      - { name: featured, label: 홈 상단 "주요 작업" 에 노출, widget: boolean, default: false }
+      - { name: featured, label: 홈 상단 "대표 작업" 에 노출, widget: boolean, default: false }
       - { name: order, label: 정렬 우선순위(작을수록 위, 비우면 날짜순), widget: number, required: false, value_type: int }
       - name: links
         label: 바로가기 링크
@@ -182,7 +182,7 @@ collections:
       - { name: tags, label: 태그, widget: list, required: false }
       - { name: cover, label: 커버 이미지, widget: image, required: false, choose_url: true }
       - { name: status, label: 상태, widget: select, options: ["published", "draft"], default: "published" }
-      - { name: featured, label: 홈 상단 "주요 작업" 에 노출, widget: boolean, default: false }
+      - { name: featured, label: 홈 상단 "대표 작업" 에 노출, widget: boolean, default: false }
       - { name: order, label: 정렬 우선순위(작을수록 위, 비우면 날짜순), widget: number, required: false, value_type: int }
       - { name: notionUrl, widget: hidden, required: false }
       - { name: sourceCategory, widget: hidden, required: false }

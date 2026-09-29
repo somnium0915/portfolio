@@ -21,7 +21,7 @@ export const SITE = {
   lang: 'ko',
 } as const;
 
-/** 홈의 "주요 작업" 블록 제목/부제 */
+/** 홈의 "대표 작업" 블록 제목/부제 */
 export const FEATURED = site.featured;
 
 /** 홈의 "보유 기술" 블록 (제목/부제/항목). site.json 에서 편집 */

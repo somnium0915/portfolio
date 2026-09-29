@@ -50,7 +50,7 @@ export async function loadAll(): Promise<DecoratedEntry[]> {
   return lists.flat().sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date));
 }
 
-/** 홈 상단 "주요 작업" */
+/** 홈 상단 "대표 작업" */
 export async function loadFeatured(): Promise<DecoratedEntry[]> {
   return (await loadAll()).filter((e) => e.data.featured);
 }

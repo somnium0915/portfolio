@@ -791,3 +791,174 @@ img.skill__icon {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================
+   Home: 대표 작업 / 아카이브
+   ============================================================ */
+.featured-block .section-head {
+  margin-bottom: 1.25rem;
+}
+
+/* 두 구역 제목: 앞에 초록 막대, 데스크톱 ~26px / 모바일 ~22px */
+.featured-block .section-head h2,
+.archive-head h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: clamp(1.4rem, 1rem + 1.4vw, 1.65rem);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.featured-block .section-head h2::before,
+.archive-head h2::before {
+  content: '';
+  width: 5px;
+  height: 1.05em;
+  border-radius: 2px;
+  background: var(--accent);
+  flex: none;
+}
+
+.featured-block .section-head p,
+.archive-head p {
+  margin: 0.2rem 0 0;
+  padding-left: calc(5px + 0.55rem);
+  color: var(--fg-muted);
+  font-size: 0.9rem;
+}
+
+/* --- 대표 작업: 가로형 카드 --- */
+.feature-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.feature-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  overflow: hidden;
+}
+
+.feature-card__media img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: var(--tag-bg);
+}
+
+.feature-card__body {
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.feature-card__meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--fg-subtle);
+}
+
+.feature-card__badge {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.feature-card__title {
+  font-size: 1.2rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.feature-card__summary {
+  margin: 0;
+  color: var(--fg-muted);
+  font-size: 0.9rem;
+}
+
+.feature-card__actions {
+  margin-top: auto;
+  padding-top: 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.feature-card__cta {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.feature-card__link {
+  color: var(--fg-muted);
+}
+
+.feature-card__link:hover {
+  color: var(--accent);
+}
+
+/* --- 아카이브: 구분선 + 가로 목록형 카드 --- */
+.archive {
+  margin-top: 3.5rem;
+}
+
+.archive-head {
+  border-top: 1px solid var(--border-strong);
+  padding-top: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.archive .section-head h2 {
+  font-size: 1.05rem;
+}
+
+.archive .section-block + .section-block {
+  margin-top: 2.5rem;
+}
+
+.archive .card-grid {
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+}
+
+.archive .card {
+  flex-direction: row;
+}
+
+.archive .card > a {
+  flex: 0 0 11rem;
+}
+
+.archive .card__cover {
+  height: 100%;
+  border-bottom: 0;
+  border-right: 1px solid var(--border);
+}
+
+.archive .card__body {
+  padding: 0.8rem 1rem;
+  gap: 0.3rem;
+}
+
+.archive .card__summary {
+  -webkit-line-clamp: 2;
+}
+
+@media (max-width: 640px) {
+  .feature-card {
+    grid-template-columns: 1fr;
+  }
+  .archive .card > a {
+    flex-basis: 7rem;
+  }
+}

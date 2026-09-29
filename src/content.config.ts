@@ -30,7 +30,7 @@ const base = z.object({
   cover: opt(z.string()),
   /** draft 는 프로덕션 빌드에서 목록/상세 모두 제외됩니다 */
   status: withFallback(z.enum(['published', 'draft']), 'published'),
-  /** 홈 상단 "주요 작업" 에 노출 */
+  /** 홈 상단 "대표 작업" 에 노출 */
   featured: z.preprocess((v) => (typeof v === 'boolean' ? v : false), z.boolean()),
   /** 목록 정렬 우선순위 (작을수록 먼저, 없으면 날짜 내림차순) */
   order: opt(z.number()),
