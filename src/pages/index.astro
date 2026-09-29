@@ -23,7 +23,7 @@ const sections = await Promise.all(
   </section>
 
   {
-    SKILLS.items.length > 0 && (
+    SKILLS.enabled !== false && SKILLS.items.length > 0 && (
       <section class="section-block" id="skills">
         <div class="section-head">
           <div>

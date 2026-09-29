@@ -51,6 +51,7 @@ collections:
             label: "'보유 기술' 블록"
             widget: object
             fields:
+              - { name: enabled, label: 홈에 표시, widget: boolean, default: true, required: false, hint: "끄면 블록 전체가 숨겨집니다 (목록은 유지)" }
               - { name: title, label: 제목, widget: string }
               - { name: note, label: 부제, widget: string, required: false }
               - name: items

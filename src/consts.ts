@@ -33,6 +33,8 @@ export interface Skill {
   url?: string;
 }
 export const SKILLS = site.skills as {
+  /** false 면 홈에서 블록 전체를 숨김 (항목 데이터는 유지) */
+  enabled?: boolean;
   title: string;
   note?: string;
   items: Skill[];

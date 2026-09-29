@@ -11,6 +11,7 @@
     "note": "직접 고른 대표 작업들"
   },
   "skills": {
+    "enabled": false,
     "title": "보유 기술",
     "note": "사용할 수 있는 툴",
     "items": [
