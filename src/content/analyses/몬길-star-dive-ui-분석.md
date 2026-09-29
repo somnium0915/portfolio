@@ -1,9 +1,19 @@
 ---
 title: "몬길: STAR DIVE UI 분석"
-date: "2026-09-29"
+summary: "수집형 RPG '몬스터 길들이기: 스타다이브'의 화면 구성과 UI 흐름 분석 — 로비 · 강화 · 전투 · 가챠"
+date: "2026-09-01"
 updated: "2026-09-29"
-tags: []
+tags:
+  - UI분석
+  - 수집형RPG
+  - 레퍼런스분석
+cover: /portfolio/images/unnamed11.jpg
 featured: false
+subject: '몬스터 길들이기: 스타다이브'
+platform: 모바일
+pdf:
+  - url: https://drive.google.com/file/d/1eRIcWN7vePxRdbyr5oK_eov9VwCs9DEm/view
+    label: UI 분석서 (PDF)
 sourceCategory: "레퍼런스 분석"
 notionUrl: "https://app.notion.com/p/STAR-DIVE-UI-3eac11bdd7d181a0b15ed0809e49cef7"
 generator: "notion-sync"
