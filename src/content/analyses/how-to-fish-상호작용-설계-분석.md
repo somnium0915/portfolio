@@ -4,6 +4,7 @@ summary: "물리 기반 협동 낚시 게임 How to Fish의 월드 상호작용 
 date: "2026-10-09"
 updated: "2026-10-09"
 tags: ["상호작용", "레퍼런스분석", "협동게임"]
+cover: /portfolio/images/how-to-fish.webp
 featured: false
 sourceCategory: "레퍼런스 분석"
 notionUrl: "https://app.notion.com/p/How-to-Fish-3f4c11bdd7d18194a7c7ed059691f540"
