@@ -4,6 +4,7 @@ summary: "협동 어드벤처 Big Walk의 디제틱 UI 분석 — 화면 UI 대�
 date: "2026-10-30"
 updated: "2026-10-30"
 tags: ["UI분석", "디제틱UI", "협동게임"]
+cover: /portfolio/images/notion/big-walk-월드-내-ui-설계-분석/img-1.png
 featured: false
 sourceCategory: "레퍼런스 분석"
 notionUrl: "https://app.notion.com/p/Big-Walk-UI-409c11bdd7d18161b455d78a9b8e8f8f"
