@@ -44,7 +44,7 @@ stack:
 - **노트/판정 시스템**: NoteSpawner·NoteView 계열. 레인별 이미지 노트, 롱노트 9-Slice, 슬라이드 궤적을 커스텀 UI.Graphic 메쉬(SlideTrailQuad)로 렌더링.
 - **그루브 게이지**: EZ2ON식 체력 증감(RhythmEngine.Life / OnFail), 실패 화면. 진행바는 스프라이트 없는 Filled 타입의 렌더링 이슈를 피해 RectTransform 앵커를 직접 조절하는 방식으로 구현.
 - **튜토리얼**: 첫 실행 시 곡 선택 대신 튜토리얼 채보 자동 재생, 인트로 구간 레인별 키 가이드 표시, 연타로 인한 화면 스킵 방지용 입력 유예.
-- **채보 에디터 툴**: 외부 라이브러리 없는 단일 HTML(Tools/ChartEditor). BPM 스냅 그리드(12/24비트 포함), 4종 노트 편집, Unity가 읽는 ChartData JSON 내보내기.
+- **채보 에디터 툴**: 외부 라이브러리 없는 단일 HTML(Tools/ChartEditor). BPM 스냅 그리드(12/24비트 포함), 4종 노트 편집, Unity가 읽는 ChartData JSON 내보내기 등.
 - **빌드 & 배포**: WebGL 빌드를 저장소 docs로 배포, 캔버스 해상도를 16:9(1280×720)에 맞춰 조정.
 
 ## 배운 점
