@@ -1,0 +1,126 @@
+{
+  "title": "즐겨 하는 게임",
+  "note": "오래 했거나, 작업에 영향을 줬거나, 분석서로 뜯어 본 게임입니다. 밝게 표시한 게임은 특히 오래 한 게임입니다.",
+  "groups": [
+    {
+      "name": "리듬 (아케이드)",
+      "games": [
+        { "name": "유비트", "main": true },
+        { "name": "beatmania IIDX" },
+        { "name": "EZ2AC" }
+      ],
+      "more": "그 밖에 아케이드 리듬게임은 대부분 해 봤습니다."
+    },
+    {
+      "name": "리듬 (PC, 모바일)",
+      "games": [
+        { "name": "EZ2ON REBOOT : R", "main": true },
+        { "name": "DJMAX RESPECT V", "main": true },
+        { "name": "프로젝트 세카이" },
+        { "name": "뱅드림" },
+        { "name": "사이터스" },
+        { "name": "사이터스 2" },
+        { "name": "디모" },
+        { "name": "탭소닉" }
+      ]
+    },
+    {
+      "name": "대전 격투",
+      "games": [
+        { "name": "철권 7", "main": true },
+        { "name": "철권 8", "main": true },
+        { "name": "길티기어 스트라이브" }
+      ]
+    },
+    {
+      "name": "서바이벌, 슈터",
+      "games": [
+        { "name": "이터널 리턴", "main": true },
+        { "name": "블랙서바이벌" },
+        { "name": "배틀그라운드", "main": true },
+        { "name": "배틀그라운드 모바일" },
+        { "name": "카운터 스트라이크 2", "main": true },
+        { "name": "오버워치" },
+        { "name": "월드 오브 탱크", "main": true }
+      ]
+    },
+    {
+      "name": "AOS, 전략",
+      "games": [
+        { "name": "리그 오브 레전드" },
+        { "name": "전략적 팀 전투" },
+        { "name": "히어로즈 오브 더 스톰" },
+        { "name": "스타크래프트" },
+        { "name": "하스스톤" },
+        { "name": "문명 5" }
+      ]
+    },
+    {
+      "name": "헌팅, 루트 슈터",
+      "games": [
+        { "name": "데스티니 가디언즈", "main": true },
+        { "name": "몬스터 헌터 라이즈", "main": true },
+        { "name": "몬스터 헌터 월드" },
+        { "name": "몬스터 헌터 와일즈" }
+      ]
+    },
+    {
+      "name": "수집형 RPG",
+      "games": [
+        { "name": "명조", "main": true },
+        { "name": "승리의 여신: 니케", "main": true },
+        { "name": "원신" },
+        { "name": "붕괴: 스타레일" },
+        { "name": "명일방주: 엔드필드" },
+        { "name": "데스티니 차일드" },
+        { "name": "세븐나이츠" },
+        { "name": "쿠키런: 킹덤" }
+      ]
+    },
+    {
+      "name": "온라인 RPG",
+      "games": [
+        { "name": "메이플스토리", "main": true },
+        { "name": "던전앤파이터", "main": true },
+        { "name": "원스 휴먼" }
+      ]
+    },
+    {
+      "name": "협동, 파티, 생존",
+      "games": [
+        { "name": "마인크래프트", "main": true },
+        { "name": "코어 키퍼", "main": true },
+        { "name": "데드 바이 데이라이트" },
+        { "name": "발헤임" },
+        { "name": "래프트" },
+        { "name": "휴먼 폴 플랫" },
+        { "name": "잇 테이크 투" },
+        { "name": "아스트랄 파티" },
+        { "name": "How to Fish", "analysis": "how-to-fish-상호작용-설계-분석" },
+        { "name": "Big Walk", "analysis": "big-walk-월드-내-ui-설계-분석" }
+      ]
+    },
+    {
+      "name": "액션, 싱글",
+      "games": [
+        { "name": "GTA 5" },
+        { "name": "사이버펑크 2077" },
+        { "name": "포탈" },
+        { "name": "스트레이" },
+        { "name": "게팅 오버 잇" },
+        { "name": "신데리아", "analysis": "신데리아-컨셉-전투-시스템-분석" }
+      ]
+    },
+    {
+      "name": "캐주얼",
+      "games": [
+        { "name": "크레이지 아케이드" },
+        { "name": "카트라이더" },
+        { "name": "냥코 대전쟁" },
+        { "name": "운빨존많겜" },
+        { "name": "뱀파이어 서바이버즈" },
+        { "name": "슈퍼 헥사곤" }
+      ]
+    }
+  ]
+}

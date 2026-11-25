@@ -1,16 +1,5 @@
 ---
-/** 연락 페이지. 헤더의 "연락"이 프로젝트, 분석서처럼 이 페이지로 온다 */
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ContactBlock from '../components/ContactBlock.astro';
+/** 예전 연락 페이지 주소. 연락 칸은 소개 페이지 맨 아래로 옮겼다 */
+import { withBase } from '../lib/path';
+return Astro.redirect(withBase('about'));
 ---
-
-<BaseLayout title="연락" description="게임 기획자 원성민에게 연락하는 방법" noFooterContact>
-  <section class="container page">
-    <header class="page-intro">
-      <h1>연락</h1>
-      <p>함께 만들 팀을 찾고 있습니다.</p>
-    </header>
-
-    <ContactBlock showFacts bare />
-  </section>
-</BaseLayout>

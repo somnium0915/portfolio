@@ -28,6 +28,28 @@ collections:
     label: 사이트 설정
     editable: true
     files:
+      # 소개 페이지의 "즐겨 하는 게임" 목록 (src/data/games.json)
+      - name: games
+        label: "소개: 즐겨 하는 게임"
+        file: "src/data/games.json"
+        fields:
+          - { name: title, label: 제목, widget: string }
+          - { name: note, label: 설명, widget: text, required: false }
+          - name: groups
+            label: 묶음
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { name: name, label: "묶음 이름 (예: 대전 격투)", widget: string }
+              - name: games
+                label: 게임
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { name: name, label: 게임 이름, widget: string }
+                  - { name: main, label: "오래 한 게임 (밝게 표시)", widget: boolean, default: false, required: false }
+                  - { name: analysis, label: "분석서 파일 이름 (있을 때만, 확장자 제외)", widget: string, required: false }
+              - { name: more, label: "묶음 끝 한 줄 (선택)", widget: string, required: false }
       - name: home
         label: 메인 화면 · 사이트 정보
         file: "src/data/site.json"

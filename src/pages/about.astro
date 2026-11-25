@@ -1,0 +1,58 @@
+---
+/**
+ * 소개 페이지. 지금은 "즐겨 하는 게임" 목록과 연락 칸으로 이루어진다.
+ * 게임 목록: src/data/games.json (웹 편집기 "사이트 설정 → 소개: 즐겨 하는 게임")
+ * 묶음마다 한 줄. 오래 한 게임(main)은 밝게, 분석서가 있는 게임은 분석서로 잇는다.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactBlock from '../components/ContactBlock.astro';
+import games from '../data/games.json';
+import { withBase } from '../lib/path';
+
+type Game = { name: string; main?: boolean; analysis?: string };
+type Group = { name: string; games: Game[]; more?: string };
+const groups = (games.groups as Group[]).filter((g) => g.games?.length);
+---
+
+<BaseLayout title="소개" description="게임 기획자 원성민이 즐겨 하는 게임과 연락처" noFooterContact>
+  <section class="container page">
+    <header class="page-intro">
+      <h1>소개</h1>
+      <p>플레이어로 쌓은 시간이 기획의 바탕입니다.</p>
+    </header>
+
+    <section class="played" aria-labelledby="played-title">
+      <header class="played__head">
+        <h2 class="cv__head" id="played-title">{games.title}</h2>
+        {games.note && <p class="played__note">{games.note}</p>}
+      </header>
+
+      <dl class="played__list">
+        {
+          groups.map((g) => (
+            <div class="played__row">
+              <dt>{g.name}</dt>
+              <dd>
+                <ul class="played__games">
+                  {/* li 안에 줄바꿈 공백이 생기면 쉼표 앞이 벌어져서 한 줄로 쓴다 */}
+                  {g.games.map((x) =>
+                    x.analysis ? (
+                      <li class:list={[{ 'is-main': x.main }]}><a href={withBase(`analyses/${x.analysis}`)}>{x.name}<span class="played__tag">분석서</span></a></li>
+                    ) : (
+                      <li class:list={[{ 'is-main': x.main }]}>{x.name}</li>
+                    ),
+                  )}
+                </ul>
+                {g.more && <p class="played__more">{g.more}</p>}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="about-contact" aria-label="연락">
+      <ContactBlock showFacts />
+    </section>
+  </section>
+</BaseLayout>

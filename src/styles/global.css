@@ -966,6 +966,101 @@ body {
   grid-column: 1 / -1;
 }
 
+/* ---- 소개: 즐겨 하는 게임. 묶음 이름(파랑) | 게임 이름을 쉼표로 이은 한 줄 ----
+   오래 한 게임만 흰색으로 밝혀, 70개 가까운 목록에서도 깊이가 먼저 보이게 한다 */
+.played__head .cv__head {
+  margin-bottom: 0.9rem;
+}
+
+.played__note {
+  margin: 0 0 1.5rem;
+  max-width: var(--measure);
+  font-size: 0.95rem;
+  color: var(--faint);
+}
+
+.played__list {
+  margin: 0;
+}
+
+.played__row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  padding-block: 0.95rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.played__row dt {
+  grid-column: 1 / span 3;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+.played__row dd {
+  grid-column: 4 / -1;
+  margin: 0;
+}
+
+.played__games {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1.75;
+  color: var(--sub);
+}
+
+.played__games li {
+  display: inline;
+}
+
+.played__games li:not(:last-child)::after {
+  content: ', ';
+  color: var(--faint);
+}
+
+.played__games .is-main {
+  color: var(--white);
+  font-weight: 500;
+}
+
+.played__games a {
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.played__games a:hover {
+  color: var(--warm);
+  border-color: var(--warm);
+}
+
+.played__tag {
+  margin-left: 0.35rem;
+  font-size: 0.8em;
+  color: var(--faint);
+}
+
+.played__more {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  color: var(--faint);
+}
+
+.about-contact {
+  margin-top: clamp(3.5rem, 9vh, 6rem);
+}
+
+@media (max-width: 760px) {
+  .played__row dt,
+  .played__row dd {
+    grid-column: 1 / -1;
+  }
+  .played__row dt {
+    margin-bottom: 0.25rem;
+  }
+}
+
 /* 연락 페이지: 제목은 페이지 머리말이 맡고, 목록 페이지처럼 선 하나 아래에서 시작 */
 .contact--bare {
   border-top: 1px solid var(--line);
