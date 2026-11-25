@@ -8,14 +8,14 @@ interface Props {
   emptyText?: string;
 }
 
-const { entries, showSection = true, emptyText = '아직 등록된 항목이 없습니다.' } = Astro.props;
+const { entries, showSection = true, emptyText = '아직 올린 문서가 없습니다.' } = Astro.props;
 ---
 
 {
   entries.length === 0 ? (
     <p class="empty">{emptyText}</p>
   ) : (
-    <div class="card-grid">
+    <div class="rows">
       {entries.map((entry) => (
         <Card entry={entry} showSection={showSection} />
       ))}

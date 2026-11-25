@@ -10,9 +10,11 @@ interface Props {
   description?: string;
   /** OG 이미지 (public 기준 경로 또는 절대 URL) */
   image?: string;
+  /** 홈(챕터 화면). 푸터를 짧게 줄인다 (연락처는 챕터 04 에 있음) */
+  home?: boolean;
 }
 
-const { title, description = SITE.description, image } = Astro.props;
+const { title, description = SITE.description, image, home = false } = Astro.props;
 const pageTitle = title ? `${title} · ${SITE.title}` : SITE.title;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).toString();
 const ogImage = image
@@ -42,29 +44,18 @@ const ogImage = image
     {ogImage && <meta property="og:image" content={ogImage} />}
     <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
 
-    <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fastly.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-    />
+    <!-- 글꼴: IBM Plex Sans KR 한 가지 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600&display=swap" />
 
-    <script is:inline>
-      (() => {
-        const stored = localStorage.getItem('theme');
-        const theme =
-          stored || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.dataset.theme = theme;
-      })();
-    </script>
   </head>
-  <body>
+  <body class={home ? "is-home" : undefined}>
     <Header />
     <main class="site-main">
-      <div class="container">
-        <slot />
-      </div>
+      <slot />
     </main>
-    <Footer />
+    <Footer compact={home} />
 
     <!-- 방문 통계 트래커 (자체 구현, 우리 Firestore). localhost 에서는 자동 비활성. -->
     <script

@@ -39,8 +39,89 @@ collections:
             label: 상단 큰 영역
             widget: object
             fields:
-              - { name: tagline, label: 큰 문구, widget: string }
-              - { name: intro, label: 소개 문단, widget: text }
+              - { name: role, label: "큰 문구 위 한 줄 (직무·이름)", widget: string, required: false }
+              - { name: tagline, label: 큰 문구, widget: text, hint: "줄바꿈이 그대로 화면 줄바꿈이 됩니다" }
+              - { name: intro, label: 부제, widget: text }
+          - name: contact
+            label: 연락처
+            widget: object
+            fields:
+              - { name: email, label: 이메일, widget: string, required: false }
+              - { name: github, label: GitHub 주소, widget: string, required: false }
+          - name: profile
+            label: "프로필 (이력서 대용)"
+            widget: object
+            required: false
+            hint: "비운 칸은 화면에 나오지 않습니다. 사진·학력 등이 하나라도 있어야 블록이 보입니다"
+            fields:
+              - { name: photo, label: 사진 (세로 3:4 권장), widget: image, required: false }
+              - { name: name, label: 이름, widget: string, required: false }
+              - { name: nameEn, label: 영문 이름, widget: string, required: false }
+              - { name: position, label: 지원 분야, widget: string, required: false }
+              - { name: birth, label: 생년, widget: string, required: false }
+              - { name: location, label: 거주지, widget: string, required: false, hint: "공개 사이트이므로 시·구 단위까지만 권장" }
+              - { name: phone, label: 연락처, widget: string, required: false, hint: "공개 사이트에 노출됩니다" }
+              - { name: email, label: "이메일 (비우면 연락처 이메일)", widget: string, required: false }
+              - name: education
+                label: 학력
+                widget: list
+                required: false
+                summary: "{{fields.period}} {{fields.title}}"
+                fields:
+                  - { name: period, label: 기간, widget: string, required: false }
+                  - { name: title, label: 항목, widget: string }
+                  - { name: detail, label: 설명, widget: string, required: false }
+              - name: experience
+                label: "연혁 (경력·활동)"
+                widget: list
+                required: false
+                summary: "{{fields.period}} {{fields.title}}"
+                fields:
+                  - { name: period, label: 기간, widget: string, required: false }
+                  - { name: title, label: 항목, widget: string }
+                  - { name: detail, label: 설명, widget: string, required: false }
+              - name: awards
+                label: 수상
+                widget: list
+                required: false
+                summary: "{{fields.period}} {{fields.title}}"
+                fields:
+                  - { name: period, label: 기간, widget: string, required: false }
+                  - { name: title, label: 항목, widget: string }
+                  - { name: detail, label: 설명, widget: string, required: false }
+              - name: certificates
+                label: 자격·어학
+                widget: list
+                required: false
+                summary: "{{fields.period}} {{fields.title}}"
+                fields:
+                  - { name: period, label: 기간, widget: string, required: false }
+                  - { name: title, label: 항목, widget: string }
+                  - { name: detail, label: 설명, widget: string, required: false }
+          - name: principles
+            label: "'이 문장을 고른 이유' 블록"
+            widget: object
+            required: false
+            fields:
+              - { name: title, label: 제목, widget: string }
+              - { name: reason, label: 이유 문단, widget: text, required: false }
+              - name: items
+                label: 원칙
+                widget: list
+                required: false
+                summary: "{{fields.title}}"
+                fields:
+                  - { name: title, label: 원칙 이름, widget: string }
+                  - { name: text, label: 설명, widget: text }
+              - { name: methodTitle, label: 일하는 방식 제목, widget: string, required: false }
+              - name: method
+                label: 일하는 방식 (순서대로)
+                widget: list
+                required: false
+                summary: "{{fields.title}}"
+                fields:
+                  - { name: title, label: 단계 이름, widget: string }
+                  - { name: text, label: 설명, widget: text }
           - name: featured
             label: "'대표 작업' 블록"
             widget: object
@@ -61,6 +142,7 @@ collections:
                 fields:
                   - { name: name, label: 이름, widget: string }
                   - { name: icon, label: 로고 이미지, widget: image, required: false, choose_url: true, hint: "비우면 이름 첫 글자로 표시됩니다" }
+                  - { name: use, label: 쓰는 일, widget: string, required: false, hint: "예: UI 설계와 시안. 이력의 사용 도구 표에 나옵니다" }
                   - { name: url, label: 링크(선택), widget: string, required: false }
           - name: sections
             label: 섹션별 한 줄 설명
@@ -115,6 +197,19 @@ collections:
       - { name: team, label: 팀, widget: string, required: false }
       - { name: period, label: 기간, widget: string, required: false }
       - { name: stack, label: 스택, widget: list, required: false }
+      - { name: highlights, label: "핵심 성과 (홈 대표 작업, 2~3줄)", widget: list, required: false }
+      - name: areas
+        label: "맡은 영역 (홈 대표 작업, 상세 페이지)"
+        widget: object
+        required: false
+        collapsed: true
+        hint: "맡은 영역에 주도 또는 공동을 고르세요. 안 맡았으면 비워 둡니다"
+        fields:
+          - { name: plan, label: 기획, widget: select, options: ["주도", "공동"], required: false }
+          - { name: ui, label: UI, widget: select, options: ["주도", "공동"], required: false }
+          - { name: system, label: 시스템, widget: select, options: ["주도", "공동"], required: false }
+          - { name: dev, label: 구현, widget: select, options: ["주도", "공동"], required: false }
+          - { name: release, label: 빌드·배포, widget: select, options: ["주도", "공동"], required: false }
       - { name: body, label: 본문, widget: markdown }
 
   # ─────────────────────────────  기획서  ─────────────────────────────

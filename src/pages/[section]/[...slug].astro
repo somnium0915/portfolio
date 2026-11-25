@@ -3,9 +3,10 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, render, type CollectionKey } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PdfEmbed from '../../components/PdfEmbed.astro';
+import AreaStrip from '../../components/AreaStrip.astro';
 import { SECTIONS, getSection } from '../../consts';
 import { formatDate, LINK_META } from '../../lib/content';
-import { withBase } from '../../lib/path';
+import { withBase, resolveMedia } from '../../lib/path';
 
 export const getStaticPaths = (async () => {
   const paths = [];
@@ -27,7 +28,8 @@ const { entry, sectionSlug } = Astro.props;
 const section = getSection(sectionSlug)!;
 const { data } = entry;
 const { Content } = await render(entry as Parameters<typeof render>[0]);
-// cover 는 카드 썸네일 / OG 이미지로만 사용. 상세 페이지 본문에는 표시하지 않는다.
+// cover: 상세 머리말 오른쪽에 16:9 로 보여 주고, 카드 썸네일·OG 이미지로도 쓴다.
+const cover = resolveMedia(data.cover);
 
 const notionUrl = (data as Record<string, unknown>).notionUrl as string | undefined;
 
@@ -52,62 +54,77 @@ const facts = factKeys
   .map(([key, label]) => [label, (data as Record<string, unknown>)[key]] as const)
   .filter(([, v]) => typeof v === 'string' && v.length > 0) as [string, string][];
 
+const areas = (data as Record<string, unknown>).areas as Record<string, string | undefined> | undefined;
 const stack = ((data as Record<string, unknown>).stack as string[] | undefined) ?? [];
 ---
 
 <BaseLayout title={data.title} description={data.summary} image={data.cover}>
-  <a class="backlink" href={withBase(section.slug)}>← {section.label}</a>
+  <div class="container page">
+  <nav class="crumbs" aria-label="위치">
+    <a href={withBase(section.slug)}>{section.label}</a>
+  </nav>
 
-  <header class="article-header">
-    <span class="kicker">{section.label}</span>
-    <h1>{data.title}</h1>
-    {data.summary && <p class="lede">{data.summary}</p>}
-
-    <div class="card__meta" style="font-size:0.82rem">
-      <time datetime={new Date(data.date).toISOString()}>{formatDate(data.date)}</time>
-      {data.updated && <span>· 수정 {formatDate(data.updated)}</span>}
+  <header class="doc-head">
+    <div class="doc-head__main">
+      <h1>{data.title}</h1>
+      {data.summary && <p class="lede">{data.summary}</p>}
+      {
+        (data.tags ?? []).length > 0 && (
+          <ul class="tags" aria-label="태그">
+            {(data.tags ?? []).map((t) => (
+              <li class="tag">{t}</li>
+            ))}
+          </ul>
+        )
+      }
+      {
+        links.length > 0 && (
+          <div class="doc-head__links">
+            {links.map(([key, href]) => (
+              <a class="extlink extlink--boxed" href={href} target="_blank" rel="noopener">
+                {LINK_META[key]?.label ?? key} <span aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        )
+      }
     </div>
 
-    {
-      (data.tags ?? []).length > 0 && (
-        <div class="article-tags">
-          {(data.tags ?? []).map((t) => (
-            <span class="tag">#{t}</span>
-          ))}
-        </div>
-      )
-    }
+    <figure class="doc-cover">
+      {cover ? <img src={cover} alt="" /> : <span class="frame__blank">{String(data.title).split(/\s+—\s+/)[0]}</span>}
+    </figure>
 
-    {
-      (facts.length > 0 || stack.length > 0) && (
-        <dl class="article-facts">
-          {facts.map(([label, value]) => (
-            <>
-              <dt>{label}</dt>
-              <dd>{value}</dd>
-            </>
-          ))}
-          {stack.length > 0 && (
-            <>
-              <dt>스택</dt>
-              <dd>{stack.join(' · ')}</dd>
-            </>
+    <dl class="doc-facts">
+      {facts.map(([label, value]) => (
+        <div>
+          <dt>{label}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+      {areas && Object.values(areas).some(Boolean) && (
+        <div class="doc-facts__areas">
+          <dt>맡은 영역</dt>
+          <dd>
+            <AreaStrip areas={areas} />
+          </dd>
+        </div>
+      )}
+      {stack.length > 0 && (
+        <div>
+          <dt>도구</dt>
+          <dd>{stack.join(', ')}</dd>
+        </div>
+      )}
+      <div>
+        <dt>작성</dt>
+        <dd>
+          <time datetime={new Date(data.date).toISOString()}>{formatDate(data.date)}</time>
+          {data.updated && +new Date(data.updated) !== +new Date(data.date) && (
+            <span class="muted"> (수정 {formatDate(data.updated)})</span>
           )}
-        </dl>
-      )
-    }
-
-    {
-      links.length > 0 && (
-        <div class="linkpills" style="margin-top:1rem">
-          {links.map(([key, href]) => (
-            <a class="linkpill" href={href} target="_blank" rel="noopener">
-              {LINK_META[key]?.label ?? key} ↗
-            </a>
-          ))}
-        </div>
-      )
-    }
+        </dd>
+      </div>
+    </dl>
   </header>
 
   <article class="prose" id="doc-body">
@@ -115,4 +132,9 @@ const stack = ((data as Record<string, unknown>).stack as string[] | undefined) 
   </article>
 
   <PdfEmbed pdf={(data as Record<string, unknown>).pdf} />
+
+  <p class="doc-end">
+    <a href={withBase(section.slug)}>{section.label} 목록으로</a>
+  </p>
+  </div>
 </BaseLayout>

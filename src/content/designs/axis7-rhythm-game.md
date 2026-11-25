@@ -8,7 +8,7 @@ tags:
   - 시스템기획
   - 채보설계
 cover: /portfolio/images/Image_Title_Logo.png
-status: published
+status: draft
 featured: false
 order: 1
 links:

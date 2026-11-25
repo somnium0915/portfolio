@@ -1,55 +1,81 @@
 ---
 import type { DecoratedEntry } from '../lib/content';
-import { formatDate, LINK_META } from '../lib/content';
+import { LINK_META } from '../lib/content';
 import { resolveMedia } from '../lib/path';
+import AreaStrip from './AreaStrip.astro';
 
 interface Props {
   entry: DecoratedEntry;
 }
 
-/** 홈 "대표 작업" 전용 가로형 대형 카드 (좌: 커버 / 우: 설명) */
+/**
+ * 챕터 02 대표 작업 한 단:
+ * 16:9 화면 → 제목·한 줄 → 역할·팀·기간 → 맡은 영역 → 핵심 성과 → 링크
+ */
 const { entry } = Astro.props;
 const { data } = entry;
+const d = data as Record<string, unknown>;
 const cover = resolveMedia(data.cover);
 const links = Object.entries(data.links ?? {}).filter(([, v]) => Boolean(v)) as [string, string][];
-const tags = (data.tags ?? []).slice(0, 4);
+const [titleMain, titleSub] = String(data.title).split(/\s+—\s+/);
+const facts = (
+  [
+    ['역할', d.role],
+    ['팀', d.team],
+    ['기간', d.period],
+  ] as [string, unknown][]
+).filter(([, v]) => typeof v === 'string' && v.length > 0) as [string, string][];
+const highlights = ((d.highlights as string[] | undefined) ?? []).filter(Boolean);
+const areas = d.areas as Record<string, string | undefined> | undefined;
 ---
 
-<article class="feature-card">
+<article class="work">
+  <a class="work__screen" href={entry.href} tabindex="-1" aria-hidden="true">
+    {cover ? <img src={cover} alt="" loading="lazy" /> : <span class="plate">{titleMain}</span>}
+  </a>
+
+  <div class="work__head">
+    <h3 class="work__title">
+      <a href={entry.href}>{titleMain}</a>
+    </h3>
+    {titleSub && <p class="work__sub">{titleSub}</p>}
+  </div>
+
   {
-    cover && (
-      <a class="feature-card__media" href={entry.href} aria-label={data.title}>
-        <img src={cover} alt="" loading="lazy" />
-      </a>
+    facts.length > 0 && (
+      <dl class="work__facts">
+        {facts.map(([k, v]) => (
+          <div>
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
     )
   }
-  <div class="feature-card__body">
-    <div class="feature-card__meta">
-      <span class="feature-card__badge">{entry.sectionLabel}</span>
-      <time datetime={new Date(data.date).toISOString()}>{formatDate(data.date)}</time>
-    </div>
-    <h3 class="feature-card__title">
-      <a href={entry.href}>{data.title}</a>
-    </h3>
-    {data.summary && <p class="feature-card__summary">{data.summary}</p>}
+
+  <AreaStrip areas={areas} />
+
+  {
+    highlights.length > 0 ? (
+      <ul class="work__highlights" aria-label="핵심 성과">
+        {highlights.slice(0, 3).map((h) => (
+          <li>{h}</li>
+        ))}
+      </ul>
+    ) : (
+      data.summary && <p class="work__summary">{data.summary}</p>
+    )
+  }
+
+  <p class="work__links">
+    <a class="more" href={entry.href}>자세히 보기</a>
     {
-      tags.length > 0 && (
-        <div class="card__tags">
-          {tags.map((t) => (
-            <span class="tag">#{t}</span>
-          ))}
-        </div>
-      )
+      links.slice(0, 3).map(([key, href]) => (
+        <a class="extlink" href={href} target="_blank" rel="noopener">
+          {LINK_META[key]?.label ?? key} ↗
+        </a>
+      ))
     }
-    <div class="feature-card__actions">
-      <a class="feature-card__cta" href={entry.href}>자세히 보기 →</a>
-      {
-        links.slice(0, 3).map(([key, href]) => (
-          <a class="feature-card__link" href={href} target="_blank" rel="noopener">
-            {LINK_META[key]?.label ?? key} <span aria-hidden="true">↗</span>
-          </a>
-        ))
-      }
-    </div>
-  </div>
+  </p>
 </article>

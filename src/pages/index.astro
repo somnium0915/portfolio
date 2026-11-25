@@ -1,82 +1,117 @@
 ---
+/**
+ * 홈 = 챕터 4개 (DESIGN.md 2~3절). 넓은 화면에서는 챕터 하나가 한 화면을 채운다.
+ * 01 소개+이력 → 02 대표 작업 → 03 문서 → 04 일하는 방식+연락
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CardGrid from '../components/CardGrid.astro';
-import SkillGrid from '../components/SkillGrid.astro';
+import ChapterIntro from '../components/ChapterIntro.astro';
+import Hero from '../components/Hero.astro';
+import DocTile from '../components/DocTile.astro';
 import FeatureCard from '../components/FeatureCard.astro';
-import { SITE, SECTIONS, FEATURED, SKILLS } from '../consts';
+import { SECTIONS, FEATURED } from '../consts';
 import { loadSection, loadFeatured } from '../lib/content';
 import { withBase } from '../lib/path';
 
-const featured = await loadFeatured();
-
-const sections = await Promise.all(
-  SECTIONS.map(async (s) => ({
-    def: s,
-    entries: (await loadSection(s.collection)).slice(0, 3),
-  })),
+const featured = (await loadFeatured()).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99) || +new Date(b.data.date) - +new Date(a.data.date),
 );
+
+const docSections = await Promise.all(
+  SECTIONS.filter((s) => s.slug !== 'projects' && !('hidden' in s && s.hidden)).map(async (s) => ({ def: s, list: await loadSection(s.collection) })),
+);
+// 분석서 챕터: 최신순 6편까지 (3열 × 2줄). 기획서는 각 프로젝트 안에 있다
+const DOC_LIMIT = 6;
+const docs = docSections
+  .flatMap(({ list }) => list)
+  .sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date))
+  .slice(0, DOC_LIMIT);
+
+const chapters = [
+  ['01', 'intro', '소개와 이력'],
+  ['02', 'featured', FEATURED.title],
+  ['03', 'docs', '분석서'],
+  ['04', 'approach', '일하는 방식'],
+];
 ---
 
-<BaseLayout>
-  <section class="hero" id="intro">
-    <h1>{SITE.tagline}</h1>
-    <p>{SITE.intro}</p>
-  </section>
+<BaseLayout home>
+  <nav class="rail" aria-label="챕터" data-rail>
+    <ol>
+      {
+        chapters.map(([n, id, label]) => (
+          <li>
+            <a href={`#${id}`} data-rail-link={id}>
+              <span class="rail__n">{n}</span>
+              <span class="rail__label">{label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
 
-  {
-    SKILLS.enabled !== false && SKILLS.items.length > 0 && (
-      <section class="section-block" id="skills">
-        <div class="section-head">
-          <div>
-            <h2>{SKILLS.title}</h2>
-            {SKILLS.note && <p>{SKILLS.note}</p>}
-          </div>
-        </div>
-        <SkillGrid items={SKILLS.items} />
-      </section>
-    )
-  }
+  <Hero projects={featured.filter((e) => e.section === 'projects')} />
 
   {
     featured.length > 0 && (
-      <section class="section-block featured-block" id="featured">
-        <div class="section-head">
-          <div>
-            <h2>{FEATURED.title}</h2>
+      <section class="chapter chapter--works" id="featured" data-chapter="02" aria-labelledby="featured-title">
+        <div class="chapter__inner">
+          <header class="chapter__head">
+            <h2 class="chapter__title" id="featured-title">
+              {FEATURED.title}
+            </h2>
             {FEATURED.note && <p>{FEATURED.note}</p>}
+            <a class="more" href={withBase('projects')}>
+              프로젝트 전체
+            </a>
+          </header>
+          <div class="works">
+            {featured.slice(0, 2).map((entry) => (
+              <FeatureCard entry={entry} />
+            ))}
           </div>
-        </div>
-        <div class="feature-list">
-          {featured.map((entry) => <FeatureCard entry={entry} />)}
         </div>
       </section>
     )
   }
 
-  <div class="archive">
-    <div class="archive-head">
-      <div>
-        <h2>아카이브</h2>
-        <p>프로젝트 · 기획서 · 분석서를 종류별로 모아둔 곳</p>
+  <section class="chapter" id="docs" data-chapter="03" aria-labelledby="docs-title">
+    <div class="chapter__inner">
+      <header class="chapter__head">
+        <h2 class="chapter__title" id="docs-title">분석서</h2>
+        <p>출시된 게임의 UI·상호작용·시스템을 뜯어 본 문서</p>
+        <span class="chapter__links">
+          {
+            docSections.map(({ def, list }) => (
+              <a class="more" href={withBase(def.slug)}>
+                {def.label} {list.length}편
+              </a>
+            ))
+          }
+        </span>
+      </header>
+      <div class="tiles">
+        {docs.map((entry) => <DocTile entry={entry} />)}
       </div>
     </div>
-    {
-      sections.map(({ def, entries }) => (
-        <section class="section-block" id={`home-${def.slug}`}>
-          <div class="section-head">
-            <div>
-              <h2>{def.label}</h2>
-              <p>{def.description}</p>
-            </div>
-            <a href={withBase(def.slug)}>전체 보기 →</a>
-          </div>
-          <CardGrid
-            entries={entries}
-            showSection={false}
-            emptyText={`${def.label} 항목이 아직 없습니다.`}
-          />
-        </section>
-      ))
-    }
-  </div>
+  </section>
+
+  <ChapterIntro />
 </BaseLayout>
+
+<script>
+  // 왼쪽 챕터 목록: 지금 화면 가운데에 있는 챕터를 표시
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-rail-link]')];
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        links.forEach((a) =>
+          a.toggleAttribute('aria-current', a.dataset.railLink === (e.target as HTMLElement).id),
+        );
+      });
+    },
+    { rootMargin: '-45% 0px -45% 0px' },
+  );
+  document.querySelectorAll('[data-chapter]').forEach((s) => io.observe(s));
+</script>

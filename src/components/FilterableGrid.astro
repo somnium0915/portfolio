@@ -9,7 +9,7 @@ interface Props {
   emptyText?: string;
 }
 
-const { entries, showSection = false, emptyText = '아직 등록된 항목이 없습니다.' } = Astro.props;
+const { entries, showSection = false, emptyText = '아직 올린 문서가 없습니다.' } = Astro.props;
 const tags = tagCounts(entries);
 ---
 
@@ -21,17 +21,17 @@ const tags = tagCounts(entries);
       {tags.length > 0 && (
         <div class="tag-filter" role="group" aria-label="태그로 거르기">
           <button type="button" data-tag="*" aria-pressed="true">
-            전체 <span aria-hidden="true">· {entries.length}</span>
+            전체 <span class="count">{entries.length}</span>
           </button>
           {tags.map(([tag, count]) => (
             <button type="button" data-tag={tag} aria-pressed="false">
-              #{tag} <span aria-hidden="true">· {count}</span>
+              {tag} <span class="count">{count}</span>
             </button>
           ))}
         </div>
       )}
 
-      <div class="card-grid" data-grid>
+      <div class="rows" data-grid>
         {entries.map((entry) => (
           <div data-item data-tags={(entry.data.tags ?? []).join('|')}>
             <Card entry={entry} showSection={showSection} />

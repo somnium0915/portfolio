@@ -1,0 +1,82 @@
+---
+/**
+ * 챕터 04 — 일하는 방식 + 연락 (마무리).
+ * 윗줄: 슬로건과 고른 이유 | 일하는 방식 세 단계
+ * 아랫줄: 연락 (메일, GitHub) | 인적 사항 (생년·거주지·연락처, 있을 때만)
+ * 문구: site.json → hero (슬로건), principles (이유·일하는 방식), contact, profile
+ */
+import { SITE, PRINCIPLES, PROFILE, CONTACT } from '../consts';
+
+const lines = String(SITE.tagline)
+  .split(/\r?\n/)
+  .filter((l) => l.trim().length > 0);
+const p = PRINCIPLES;
+const steps = p?.method ?? [];
+const prof = PROFILE ?? {};
+const email = prof.email || CONTACT.email;
+const basics = (
+  [
+    ['생년', prof.birth],
+    ['거주지', prof.location],
+    ['연락처', prof.phone],
+  ] as [string, string | undefined][]
+).filter(([, v]) => v && v.trim());
+---
+
+<section class="chapter" id="approach" data-chapter="04" aria-labelledby="approach-title">
+  <div class="chapter__inner">
+    <h2 class="chapter__title" id="approach-title">{p?.methodTitle ?? '일하는 방식'}</h2>
+
+    <div class="approach">
+      <div class="approach__slogan">
+        <p class="approach__quote">{lines.map((l) => <span>{l}</span>)}</p>
+        {p?.reason && <p class="approach__why">{p.reason}</p>}
+      </div>
+
+      {
+        steps.length > 0 && (
+          <ol class="steps">
+            {steps.map((s) => (
+              <li>
+                <strong>{s.title}</strong>
+                <span>{s.text}</span>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+    </div>
+
+    <div class="closing" id="contact-end">
+      <div class="closing__contact">
+        <h3 class="cv__head">연락</h3>
+        {
+          email && (
+            <a class="cv__mail" href={`mailto:${email}`}>
+              {email}
+            </a>
+          )
+        }
+        {
+          CONTACT.github && (
+            <a class="extlink" href={CONTACT.github} target="_blank" rel="noopener">
+              GitHub ↗
+            </a>
+          )
+        }
+      </div>
+      {
+        basics.length > 0 && (
+          <dl class="closing__facts">
+            {basics.map(([k, v]) => (
+              <div>
+                <dt>{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+    </div>
+  </div>
+</section>

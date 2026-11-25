@@ -72,6 +72,13 @@ const projects = defineCollection({
     team: opt(z.string()),
     period: opt(z.string()),
     stack: optArray(z.string()),
+    /** 핵심 성과 2~3줄. 홈 "대표 작업" 카드에 나온다 */
+    highlights: optArray(z.string()),
+    /** 맡은 영역 (홈 대표 작업 카드, 상세 페이지). 영역별로 주도 / 공동, 안 맡았으면 비움 */
+    areas: z.preprocess(
+      (v) => (v && typeof v === 'object' ? v : {}),
+      z.record(z.string(), z.preprocess((x) => (x === '' || x == null ? undefined : x), z.enum(['주도', '공동']).optional())),
+    ),
   }),
 });
 

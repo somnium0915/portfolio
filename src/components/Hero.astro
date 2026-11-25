@@ -1,0 +1,160 @@
+---
+/**
+ * 챕터 01 — 소개 + 이력 (이력서 첫 장).
+ * 왼쪽: 직무 · 이름 · 한 줄 소개 · 메일 · 버튼 (세로 가운데)
+ * 오른쪽 위: 연혁 (연도별, 최신부터) | 학력
+ * 오른쪽 아래: 사용 도구 3열 × 2줄 (로고 + 쓰는 일 + 쓴 프로젝트)
+ * 빠르게 훑는 정보만 둔다. 대표 작업은 다음 챕터가 한 화면 전체를 쓴다.
+ * 내용: site.json → profile, hero, contact, skills / 프로젝트 frontmatter → stack
+ */
+import type { DecoratedEntry } from '../lib/content';
+import { SITE, PROFILE, CONTACT, SKILLS } from '../consts';
+import { resolveMedia } from '../lib/path';
+
+interface Props {
+  /** 사용 도구의 "쓴 프로젝트"를 찾을 프로젝트 목록 */
+  projects: DecoratedEntry[];
+}
+
+const { projects } = Astro.props;
+const p = PROFILE ?? {};
+const email = p.email || CONTACT.email;
+const tagline = String(SITE.tagline).replace(/\s*\r?\n\s*/g, ' ');
+
+type Item = { period?: string; title: string; detail?: string };
+
+// 연혁: 경력·활동·수상을 시작 연도별로 묶어 최신 연도부터
+const yearOf = (period?: string) => period?.match(/\d{4}/)?.[0] ?? '';
+const events: Item[] = [...(p.experience ?? []), ...(p.awards ?? [])];
+const years = [...new Set(events.map((e) => yearOf(e.period)))].sort((a, b) => b.localeCompare(a));
+const history = years.map((y) => ({
+  year: y || '기타',
+  items: events
+    .filter((e) => yearOf(e.period) === y)
+    .sort((a, b) => String(b.period).localeCompare(String(a.period))),
+}));
+const education = [...(p.education ?? []), ...(p.certificates ?? [])];
+
+// 사용 도구: 각 도구를 실제로 쓴 프로젝트를 스택에서 찾아 붙인다
+const projectStacks = projects.map((e) => ({
+  title: String(e.data.title).split(/\s+—\s+/)[0],
+  href: e.href,
+  stack: (((e.data as Record<string, unknown>).stack as string[] | undefined) ?? []).map((s) => s.toLowerCase()),
+}));
+const tools =
+  SKILLS.enabled !== false
+    ? SKILLS.items
+        .filter((s) => s && s.name)
+        .map((s) => {
+          const keys = s.name.toLowerCase().split(/\s*[·,/]\s*/).filter(Boolean);
+          const used = projectStacks.filter((ps) => ps.stack.some((st) => keys.some((k) => st.startsWith(k))));
+          return { ...s, icon: resolveMedia(s.icon), used };
+        })
+    : [];
+---
+
+<section class="chapter chapter--hero" id="intro" data-chapter="01" aria-labelledby="hero-name">
+  <div class="chapter__inner hero">
+    <div class="hero__who">
+      <p class="hero__role">{p.position || '게임 기획자'}</p>
+      <h1 class="hero__name" id="hero-name">{p.name || SITE.author}</h1>
+      <p class="hero__line">{tagline}</p>
+      {SITE.intro && <p class="hero__intro">{SITE.intro}</p>}
+
+      <div class="hero__contact">
+        {
+          email && (
+            <a class="hero__mail" href={`mailto:${email}`}>
+              {email}
+            </a>
+          )
+        }
+        <p class="hero__links">
+          <a class="btn btn--solid" href="#featured">대표 작업 보기</a>
+          {
+            CONTACT.github && (
+              <a class="btn" href={CONTACT.github} target="_blank" rel="noopener">
+                GitHub
+              </a>
+            )
+          }
+        </p>
+      </div>
+    </div>
+
+    <div class="hero__info">
+      <div class="hero__history">
+        {
+          history.length > 0 && (
+            <>
+              <h2 class="cv__head">연혁</h2>
+              <ol class="years">
+                {history.map((g) => (
+                  <li class="years__group">
+                    <span class="years__y">{g.year}</span>
+                    <ol class="years__items">
+                      {g.items.map((it) => (
+                        <li>
+                          {it.period && <span class="cv__period">{it.period}</span>}
+                          <span class="cv__item">{it.title}</span>
+                          {it.detail && <span class="cv__detail">{it.detail}</span>}
+                        </li>
+                      ))}
+                    </ol>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )
+        }
+      </div>
+
+      {
+        education.length > 0 && (
+          <div class="hero__edu cv__edu">
+            <h2 class="cv__head">학력</h2>
+            <ul>
+              {education.map((it) => (
+                <li>
+                  <span class="cv__item">{it.title}</span>
+                  <span class="cv__detail">{[it.period, it.detail].filter(Boolean).join(', ')}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      {
+        tools.length > 0 && (
+          <div class="hero__tools">
+            <h2 class="cv__head">{SKILLS.title}</h2>
+            <ul class="tools">
+              {tools.map((t) => (
+                <li class="tool">
+                  <span class="tool__logo" aria-hidden="true">
+                    {t.icon ? <img src={t.icon} alt="" loading="lazy" /> : <span>{t.name.trim().charAt(0)}</span>}
+                  </span>
+                  <span class="tool__text">
+                    <strong class="tool__name">{t.name}</strong>
+                    {t.use && <span class="tool__use">{t.use}</span>}
+                    {t.used.length > 0 && (
+                      <span class="tool__used">
+                        {t.used.map((u, i) => (
+                          <>
+                            {i > 0 && ', '}
+                            <a href={u.href}>{u.title}</a>
+                          </>
+                        ))}
+                      </span>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,44 @@
+---
+/**
+ * 맡은 영역: "주도"와 "공동" 두 줄로 나눠 영역 이름을 적는다. 안 맡은 영역은 쓰지 않는다.
+ * (●/○ 기호는 빈 동그라미가 "안 했다"로 읽혀서 쓰지 않는다)
+ * 쓰는 곳: 홈 대표 작업 카드, 프로젝트 상세 정보 줄
+ * 데이터: 프로젝트 frontmatter 의 areas (웹 편집기 "프로젝트 → 맡은 영역")
+ */
+import { AREAS } from '../consts';
+
+interface Props {
+  areas?: Record<string, string | undefined>;
+}
+
+const areas = Astro.props.areas ?? {};
+const groups = (
+  [
+    ['주도', '주도'],
+    ['공동', '함께'],
+  ] as const
+)
+  .map(([value, label]) => ({
+    value,
+    label,
+    names: AREAS.filter(([key]) => areas[key] === value).map(([, name]) => name),
+  }))
+  .filter((g) => g.names.length > 0);
+---
+
+{
+  groups.length > 0 && (
+    <dl class="area-strip">
+      {groups.map((g) => (
+        <div class={`area-strip__row area-strip__row--${g.value === '주도' ? 'lead' : 'co'}`}>
+          <dt>{g.label}</dt>
+          <dd>
+            {g.names.map((n) => (
+              <span class="chip">{n}</span>
+            ))}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  )
+}

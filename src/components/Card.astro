@@ -1,64 +1,44 @@
 ---
 import type { DecoratedEntry } from '../lib/content';
-import { formatDate, LINK_META } from '../lib/content';
+import { formatDate } from '../lib/content';
 import { resolveMedia } from '../lib/path';
 
 interface Props {
   entry: DecoratedEntry;
-  /** 카드에 섹션 배지를 표시할지 (섹션 전용 목록에서는 끄면 됨) */
+  /** 섹션 이름을 표시할지 (섹션 전용 목록에서는 끔) */
   showSection?: boolean;
 }
 
+/** 문서 목록 한 줄: 날짜 | 제목·요약 | 태그 | 16:9 썸네일. 줄 전체가 링크 */
 const { entry, showSection = true } = Astro.props;
 const { data } = entry;
 const cover = resolveMedia(data.cover);
-const links = Object.entries(data.links ?? {}).filter(([, v]) => Boolean(v)) as [string, string][];
-// 노션에서 가져온 문서는 notionUrl 을 "노션 원본" 바로가기로 카드에도 표시
-const notionUrl = (data as Record<string, unknown>).notionUrl as string | undefined;
-if (notionUrl && !links.some(([key]) => key === 'notion')) {
-  links.push(['notion', notionUrl]);
-}
 const tags = (data.tags ?? []).slice(0, 3);
 ---
 
-<article class="card">
-  <a href={entry.href} aria-label={data.title}>
-    {cover && <img class="card__cover" src={cover} alt="" loading="lazy" />}
-  </a>
-  <div class="card__body">
-    <div class="card__meta">
-      {showSection && <span class="card__badge">{entry.sectionLabel}</span>}
-      <time datetime={new Date(data.date).toISOString()}>{formatDate(data.date)}</time>
-    </div>
-
-    <h3 class="card__title">
+<article class="row">
+  <p class="row__date">
+    <time datetime={new Date(data.date).toISOString()}>{formatDate(data.date)}</time>
+    {showSection && <span>{entry.sectionLabel}</span>}
+  </p>
+  <div class="row__text">
+    <h3 class="row__title">
       <a href={entry.href}>{data.title}</a>
     </h3>
-
-    {data.summary && <p class="card__summary">{data.summary}</p>}
-
-    {
-      (tags.length > 0 || links.length > 0) && (
-        <div class="card__footer">
-          {tags.length > 0 && (
-            <div class="card__tags">
-              {tags.map((t) => (
-                <span class="tag">#{t}</span>
-              ))}
-            </div>
-          )}
-          {links.length > 0 && (
-            <div class="card__links">
-              {links.slice(0, 4).map(([key, href]) => (
-                <a href={href} target="_blank" rel="noopener">
-                  {LINK_META[key]?.label ?? key}
-                  <span aria-hidden="true">↗</span>
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-      )
-    }
+    {data.summary && <p class="row__summary">{data.summary}</p>}
   </div>
+  {
+    tags.length > 0 ? (
+      <ul class="row__tags" aria-label="태그">
+        {tags.map((t) => (
+          <li>{t}</li>
+        ))}
+      </ul>
+    ) : (
+      <span />
+    )
+  }
+  <span class="row__thumb" aria-hidden="true">
+    {cover && <img src={cover} alt="" loading="lazy" />}
+  </span>
 </article>

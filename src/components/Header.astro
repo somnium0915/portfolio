@@ -10,35 +10,20 @@ const isActive = (slug: string) => current === withBase(slug) || current.startsW
 
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="brand" href={withBase()}>{SITE.author}</a>
+    <a class="brand" href={withBase()} aria-current={isHome ? 'page' : undefined}>
+      <span class="brand__name">{SITE.author}</span>
+      <span class="brand__role">게임 기획</span>
+    </a>
 
     <nav class="nav" aria-label="주요 섹션">
-      <a href={withBase()} aria-current={isHome ? 'page' : undefined}>홈</a>
       {
-        SECTIONS.map((s) => (
+        SECTIONS.filter((s) => !('hidden' in s && s.hidden)).map((s) => (
           <a href={withBase(s.slug)} aria-current={isActive(s.slug) ? 'page' : undefined}>
             {s.label}
           </a>
         ))
       }
-      <button
-        class="theme-toggle"
-        type="button"
-        aria-label="라이트/다크 테마 전환"
-        data-theme-toggle
-      >
-        <span aria-hidden="true">◐</span>
-      </button>
+      <a href={`${withBase()}#contact-end`}>연락</a>
     </nav>
   </div>
 </header>
-
-<script>
-  const btn = document.querySelector('[data-theme-toggle]');
-  btn?.addEventListener('click', () => {
-    const root = document.documentElement;
-    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    root.dataset.theme = next;
-    localStorage.setItem('theme', next);
-  });
-</script>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="300" height="400">
+  <!-- 임시 프로필 사진. 실제 사진으로 교체하세요 (site.json → profile.photo) -->
+  <rect width="300" height="400" fill="#23262b"/>
+  <circle cx="150" cy="150" r="62" fill="#34383e"/>
+  <path d="M40 400c0-78 49-128 110-128s110 50 110 128z" fill="#34383e"/>
+  <text x="150" y="380" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#77756f">임시 사진</text>
+</svg>

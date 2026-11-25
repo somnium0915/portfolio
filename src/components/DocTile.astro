@@ -1,0 +1,27 @@
+---
+import type { DecoratedEntry } from '../lib/content';
+import { formatDate } from '../lib/content';
+import { resolveMedia } from '../lib/path';
+
+interface Props {
+  entry: DecoratedEntry;
+}
+
+/** 챕터 03 의 문서 한 칸: 16:9 썸네일 + 종류·날짜 + 제목. 칸 전체가 링크 */
+const { entry } = Astro.props;
+const { data } = entry;
+const cover = resolveMedia(data.cover);
+---
+
+<article class="tile">
+  <span class="tile__screen" aria-hidden="true">
+    {cover ? <img src={cover} alt="" loading="lazy" /> : <span class="plate">{data.title}</span>}
+  </span>
+  <p class="tile__meta">
+    <span>{entry.sectionLabel}</span>
+    <time datetime={new Date(data.date).toISOString()}>{formatDate(data.date)}</time>
+  </p>
+  <h3 class="tile__title">
+    <a href={entry.href}>{data.title}</a>
+  </h3>
+</article>
