@@ -1,5 +1,5 @@
 {
-  "title": "원성민 · 게임 기획 포트폴리오",
+  "title": "원성민 게임 기획 포트폴리오",
   "description": "플레이어의 눈으로 기획하고, 기획자의 손으로 완성합니다. 게임 기획자 원성민의 프로젝트, 기획서, 게임 분석서.",
   "author": "원성민",
   "hero": {
@@ -11,7 +11,7 @@
     "photo": "/portfolio/images/profile-placeholder.svg",
     "name": "원성민",
     "nameEn": "Won Seongmin",
-    "position": "게임 기획 · UI / 시스템",
+    "position": "게임 기획 (UI, 시스템)",
     "birth": "1999",
     "location": "경기도 남양주시",
     "phone": "",
@@ -25,14 +25,14 @@
     ],
     "experience": [
       {
-        "period": "2026.10 – 2026.11",
-        "title": "R.A.M.P · 팀 TRILLION",
-        "detail": "UI 기획·구현 전담, 시스템 공동 개발"
+        "period": "2026.09 – 2026.11",
+        "title": "R.A.M.P, 팀 TRILLION",
+        "detail": "UI/UX 기획, 플레이테스트 3회"
       },
       {
         "period": "2026.07 – 2026.08",
-        "title": "NAN 2026 해커톤 · 팀 7emp0",
-        "detail": "AXIS7 기획·프로그래밍, 빌드·배포"
+        "title": "NAN 2026 해커톤, 팀 7emp0",
+        "detail": "AXIS7 시스템 기획, 개발, 웹 배포"
       }
     ]
   },
@@ -72,7 +72,7 @@
         "name": "Unity",
         "icon": "/portfolio/images/channels4_profile.jpg",
         "url": "",
-        "use": "게임 시스템과 UI 구현"
+        "use": "게임에 UI 적용, 수치 조정"
       },
       {
         "name": "Figma",
@@ -87,7 +87,7 @@
         "use": "기획서와 분석서 작성"
       },
       {
-        "name": "Jira · Confluence",
+        "name": "Jira, Confluence",
         "icon": "/portfolio/images/jira.svg",
         "url": "",
         "use": "팀 일정 관리와 문서 협업"
@@ -102,7 +102,7 @@
         "name": "Claude",
         "icon": "/portfolio/images/claude-color.svg",
         "url": "",
-        "use": "기획 문서 검토, 구현 보조, 사이트 제작"
+        "use": "시안 제작과 구현 보조"
       }
     ]
   },

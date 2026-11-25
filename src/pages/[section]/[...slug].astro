@@ -27,7 +27,15 @@ export const getStaticPaths = (async () => {
 const { entry, sectionSlug } = Astro.props;
 const section = getSection(sectionSlug)!;
 const { data } = entry;
-const { Content } = await render(entry as Parameters<typeof render>[0]);
+const { Content, headings } = await render(entry as Parameters<typeof render>[0]);
+// 왼쪽 목차: 본문 큰 제목(h2)이 3개 이상일 때만
+// 큰 제목(h2)마다, "구현" 절 안의 의도 제목(h3)은 하위 항목으로
+const toc: { slug: string; text: string; children: { slug: string; text: string }[] }[] = [];
+for (const h of headings) {
+  if (h.depth === 2) toc.push({ slug: h.slug, text: h.text, children: [] });
+  else if (h.depth === 3 && toc.length && toc[toc.length - 1].text.includes('구현'))
+    toc[toc.length - 1].children.push({ slug: h.slug, text: h.text });
+}
 // cover: 상세 머리말 오른쪽에 16:9 로 보여 주고, 카드 썸네일·OG 이미지로도 쓴다.
 const cover = resolveMedia(data.cover);
 
@@ -55,6 +63,8 @@ const facts = factKeys
   .filter(([, v]) => typeof v === 'string' && v.length > 0) as [string, string][];
 
 const areas = (data as Record<string, unknown>).areas as Record<string, string | undefined> | undefined;
+// "본제목 — 부제" 는 두 줄로 나눠 보여 준다 (줄표를 화면에 그대로 쓰지 않음)
+const [titleMain, titleSub] = String(data.title).split(/\s+—\s+/);
 const stack = ((data as Record<string, unknown>).stack as string[] | undefined) ?? [];
 ---
 
@@ -66,7 +76,10 @@ const stack = ((data as Record<string, unknown>).stack as string[] | undefined) 
 
   <header class="doc-head">
     <div class="doc-head__main">
-      <h1>{data.title}</h1>
+      <h1>
+        {titleMain}
+        {titleSub && <span class="doc-head__sub">{titleSub}</span>}
+      </h1>
       {data.summary && <p class="lede">{data.summary}</p>}
       {
         (data.tags ?? []).length > 0 && (
@@ -127,7 +140,35 @@ const stack = ((data as Record<string, unknown>).stack as string[] | undefined) 
     </dl>
   </header>
 
-  <article class="prose" id="doc-body">
+  {
+    toc.length >= 3 && (
+      <nav class="toc" aria-label="이 페이지 목차">
+        <p class="toc__title">목차</p>
+        <ol>
+          {toc.map((h) => (
+            <li>
+              <a href={`#${h.slug}`} data-toc={h.slug}>
+                {h.text}
+              </a>
+              {h.children.length > 0 && (
+                <ol>
+                  {h.children.map((c) => (
+                    <li>
+                      <a href={`#${c.slug}`} data-toc={c.slug}>
+                        {c.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )
+  }
+
+  <article class="prose" id="doc-body" data-section={section.slug}>
     <Content />
   </article>
 
@@ -138,3 +179,35 @@ const stack = ((data as Record<string, unknown>).stack as string[] | undefined) 
   </p>
   </div>
 </BaseLayout>
+
+<script>
+  // 왼쪽 목차: 화면 위쪽 1/3 선을 지난 마지막 절을 지금 읽는 절로 표시
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc]')];
+  const heads = [...document.querySelectorAll<HTMLElement>('#doc-body > h2[id], #doc-body > h3[id]')];
+  const toc = document.querySelector<HTMLElement>('.toc');
+  const head = document.querySelector<HTMLElement>('.doc-head');
+  const headerH = document.querySelector<HTMLElement>('.site-header, header[role="banner"], body > header')?.offsetHeight ?? 64;
+  if (links.length && heads.length) {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const line = window.innerHeight / 3;
+      let current = heads[0].id;
+      for (const h of heads) if (h.getBoundingClientRect().top <= line) current = h.id;
+      links.forEach((a) => a.toggleAttribute('aria-current', a.dataset.toc === current));
+      // 머리말(제목·정보 줄)이 헤더 위로 다 지나간 뒤에만 목차를 보인다 → 겹치지 않음
+      const headBottom = head ? head.getBoundingClientRect().bottom : heads[0].getBoundingClientRect().top;
+      toc?.classList.toggle('is-on', headBottom <= headerH);
+      // 지금 읽는 항목이 목차 밖이면 목차 안에서만 스크롤
+      const cur = toc?.querySelector<HTMLElement>('a[aria-current]');
+      if (toc && cur) {
+        const t = toc.getBoundingClientRect(), c = cur.getBoundingClientRect();
+        if (c.top < t.top || c.bottom > t.bottom) toc.scrollTop += c.top - t.top - t.height / 3;
+      }
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  }
+</script>

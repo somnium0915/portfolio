@@ -15,7 +15,8 @@ interface Props {
 }
 
 const { title, description = SITE.description, image, home = false } = Astro.props;
-const pageTitle = title ? `${title} · ${SITE.title}` : SITE.title;
+// 줄표로 붙인 부제는 탭 제목에서 빼고, 사이트 이름과는 | 로 나눈다
+const pageTitle = title ? `${String(title).split(/\s+—\s+/)[0]} | ${SITE.title}` : SITE.title;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).toString();
 const ogImage = image
   ? /^https?:\/\//.test(image)

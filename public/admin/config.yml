@@ -197,7 +197,7 @@ collections:
       - { name: team, label: 팀, widget: string, required: false }
       - { name: period, label: 기간, widget: string, required: false }
       - { name: stack, label: 스택, widget: list, required: false }
-      - { name: highlights, label: "핵심 성과 (홈 대표 작업, 2~3줄)", widget: list, required: false }
+      - { name: highlights, label: "기획 의도 (홈 대표 작업 카드, '의도: 적용 예' 형식 2~3줄)", widget: list, required: false }
       - name: areas
         label: "맡은 영역 (홈 대표 작업, 상세 페이지)"
         widget: object

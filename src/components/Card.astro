@@ -23,7 +23,7 @@ const tags = (data.tags ?? []).slice(0, 3);
   </p>
   <div class="row__text">
     <h3 class="row__title">
-      <a href={entry.href}>{data.title}</a>
+      <a href={entry.href}>{String(data.title).split(/\s+—\s+/).join(', ')}</a>
     </h3>
     {data.summary && <p class="row__summary">{data.summary}</p>}
   </div>

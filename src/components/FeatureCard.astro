@@ -10,7 +10,7 @@ interface Props {
 
 /**
  * 챕터 02 대표 작업 한 단:
- * 16:9 화면 → 제목·한 줄 → 역할·팀·기간 → 맡은 영역 → 핵심 성과 → 링크
+ * 16:9 화면 → 제목·한 줄 → 역할·팀·기간 → 맡은 영역 → 기획 의도 세 줄 → 링크
  */
 const { entry } = Astro.props;
 const { data } = entry;
@@ -58,10 +58,17 @@ const areas = d.areas as Record<string, string | undefined> | undefined;
 
   {
     highlights.length > 0 ? (
-      <ul class="work__highlights" aria-label="핵심 성과">
-        {highlights.slice(0, 3).map((h) => (
-          <li>{h}</li>
-        ))}
+      <ul class="work__highlights" aria-label="기획 의도">
+        {highlights.slice(0, 3).map((h) => {
+          const i = h.indexOf(': ');
+          return i > 0 ? (
+            <li>
+              <strong>{h.slice(0, i)}</strong> {h.slice(i + 2)}
+            </li>
+          ) : (
+            <li>{h}</li>
+          );
+        })}
       </ul>
     ) : (
       data.summary && <p class="work__summary">{data.summary}</p>

@@ -1,7 +1,7 @@
 ---
 /**
- * 맡은 영역: "주도"와 "공동" 두 줄로 나눠 영역 이름을 적는다. 안 맡은 영역은 쓰지 않는다.
- * (●/○ 기호는 빈 동그라미가 "안 했다"로 읽혀서 쓰지 않는다)
+ * 맡은 영역: "주도 기획, UI, 구현 / 함께 시스템" 처럼 글로만 적는다.
+ * 칩(동그란 카드)·기호는 쓰지 않는다. 안 맡은 영역은 쓰지 않는다.
  * 쓰는 곳: 홈 대표 작업 카드, 프로젝트 상세 정보 줄
  * 데이터: 프로젝트 frontmatter 의 areas (웹 편집기 "프로젝트 → 맡은 영역")
  */
@@ -19,7 +19,6 @@ const groups = (
   ] as const
 )
   .map(([value, label]) => ({
-    value,
     label,
     names: AREAS.filter(([key]) => areas[key] === value).map(([, name]) => name),
   }))
@@ -28,17 +27,12 @@ const groups = (
 
 {
   groups.length > 0 && (
-    <dl class="area-strip">
+    <p class="area-strip">
       {groups.map((g) => (
-        <div class={`area-strip__row area-strip__row--${g.value === '주도' ? 'lead' : 'co'}`}>
-          <dt>{g.label}</dt>
-          <dd>
-            {g.names.map((n) => (
-              <span class="chip">{n}</span>
-            ))}
-          </dd>
-        </div>
+        <span class="area-strip__group">
+          <span class="area-strip__label">{g.label}</span> {g.names.join(', ')}
+        </span>
       ))}
-    </dl>
+    </p>
   )
 }
