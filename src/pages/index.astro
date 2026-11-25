@@ -79,12 +79,12 @@ const chapters = [
     <div class="chapter__inner">
       <header class="chapter__head">
         <h2 class="chapter__title" id="docs-title">분석서</h2>
-        <p>출시된 게임의 UI·상호작용·시스템을 뜯어 본 문서</p>
+        <p>출시된 게임의 UI, 상호작용, 시스템을 뜯어 본 문서</p>
         <span class="chapter__links">
           {
-            docSections.map(({ def, list }) => (
+            docSections.map(({ def }) => (
               <a class="more" href={withBase(def.slug)}>
-                {def.label} {list.length}편
+                {def.label} 전체
               </a>
             ))
           }

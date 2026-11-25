@@ -284,16 +284,18 @@ img {
   padding-left: calc(var(--gutter) + var(--rail));
 }
 
+/* 제목 아래에 부제를 붙이고, 오른쪽 링크는 제목 줄 높이에 맞춘다 */
 .chapter__head {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--col-gap);
-  align-items: baseline;
+  align-items: end;
   margin-bottom: clamp(2rem, 4vh, 3rem);
 }
 
 .chapter__title {
-  grid-column: 1 / span 3;
+  grid-column: 1 / span 9;
+  grid-row: 1;
   margin: 0;
   font-weight: 600;
   font-size: clamp(1.8rem, 1.2rem + 1.5vw, 2.7rem);
@@ -303,14 +305,17 @@ img {
 }
 
 .chapter__head p {
-  grid-column: 4 / span 6;
-  margin: 0;
+  grid-column: 1 / span 9;
+  grid-row: 2;
+  margin: 0.6rem 0 0;
   color: var(--sub);
 }
 
 .chapter__head .more,
 .chapter__links {
   grid-column: 10 / span 3;
+  grid-row: 1;
+  align-self: center;
   justify-self: end;
 }
 
