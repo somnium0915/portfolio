@@ -1,5 +1,6 @@
 ---
-import { SITE, CONTACT, SOCIALS } from '../consts';
+import { SITE } from '../consts';
+import ContactBlock from './ContactBlock.astro';
 
 interface Props {
   /** 홈에서는 연락처가 챕터 04 에 있으므로 저작권 줄만 남긴다 */
@@ -12,23 +13,7 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer" id="contact">
   <div class="container site-footer__inner">
-    {
-      !compact && (
-        <div class="site-footer__contact">
-          <p class="site-footer__lead">함께 만들 팀을 찾고 있습니다.</p>
-          {CONTACT.email && (
-            <a class="site-footer__mail" href={`mailto:${CONTACT.email}`}>
-              {CONTACT.email}
-            </a>
-          )}
-          {SOCIALS.map((s) => (
-            <a class="extlink" href={s.href} target="_blank" rel="me noopener">
-              {s.label} ↗
-            </a>
-          ))}
-        </div>
-      )
-    }
+    {!compact && <ContactBlock />}
     <p class="site-footer__fine">© {year} {SITE.author}</p>
   </div>
 </footer>

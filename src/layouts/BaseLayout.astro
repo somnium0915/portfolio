@@ -12,9 +12,11 @@ interface Props {
   image?: string;
   /** 홈(챕터 화면). 푸터를 짧게 줄인다 (연락처는 챕터 04 에 있음) */
   home?: boolean;
+  /** 본문에 이미 연락처가 있는 페이지(연락 페이지). 푸터의 연락 칸을 뺀다 */
+  noFooterContact?: boolean;
 }
 
-const { title, description = SITE.description, image, home = false } = Astro.props;
+const { title, description = SITE.description, image, home = false, noFooterContact = false } = Astro.props;
 // 줄표로 붙인 부제는 탭 제목에서 빼고, 사이트 이름과는 | 로 나눈다
 const pageTitle = title ? `${String(title).split(/\s+—\s+/)[0]} | ${SITE.title}` : SITE.title;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).toString();
@@ -56,7 +58,7 @@ const ogImage = image
     <main class="site-main">
       <slot />
     </main>
-    <Footer compact={home} />
+    <Footer compact={home || noFooterContact} />
 
     <!-- 방문 통계 트래커 (자체 구현, 우리 Firestore). localhost 에서는 자동 비활성. -->
     <script

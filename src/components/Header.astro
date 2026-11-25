@@ -23,7 +23,9 @@ const isActive = (slug: string) => current === withBase(slug) || current.startsW
           </a>
         ))
       }
-      <a href={`${withBase()}#contact-end`}>연락</a>
+      <a href={withBase('contact')} aria-current={isActive('contact') ? 'page' : undefined}>
+        연락
+      </a>
     </nav>
   </div>
 </header>

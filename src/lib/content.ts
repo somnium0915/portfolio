@@ -55,17 +55,6 @@ export async function loadFeatured(): Promise<DecoratedEntry[]> {
   return (await loadAll()).filter((e) => e.data.featured);
 }
 
-/** 태그 → 개수 맵 (섹션 목록 페이지의 필터 UI 용) */
-export function tagCounts(entries: DecoratedEntry[]): [string, number][] {
-  const counts = new Map<string, number>();
-  for (const e of entries) {
-    for (const tag of e.data.tags ?? []) {
-      counts.set(tag, (counts.get(tag) ?? 0) + 1);
-    }
-  }
-  return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ko'));
-}
-
 export function formatDate(value: Date | string): string {
   const d = new Date(value);
   if (Number.isNaN(+d)) return '';

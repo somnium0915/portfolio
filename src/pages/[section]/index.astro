@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import FilterableGrid from '../../components/FilterableGrid.astro';
+import Card from '../../components/Card.astro';
 import { SECTIONS } from '../../consts';
 import { loadSection } from '../../lib/content';
 
@@ -21,6 +21,17 @@ const entries = await loadSection(section.collection);
       <p>{section.description}</p>
     </header>
 
-    <FilterableGrid entries={entries} emptyText={`아직 올린 ${section.label}가 없습니다.`} />
+    {/* 글 수가 적어 태그 필터는 두지 않는다. 태그는 각 줄에 표시만 한다 */}
+    {
+      entries.length === 0 ? (
+        <p class="empty">{`아직 올린 ${section.label}가 없습니다.`}</p>
+      ) : (
+        <div class="rows">
+          {entries.map((entry) => (
+            <Card entry={entry} showSection={false} />
+          ))}
+        </div>
+      )
+    }
   </section>
 </BaseLayout>

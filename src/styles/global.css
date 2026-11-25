@@ -100,7 +100,15 @@ img {
   padding-inline: var(--gutter);
 }
 
+/* 내용이 짧은 페이지(연락, 404)에서도 푸터가 화면 바닥에 붙게 한다 */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
 .site-main {
+  flex: 1 0 auto;
   min-height: 60vh;
 }
 
@@ -942,53 +950,110 @@ img {
   text-underline-offset: 3px;
 }
 
-/* ---- 04 마무리: 연락 | 인적 사항 ---- */
-.closing {
+/* ---- 연락 (홈 04 마지막 줄, 다른 페이지 푸터): 한 줄 → 큰 메일 → 행동 | 인적 사항 ----
+   이 칸에서 눈에 띄는 것은 가는 굵기의 큰 메일 주소 하나. 나머지는 조용히 둔다 */
+.contact {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--col-gap);
-  row-gap: 2rem;
-  margin-top: clamp(2.5rem, 6vh, 4rem);
 }
 
-.closing__contact {
-  grid-column: 1 / span 6;
+.chapter .contact {
+  margin-top: clamp(2rem, 4vh, 3rem);
+}
+
+.contact__head {
+  grid-column: 1 / -1;
+}
+
+/* 연락 페이지: 제목은 페이지 머리말이 맡고, 목록 페이지처럼 선 하나 아래에서 시작 */
+.contact--bare {
+  border-top: 1px solid var(--line);
+  padding-top: clamp(2rem, 5vh, 3.5rem);
+}
+
+/* 연락 페이지에서는 메일 주소가 이 페이지의 주인공이라 제목만큼 키운다 */
+.contact--bare .contact__mail {
+  font-size: clamp(1.45rem, 0.6rem + 3.6vw, 4.4rem);
+}
+
+.contact--bare .contact__actions {
+  margin-top: 2rem;
+}
+
+.contact__main {
+  grid-column: 1 / span 8;
   display: grid;
   justify-items: start;
+}
+
+.contact__lead {
+  margin: 0;
+  color: var(--sub);
+}
+
+.contact__mail {
+  margin-top: 0.35rem;
+  font-weight: 300;
+  /* 375px 폰에서도 주소가 한 줄에 들어가는 크기부터 시작 */
+  font-size: clamp(1.45rem, 0.9rem + 2.4vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  border-bottom: 1px solid var(--warm);
+  padding-bottom: 0.15rem;
+  overflow-wrap: anywhere;
+  transition: color 0.2s;
+}
+
+.contact__mail:hover {
+  color: var(--warm);
+}
+
+.contact__actions {
+  margin-top: 1.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+.contact__copy {
+  font: inherit;
+  background: none;
+  cursor: pointer;
+  min-width: 8.5rem;
+  justify-content: center;
+}
+
+/* 복사가 끝나면 테두리와 글자가 호박색으로 바뀌어 눌린 결과를 보여 준다 */
+.contact__copy[data-copied] {
+  border-color: var(--warm);
+  color: var(--warm);
+}
+
+.contact__facts {
+  grid-column: 10 / span 3;
+  align-self: end;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.contact__facts div {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
   gap: 0.75rem;
 }
 
-.closing__contact .cv__head {
-  justify-self: stretch;
-}
-
-.closing__facts {
-  grid-column: 8 / span 5;
-  align-self: end;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 2rem;
-}
-
-.closing__facts div {
-  display: flex;
-  gap: 0.6rem;
-}
-
-.closing__facts dd {
+.contact__facts dd {
   margin: 0;
 }
 
-.cv__mail {
-  font-weight: 400;
-  font-size: clamp(1.2rem, 0.8rem + 1vw, 1.75rem);
-  white-space: nowrap;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  color: var(--white);
-  border-bottom: 1px solid var(--sub);
-  transition: border-color 0.2s;
+@media (max-width: 960px) {
+  .contact__facts {
+    margin-top: 1.75rem;
+  }
 }
 
 .sr-only {
@@ -1030,38 +1095,6 @@ img {
   margin: 0;
   color: var(--sub);
   font-size: 1.05rem;
-}
-
-.tag-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-  padding-block: 0 1.5rem;
-}
-
-.tag-filter button {
-  font: inherit;
-  font-size: 0.92rem;
-  padding: 0.2rem 0;
-  border: 0;
-  border-bottom: 1px solid transparent;
-  background: none;
-  color: var(--sub);
-  cursor: pointer;
-}
-
-.tag-filter button:hover {
-  color: var(--white);
-}
-
-.tag-filter button[aria-pressed='true'] {
-  color: var(--white);
-  border-bottom-color: var(--white);
-}
-
-.tag-filter button .count {
-  vertical-align: 0;
-  font-size: 0.85em;
 }
 
 .rows {
@@ -1554,29 +1587,8 @@ img {
   padding-block: 2rem;
 }
 
-.site-footer__contact {
-  display: grid;
-  justify-items: start;
-  gap: 0.75rem;
+.site-footer .contact {
   padding-block: clamp(2rem, 5vw, 4rem) 3rem;
-}
-
-.site-footer__lead {
-  margin: 0;
-  color: var(--sub);
-}
-
-.site-footer__mail {
-  font-weight: 300;
-  font-size: clamp(1.4rem, 0.8rem + 2.4vw, 2.8rem);
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  color: var(--white);
-  border-bottom: 1px solid var(--line);
-}
-
-.site-footer__mail:hover {
-  border-color: var(--white);
 }
 
 .site-footer__fine {
@@ -2554,7 +2566,7 @@ img {
 .cv__facts dt,
 .cv__edu .label,
 .years__y,
-.closing__facts dt,
+.contact__facts dt,
 .doc-facts dt,
 .row__date,
 .steps li::before {
@@ -2593,13 +2605,11 @@ img {
   color: var(--warm);
 }
 
-.hero__mail,
-.cv__mail {
+.hero__mail {
   border-bottom-color: var(--warm);
 }
 
 .hero__mail:hover,
-.cv__mail:hover,
 .more:hover,
 .extlink:hover,
 .work__title a:hover,
@@ -2644,8 +2654,8 @@ img {
 }
 
 @media (max-width: 960px) {
-  .closing__contact,
-  .closing__facts,
+  .contact__main,
+  .contact__facts,
   .approach__slogan,
   .approach .steps {
     grid-column: 1 / -1;
