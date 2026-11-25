@@ -1,21 +1,18 @@
 ---
 /**
- * 연락 칸. 홈 챕터 04 마지막 줄과 다른 페이지 푸터에 같은 모양으로 쓴다.
- * 왼쪽: 한 줄 → 큰 메일 주소 → 메일 보내기, 주소 복사, GitHub
- * 오른쪽: 인적 사항 (생년, 거주지, 연락처. 있을 때만)
- * 웹메일을 쓰는 사람은 mailto 가 안 열리는 경우가 많아 주소 복사 버튼을 둔다.
+ * 연락 칸. 홈 챕터 04 마지막 줄과 소개 페이지 맨 아래에 같은 모양으로 쓴다.
+ * 왼쪽: 연락 (메일, GitHub) | 오른쪽: 인적 사항 (생년, 거주지, 연락처. 있을 때만)
+ * 다른 페이지 푸터의 연락 줄은 Footer.astro 에 따로 있다.
  */
 import { PROFILE, CONTACT } from '../consts';
 
 interface Props {
   id?: string;
-  /** 인적 사항을 함께 보여 줄지 (홈 챕터 04, 연락 페이지) */
+  /** 인적 사항을 함께 보여 줄지 */
   showFacts?: boolean;
-  /** 페이지 제목이 따로 있을 때(연락 페이지) 구역 이름과 한 줄을 뺀다 */
-  bare?: boolean;
 }
 
-const { id, showFacts = false, bare = false } = Astro.props;
+const { id, showFacts = false } = Astro.props;
 const prof = PROFILE ?? {};
 const email = prof.email || CONTACT.email;
 const facts = (
@@ -27,45 +24,27 @@ const facts = (
 ).filter(([, v]) => v && v.trim());
 ---
 
-<div class:list={['contact', { 'contact--bare': bare }]} id={id}>
-  {!bare && <h3 class="contact__head cv__head">연락</h3>}
-
-  <div class="contact__main">
-    {!bare && <p class="contact__lead">함께 만들 팀을 찾고 있습니다.</p>}
+<div class="closing" id={id}>
+  <div class="closing__contact">
+    <h3 class="cv__head">연락</h3>
     {
       email && (
-        <a class="contact__mail" href={`mailto:${email}`}>
+        <a class="cv__mail" href={`mailto:${email}`}>
           {email}
         </a>
       )
     }
-    <div class="contact__actions">
-      {
-        email && (
-          <>
-            <a class="btn btn--solid" href={`mailto:${email}`}>
-              메일 보내기
-            </a>
-            <button class="btn contact__copy" type="button" data-copy={email}>
-              <span data-copy-label>주소 복사</span>
-            </button>
-          </>
-        )
-      }
-      {
-        CONTACT.github && (
-          <a class="extlink" href={CONTACT.github} target="_blank" rel="noopener">
-            GitHub ↗
-          </a>
-        )
-      }
-    </div>
-    <p class="sr-only" aria-live="polite" data-copy-status></p>
+    {
+      CONTACT.github && (
+        <a class="extlink" href={CONTACT.github} target="_blank" rel="noopener">
+          GitHub ↗
+        </a>
+      )
+    }
   </div>
-
   {
     showFacts && facts.length > 0 && (
-      <dl class="contact__facts">
+      <dl class="closing__facts">
         {facts.map(([k, v]) => (
           <div>
             <dt>{k}</dt>
@@ -76,30 +55,3 @@ const facts = (
     )
   }
 </div>
-
-<script>
-  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
-    const label = btn.querySelector<HTMLElement>('[data-copy-label]');
-    const status = btn.closest('.contact')?.querySelector<HTMLElement>('[data-copy-status]');
-    let timer: number | undefined;
-
-    btn.addEventListener('click', async () => {
-      const text = btn.dataset.copy ?? '';
-      let ok = true;
-      try {
-        await navigator.clipboard.writeText(text);
-      } catch {
-        ok = false;
-      }
-      const msg = ok ? '복사했습니다' : '복사하지 못했습니다. 주소를 직접 선택해 주세요';
-      if (label) label.textContent = ok ? '복사했습니다' : '복사 실패';
-      if (status) status.textContent = msg;
-      btn.toggleAttribute('data-copied', ok);
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => {
-        if (label) label.textContent = '주소 복사';
-        btn.removeAttribute('data-copied');
-      }, 2000);
-    });
-  });
-</script>

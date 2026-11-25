@@ -16,6 +16,7 @@ const isActive = (slug: string) => current === withBase(slug) || current.startsW
     </a>
 
     <nav class="nav" aria-label="주요 섹션">
+      <a href={withBase()} aria-current={isHome ? 'page' : undefined}>홈</a>
       {
         SECTIONS.filter((s) => !('hidden' in s && s.hidden)).map((s) => (
           <a href={withBase(s.slug)} aria-current={isActive(s.slug) ? 'page' : undefined}>

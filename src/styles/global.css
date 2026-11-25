@@ -616,10 +616,10 @@ body {
 /* 핵심 성과: 순서가 없는 목록이라 번호 대신 짧은 줄 */
 .work__highlights {
   list-style: none;
-  margin: 0.85rem 0 0;
+  margin: 0.7rem 0 0;
   padding: 0;
   display: grid;
-  gap: 0.3rem;
+  gap: 0.35rem;
 }
 
 .work__highlights li {
@@ -631,9 +631,18 @@ body {
   text-wrap: pretty;
 }
 
+/* 의도는 한 줄 굵게, 적용 예는 그 아래 보조 색으로 나눠 의도가 먼저 읽히게 한다 */
 .work__highlights strong {
-  font-weight: 500;
+  display: block;
+  font-weight: 600;
   color: var(--white);
+}
+
+.work__highlights strong + span {
+  display: block;
+  color: var(--sub);
+  font-size: 0.92rem;
+  line-height: 1.4;
 }
 
 .work__highlights li::before {
@@ -950,20 +959,53 @@ body {
   text-underline-offset: 3px;
 }
 
-/* ---- 연락 (홈 04 마지막 줄, 다른 페이지 푸터): 한 줄 → 큰 메일 → 행동 | 인적 사항 ----
-   이 칸에서 눈에 띄는 것은 가는 굵기의 큰 메일 주소 하나. 나머지는 조용히 둔다 */
-.contact {
+/* ---- 04 마무리, 소개 페이지 맨 아래: 연락 | 인적 사항 ---- */
+.closing {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--col-gap);
+  row-gap: 2rem;
+  margin-top: clamp(2.5rem, 6vh, 4rem);
 }
 
-.chapter .contact {
-  margin-top: clamp(2rem, 4vh, 3rem);
+.closing__contact {
+  grid-column: 1 / span 6;
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
 }
 
-.contact__head {
-  grid-column: 1 / -1;
+.closing__contact .cv__head {
+  justify-self: stretch;
+}
+
+.closing__facts {
+  grid-column: 8 / span 5;
+  align-self: end;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+}
+
+.closing__facts div {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.closing__facts dd {
+  margin: 0;
+}
+
+.cv__mail {
+  font-weight: 400;
+  font-size: clamp(1.2rem, 0.8rem + 1vw, 1.75rem);
+  white-space: nowrap;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  border-bottom: 1px solid var(--sub);
+  transition: border-color 0.2s;
 }
 
 /* ---- 소개: 즐겨 하는 게임. 묶음 이름(파랑) | 게임 이름을 쉼표로 이은 한 줄 ----
@@ -1058,96 +1100,6 @@ body {
   }
   .played__row dt {
     margin-bottom: 0.25rem;
-  }
-}
-
-/* 연락 페이지: 제목은 페이지 머리말이 맡고, 목록 페이지처럼 선 하나 아래에서 시작 */
-.contact--bare {
-  border-top: 1px solid var(--line);
-  padding-top: clamp(2rem, 5vh, 3.5rem);
-}
-
-/* 연락 페이지에서는 메일 주소가 이 페이지의 주인공이라 제목만큼 키운다 */
-.contact--bare .contact__mail {
-  font-size: clamp(1.45rem, 0.6rem + 3.6vw, 4.4rem);
-}
-
-.contact--bare .contact__actions {
-  margin-top: 2rem;
-}
-
-.contact__main {
-  grid-column: 1 / span 8;
-  display: grid;
-  justify-items: start;
-}
-
-.contact__lead {
-  margin: 0;
-  color: var(--sub);
-}
-
-.contact__mail {
-  margin-top: 0.35rem;
-  font-weight: 300;
-  /* 375px 폰에서도 주소가 한 줄에 들어가는 크기부터 시작 */
-  font-size: clamp(1.45rem, 0.9rem + 2.4vw, 3rem);
-  line-height: 1.15;
-  letter-spacing: -0.03em;
-  color: var(--white);
-  border-bottom: 1px solid var(--warm);
-  padding-bottom: 0.15rem;
-  overflow-wrap: anywhere;
-  transition: color 0.2s;
-}
-
-.contact__mail:hover {
-  color: var(--warm);
-}
-
-.contact__actions {
-  margin-top: 1.4rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1.25rem;
-}
-
-.contact__copy {
-  font: inherit;
-  background: none;
-  cursor: pointer;
-  min-width: 8.5rem;
-  justify-content: center;
-}
-
-/* 복사가 끝나면 테두리와 글자가 호박색으로 바뀌어 눌린 결과를 보여 준다 */
-.contact__copy[data-copied] {
-  border-color: var(--warm);
-  color: var(--warm);
-}
-
-.contact__facts {
-  grid-column: 10 / span 3;
-  align-self: end;
-  margin: 0;
-  display: grid;
-  gap: 0.5rem;
-}
-
-.contact__facts div {
-  display: grid;
-  grid-template-columns: 3.5rem 1fr;
-  gap: 0.75rem;
-}
-
-.contact__facts dd {
-  margin: 0;
-}
-
-@media (max-width: 960px) {
-  .contact__facts {
-    margin-top: 1.75rem;
   }
 }
 
@@ -1682,7 +1634,9 @@ body {
   padding-block: 2rem;
 }
 
-.site-footer .contact {
+/* 푸터의 연락 칸은 홈 04, 소개 페이지와 같은 부품. 위아래 여백만 준다 */
+.site-footer .closing {
+  margin-top: 0;
   padding-block: clamp(2rem, 5vw, 4rem) 3rem;
 }
 
@@ -2661,7 +2615,7 @@ body {
 .cv__facts dt,
 .cv__edu .label,
 .years__y,
-.contact__facts dt,
+.closing__facts dt,
 .doc-facts dt,
 .row__date,
 .steps li::before {
@@ -2700,11 +2654,13 @@ body {
   color: var(--warm);
 }
 
-.hero__mail {
+.hero__mail,
+.cv__mail {
   border-bottom-color: var(--warm);
 }
 
 .hero__mail:hover,
+.cv__mail:hover,
 .more:hover,
 .extlink:hover,
 .work__title a:hover,
@@ -2749,8 +2705,8 @@ body {
 }
 
 @media (max-width: 960px) {
-  .contact__main,
-  .contact__facts,
+  .closing__contact,
+  .closing__facts,
   .approach__slogan,
   .approach .steps {
     grid-column: 1 / -1;

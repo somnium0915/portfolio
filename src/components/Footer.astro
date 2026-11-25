@@ -3,7 +3,7 @@ import { SITE } from '../consts';
 import ContactBlock from './ContactBlock.astro';
 
 interface Props {
-  /** 홈에서는 연락처가 챕터 04 에 있으므로 저작권 줄만 남긴다 */
+  /** 홈과 소개 페이지는 본문에 연락 칸이 있으므로 저작권 줄만 남긴다 */
   compact?: boolean;
 }
 
@@ -13,7 +13,7 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer" id="contact">
   <div class="container site-footer__inner">
-    {!compact && <ContactBlock />}
+    {!compact && <ContactBlock showFacts />}
     <p class="site-footer__fine">© {year} {SITE.author}</p>
   </div>
 </footer>

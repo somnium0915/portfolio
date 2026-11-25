@@ -59,7 +59,8 @@ const highlights = ((d.highlights as string[] | undefined) ?? []).filter(Boolean
           const i = h.indexOf(': ');
           return i > 0 ? (
             <li>
-              <strong>{h.slice(0, i)}</strong> {h.slice(i + 2)}
+              <strong>{h.slice(0, i)}</strong>
+              <span>{h.slice(i + 2)}</span>
             </li>
           ) : (
             <li>{h}</li>
