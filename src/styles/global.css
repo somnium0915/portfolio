@@ -533,6 +533,19 @@ body {
   align-content: start;
 }
 
+/* 두 작업을 나란히 둘 때 화면, 제목, 정보 줄, 의도, 링크 다섯 줄을 양쪽이 함께 쓴다.
+   한쪽 정보 줄(역할, 팀, 기간)이 접혀 길어져도 아래 의도와 링크가 같은 선에서 시작한다 */
+@media (min-width: 1101px) {
+  .works {
+    row-gap: 0;
+  }
+  .work {
+    grid-row: span 5;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+  }
+}
+
 .work__screen {
   display: block;
   aspect-ratio: 16 / 9;
