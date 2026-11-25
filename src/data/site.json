@@ -18,19 +18,19 @@
     "email": "",
     "education": [
       {
-        "period": "2019 – 2025",
+        "period": "2019 ~ 2025",
         "title": "서원대학교 건축학과",
         "detail": "졸업"
       }
     ],
     "experience": [
       {
-        "period": "2026.09 – 2026.11",
+        "period": "2026.09 ~ 2026.11",
         "title": "R.A.M.P, 팀 TRILLION",
         "detail": "UI/UX 기획, 플레이테스트 3회"
       },
       {
-        "period": "2026.07 – 2026.08",
+        "period": "2026.07 ~ 2026.08",
         "title": "NAN 2026 해커톤, 팀 7emp0",
         "detail": "AXIS7 시스템 기획, 개발, 웹 배포"
       }
