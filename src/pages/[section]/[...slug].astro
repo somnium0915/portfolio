@@ -3,7 +3,6 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection, render, type CollectionKey } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PdfEmbed from '../../components/PdfEmbed.astro';
-import AreaStrip from '../../components/AreaStrip.astro';
 import { SECTIONS, getSection } from '../../consts';
 import { formatDate, LINK_META } from '../../lib/content';
 import { withBase, resolveMedia } from '../../lib/path';
@@ -62,7 +61,6 @@ const facts = factKeys
   .map(([key, label]) => [label, (data as Record<string, unknown>)[key]] as const)
   .filter(([, v]) => typeof v === 'string' && v.length > 0) as [string, string][];
 
-const areas = (data as Record<string, unknown>).areas as Record<string, string | undefined> | undefined;
 // "본제목 — 부제" 는 두 줄로 나눠 보여 준다 (줄표를 화면에 그대로 쓰지 않음)
 const [titleMain, titleSub] = String(data.title).split(/\s+—\s+/);
 const stack = ((data as Record<string, unknown>).stack as string[] | undefined) ?? [];
@@ -114,14 +112,6 @@ const stack = ((data as Record<string, unknown>).stack as string[] | undefined) 
           <dd>{value}</dd>
         </div>
       ))}
-      {areas && Object.values(areas).some(Boolean) && (
-        <div class="doc-facts__areas">
-          <dt>맡은 영역</dt>
-          <dd>
-            <AreaStrip areas={areas} />
-          </dd>
-        </div>
-      )}
       {stack.length > 0 && (
         <div>
           <dt>도구</dt>

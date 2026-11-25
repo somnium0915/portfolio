@@ -18,7 +18,7 @@ links:
   repo: ''
   figma: ''
   drive: ''
-  video: ''
+  video: https://drive.google.com/file/d/1fjEzDA-oqZQpE-vgtQrk4acKdR-5uSGI/view
   notion: ''
   docs: ''
 pdf: []

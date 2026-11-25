@@ -2,7 +2,6 @@
 import type { DecoratedEntry } from '../lib/content';
 import { LINK_META } from '../lib/content';
 import { resolveMedia } from '../lib/path';
-import AreaStrip from './AreaStrip.astro';
 
 interface Props {
   entry: DecoratedEntry;
@@ -10,7 +9,7 @@ interface Props {
 
 /**
  * 챕터 02 대표 작업 한 단:
- * 16:9 화면 → 제목·한 줄 → 역할·팀·기간 → 맡은 영역 → 기획 의도 세 줄 → 링크
+ * 16:9 화면 → 제목·한 줄 → 역할·팀·기간 → 기획 의도 세 줄 → 링크
  */
 const { entry } = Astro.props;
 const { data } = entry;
@@ -26,7 +25,6 @@ const facts = (
   ] as [string, unknown][]
 ).filter(([, v]) => typeof v === 'string' && v.length > 0) as [string, string][];
 const highlights = ((d.highlights as string[] | undefined) ?? []).filter(Boolean);
-const areas = d.areas as Record<string, string | undefined> | undefined;
 ---
 
 <article class="work">
@@ -54,8 +52,6 @@ const areas = d.areas as Record<string, string | undefined> | undefined;
     )
   }
 
-  <AreaStrip areas={areas} />
-
   {
     highlights.length > 0 ? (
       <ul class="work__highlights" aria-label="기획 의도">
@@ -78,7 +74,7 @@ const areas = d.areas as Record<string, string | undefined> | undefined;
   <p class="work__links">
     <a class="more" href={entry.href}>자세히 보기</a>
     {
-      links.slice(0, 3).map(([key, href]) => (
+      links.map(([key, href]) => (
         <a class="extlink" href={href} target="_blank" rel="noopener">
           {LINK_META[key]?.label ?? key} ↗
         </a>
