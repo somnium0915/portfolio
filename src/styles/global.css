@@ -50,12 +50,21 @@ html {
   scrollbar-gutter: stable;
 }
 
+/* FHD(1920×950)보다 큰 화면은 FHD 배치를 그대로 키운다.
+   크기가 거의 다 rem이라 기준 글자 크기만 바꾸면 비율이 유지된다.
+   폭과 높이 중 작은 쪽에 맞춰, 낮고 넓은 화면에서도 챕터가 한 화면을 넘지 않게 한다 */
+@media (min-width: 1921px) {
+  html {
+    font-size: clamp(16px, min(100vw / 120, 100vh / 59.375), 24px);
+  }
+}
+
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  font-size: 17px;
+  font-size: 1.0625rem; /* 17px. rem이라 넓은 화면에서 같이 커진다 */
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
