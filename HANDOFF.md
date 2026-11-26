@@ -2,7 +2,9 @@
 
 다른 PC에서 이 포트폴리오 작업을 이어갈 때 읽는 문서다. 설치와 실행은 README.md, 디자인 결정은 DESIGN.md에 있다. 이 문서는 그 둘에 없는 작업 방식과 현재 상태를 적는다.
 
-마지막 정리: 2026-11-25 (커밋 f36652d 기준)
+마지막 정리: 2026-11-26
+
+> **다음 작업은 PLAN.md에 있다.** 2026-11-26 피드백으로 정한 개편 방향(UI·시스템 기준, 허즈버그와 카노 모델, 분석서 재분류, 이미지 확대, 다음 챕터 걸치기)과 미정 항목이다. 작업 전에 먼저 읽는다.
 
 ## 1. 새 PC에서 시작하기
 
@@ -16,7 +18,7 @@ npm run dev
 - 미리보기: http://localhost:4321/portfolio/
 - Node.js 20 이상. 이 문서를 쓴 PC는 v26.
 - `NOTION_TOKEN`은 없어도 된다. 분석서는 이미 `src/content/analyses/`에 들어 있고, `import-once`라 빌드할 때 덮어쓰지 않는다.
-- Claude Code로 작업한다면 시작할 때 이 문서, DESIGN.md, README.md 순서로 읽게 한다.
+- Claude Code로 작업한다면 시작할 때 이 문서, PLAN.md, DESIGN.md, README.md 순서로 읽게 한다.
 
 ## 2. 작업 규칙
 
