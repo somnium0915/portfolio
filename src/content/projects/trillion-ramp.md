@@ -26,9 +26,9 @@ role: UI/UX 기획 (화면 설계부터 게임 적용까지)
 team: TRILLION (기획자 5인)
 period: 2026.09 ~ 2026.11
 highlights:
-  - "깔끔하고 직관적인 UI: 늘 보이는 정보는 네 가지만 두고, 기절과 차지는 HUD 대신 캐릭터가 보여 줌"
-  - "안내는 공간과 사물로: 잠긴 이유는 문이 말하게 하고 강공격은 수련장 두루마리로 알려 줌"
-  - "유저 인식의 고려: 왼손 Q와 오른손 우클릭에 맞게 칸 위치를 바꾸고 스킬 칸을 한곳에 모음"
+  - "직관성: 늘 보이는 정보는 적게 두고 화면의 자리마다 뜻을 정해 보자마자 읽히게 함"
+  - "몰입감: 잠긴 이유는 문이 말하게 하고 강공격은 수련장 두루마리로 알려 줌"
+  - "사용감: 왼손 Q와 오른손 우클릭에 맞게 칸 위치를 바꾸고 스킬 칸을 한곳에 모음"
 areas:
   plan: 주도
   ui: 주도
@@ -72,20 +72,39 @@ stack:
 
 ## 기획 의도
 
-4명이 한데 엉켜 싸우는 난전에서도 화면이 바로 읽히는 것이 UI의 목표였습니다. 판단이 갈리면 "깔끔하고 직관적인 UI"를 기준으로 삼았고, 그 아래 여섯 가지 의도를 세웠습니다. 칸을 누르면 그 의도를 어떻게 구현했는지로 이동합니다.
+4명이 한데 엉켜 싸우는 난전에서도 화면이 바로 읽히는 것이 UI의 목표였습니다. 판단이 갈리면 "깔끔하고 직관적인 UI"를 기준으로 삼았고, 이를 직관성, 몰입감, 사용감 세 가지로 나눠 설계했습니다. 의도를 누르면 어떻게 구현했는지로 이동합니다.
 
-<ul class="intent-map">
-  <li><a href="#난전-속에서도-01초-안에-읽혀야-한다"><strong>난전 속에서도 0.1초 안에 읽혀야 한다</strong><span>"내가 때렸다, 내가 맞았다, 저 사람은 지금 날릴 수 있다"가 바로 보이게</span></a></li>
-  <li><a href="#늘-보이는-정보는-최소로"><strong>늘 보이는 정보는 최소로</strong><span>늘 보이는 것은 네 가지만. 나머지는 필요할 때만 뜨거나 뺀다</span></a></li>
-  <li><a href="#유저-인식의-고려"><strong>유저 인식의 고려</strong><span>누르는 손에 맞는 자리, 한곳에 모여 한눈에 보이는 스킬 칸</span></a></li>
-  <li><a href="#화면의-자리로-의미를-나눈다"><strong>화면의 자리로 의미를 나눈다</strong><span>가운데 큰 글자는 모두에게 일어나는 일에만</span></a></li>
-  <li><a href="#안내는-글이-아니라-공간과-사물로"><strong>안내는 글이 아니라 공간과 사물로</strong><span>따로 떨어진 튜토리얼 없이 로비 동선이 알려 준다</span></a></li>
-  <li><a href="#돈을-실시간으로-버는-실감"><strong>돈을 실시간으로 버는 실감</strong><span>룬 코인을 버는 순간을 바로 알게</span></a></li>
-</ul>
+<div class="criteria">
+  <div class="criteria__item">
+    <p class="criteria__name">직관성</p>
+    <p class="criteria__def">배우거나 따져 보지 않아도 화면을 보는 즉시 뜻을 안다</p>
+    <ul>
+      <li><a href="#난전-속에서도-01초-안에-읽혀야-한다">난전 속에서도 0.1초 안에 읽혀야 한다</a></li>
+      <li><a href="#적게-보여-주고-자리로-읽히게">적게 보여 주고, 자리로 읽히게</a></li>
+      <li><a href="#돈이-오가는-순간이-바로-보이게">돈이 오가는 순간이 바로 보이게</a></li>
+    </ul>
+  </div>
+  <div class="criteria__item">
+    <p class="criteria__name">몰입감</p>
+    <p class="criteria__def">안내와 정보가 플레이를 끊지 않고 게임 세계 안에서 전해진다. 핵심 재미에 닿는 시간도 짧게</p>
+    <ul>
+      <li><a href="#안내는-글이-아니라-공간과-사물로">안내는 글이 아니라 공간과 사물로</a></li>
+    </ul>
+  </div>
+  <div class="criteria__item">
+    <p class="criteria__name">사용감</p>
+    <p class="criteria__def">조작과 화면 배치가 플레이어의 손과 눈에 자연스럽게 맞는다</p>
+    <ul>
+      <li><a href="#유저-인식의-고려">유저 인식의 고려</a></li>
+    </ul>
+  </div>
+</div>
 
 ## 의도를 구현한 방법
 
 ### 난전 속에서도 0.1초 안에 읽혀야 한다
+
+<p class="intent-tag">직관성</p>
 
 <p class="why">"내가 때렸다, 내가 맞았다, 저 사람은 지금 날릴 수 있다." 이 세 가지가 0.1초 안에 읽혀야 하는 게임입니다.</p>
 
@@ -113,9 +132,27 @@ stack:
   <li class="is-kept">검토했지만 하지 않은 것: 기절 게이지를 화면 가운데로 옮기는 안. 지금 방식이 낫다고 판단했습니다.</li>
 </ul>
 
-### 늘 보이는 정보는 최소로
+### 적게 보여 주고, 자리로 읽히게
 
-<p class="why">늘 보이는 정보는 스킬 칸, 점령 현황, 기절 게이지, 날아간 횟수 네 가지로 정했습니다. HUD만으로 모든 것을 표현하지 않습니다.</p>
+<p class="intent-tag">직관성</p>
+
+<p class="why">늘 보이는 정보는 꼭 필요한 것만 남기고, 나머지는 캐릭터와 연출로 보여 줍니다. 그리고 화면의 자리마다 뜻을 정해, 자리만 보고도 누구의 일인지 알 수 있게 했습니다.</p>
+
+<figure class="fig">
+  <img src="/portfolio/images/projects/ramp/hud-zones.webp" alt="R.A.M.P 1라운드 화면에서 점령 현황, 남은 시간, 룬 코인, 버는 순간의 점수, 날아간 횟수, 기절 게이지, 구르기 쿨타임, 버프 설명, 스킬 칸을 밝게 강조한 그림" loading="lazy" />
+  <figcaption>1R 화면. 화면에 늘 보이는 정보와 그 자리를 밝게 표시했습니다.</figcaption>
+</figure>
+
+| 자리 | 무엇을 두나 |
+| --- | --- |
+| 가운데, 크게 | 모두에게 동시에 일어나는 일: 라운드 시작 3·2·1, 공통 미션 예고. 3·2·1도 공통 미션 예고와 같은 모양과 움직임을 써서, 가운데 큰 글자가 늘 같은 뜻으로 읽히게 |
+| 위 가운데 | 남은 시간 |
+| 왼쪽 위 | 모두의 순위인 점령 현황 |
+| 오른쪽 위 | 나의 룬 코인 |
+| 크로스헤어 아래 | 내가 버는 순간의 점수 |
+| 왼쪽 아래 | 나의 상태: 기절 게이지, 날아간 횟수, 구르기 쿨타임 |
+| 오른쪽 아래 | 나의 스킬 |
+| 스킬 칸 왼쪽 | 버프 설명. 마법은 단순하고 직관적인 스킬로 구성해 이름과 그림만 봐도 알 수 있지만, 버프는 로직이 복잡해 설명이 필요해서 설명 칸을 따로 둠 |
 
 | HUD에서 뺀 것 | 대신 보여 주는 곳 |
 | --- | --- |
@@ -133,72 +170,9 @@ stack:
   <li><span>4</span>그래도 안 되면 새 HUD 요소</li>
 </ol>
 
-### 유저 인식의 고려
+### 돈이 오가는 순간이 바로 보이게
 
-<p class="why">스킬 칸의 자리는 플레이어의 손과 눈에 맞아야 합니다. 누르는 손과 칸의 위치가 어긋나거나 칸이 흩어져 있으면 인지할 것이 늘어납니다.</p>
-
-<figure class="fig">
-  <img src="/portfolio/images/projects/ramp/play-2r.webp" alt="R.A.M.P 2라운드 플레이 화면" loading="lazy" />
-  <figcaption>2R. 스킬 칸이 오른쪽 아래 한곳에 모여 있습니다.</figcaption>
-</figure>
-
-<ul class="change">
-  <li>
-    <div class="from"><small>처음 배치</small>Q(버프) 칸이 오른쪽, 우클릭(마법) 칸이 왼쪽에 있었다</div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="to"><small>바꾼 것</small>Q는 왼손, 우클릭은 오른손으로 누르므로 두 칸의 위치를 서로 바꿈</div>
-  </li>
-  <li>
-    <div class="from"><small>플레이테스트</small>"오른쪽이 스킬인지 가운데가 스킬인지" 헷갈린다</div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="to"><small>바꾼 것</small>스킬 칸을 오른쪽 아래 한곳에 모아 한눈에 보이게 한 뒤, 그 안에서도 Q는 왼쪽, 우클릭은 오른쪽에 둠. 버프 칸도 마법 칸과 같은 크기로, Tab 말풍선은 위치 대신 그림으로 짝을 찾게</div>
-  </li>
-</ul>
-
-### 화면의 자리로 의미를 나눈다
-
-<p class="why">화면 가운데 큰 글자는 모두에게 일어나는 일에만 씁니다. 나만의 일은 가장자리에 둬서, 자리만 보고도 누구의 일인지 알 수 있게 했습니다.</p>
-
-| 자리 | 무엇을 두나 |
-| --- | --- |
-| 가운데, 크게 | 모두에게 동시에 일어나는 일: 라운드 시작 3·2·1, 공통 미션 예고. 3·2·1도 공통 미션 예고와 같은 모양과 움직임을 써서, 가운데 큰 글자가 늘 같은 뜻으로 읽히게 |
-| 왼쪽 위 | 모두의 순위인 점령 현황 |
-| 왼쪽 아래 | 나의 상태: 기절 게이지, 날아간 횟수 |
-| 오른쪽 아래 | 나의 스킬 |
-
-### 안내는 글이 아니라 공간과 사물로
-
-<p class="why">따로 떨어진 튜토리얼을 두지 않고, 로비 동선이 플레이 방법을 알려 주게 했습니다. 화면 위 안내가 많아지면 난잡해지고 몰입이 떨어지기 때문입니다.</p>
-
-<div class="case">
-  <img src="/portfolio/images/projects/ramp/door-after.webp" alt="마법진으로 막은 의상실 문과 안내 팝업" loading="lazy" />
-  <dl>
-    <div><dt>막힌 곳 (M2)</dt><dd>멀티 세션에 들어가야 문이 열린다는 걸 알기 어려웠습니다.</dd></div>
-    <div><dt>바꾼 것</dt><dd>여는 조건은 그대로 두고, <strong>왜 잠겼는지를 문 자체가 말하게</strong> 했습니다. 문을 마법진으로 막고, 다가가면 이유를 띄우고, 빛 통로로 수정구를 가리킵니다. 빛의 길은 처음 두 번만 보여 줍니다. 계속 보이면 길만 따라가게 되기 때문입니다.</dd></div>
-    <div><dt>"문을 열고 나가는 과정을 알기 쉬웠다"</dt><dd>
-      <div class="score">
-        <div class="score__row"><span>M2 13명</span><span class="score__bar"><i style="--v:3.23"></i></span><b>3.23</b></div>
-        <div class="score__row score__row--after"><span>M3 14명</span><span class="score__bar"><i style="--v:3.93"></i></span><b>3.93</b></div>
-      </div>
-    </dd></div>
-  </dl>
-</div>
-
-<div class="case">
-  <img src="/portfolio/images/projects/ramp/lobby-practice.webp" alt="허수아비와 두루마리가 있는 수련장" loading="lazy" />
-  <dl>
-    <div><dt>막힌 곳</dt><dd>테스터들이 강공격이 있는 줄 몰랐습니다.</dd></div>
-    <div><dt>바꾼 것</dt><dd>화면에 힌트를 띄우는 대신 가는 길의 수련장에 두루마리를 세웠습니다. 허수아비로 따라 하면 도전과제를 해낸 것처럼 도장이 꽝 찍힙니다. 안내판은 세운 판, 바닥 그림, 두루마리 세 안을 플레이어 자리에서 비교해 정했습니다.</dd></div>
-    <div><dt>"로비 튜토리얼로 플레이 방법을 잘 알 수 있었다"</dt><dd>
-      <div class="score">
-        <div class="score__row score__row--after"><span>M3 14명</span><span class="score__bar"><i style="--v:4"></i></span><b>4.00</b></div>
-      </div>
-      3점 아래 응답 없음
-    </dd></div>
-  </dl>
-</div>
-
-### 돈을 실시간으로 버는 실감
+<p class="intent-tag">직관성</p>
 
 <p class="why">1R을 개편하며 세운 목적은 실시간으로 룬 코인 버는 걸 알게 하는 것, 실제 재화를 번다는 실감을 주는 것이었습니다.</p>
 
@@ -223,6 +197,89 @@ stack:
   </li>
   <li class="is-kept">점령 수입은 가만히 쌓이는 돈이라 팝업에 넣지 않고, 코인 숫자 아래에 가볍게 더합니다.</li>
 </ul>
+
+### 안내는 글이 아니라 공간과 사물로
+
+<p class="intent-tag">몰입감</p>
+
+<p class="why">따로 떨어진 튜토리얼을 두지 않고, 로비 동선이 플레이 방법을 알려 주게 했습니다. 화면 위 안내가 많아지면 난잡해지고 몰입이 떨어지기 때문입니다.</p>
+
+<div class="case">
+  <img src="/portfolio/images/projects/ramp/door-after.webp" alt="마법진으로 막은 의상실 문과 안내 팝업" loading="lazy" />
+  <dl>
+    <div><dt>막힌 곳 (M2)</dt><dd>멀티 세션에 들어가야 문이 열린다는 걸 알기 어려웠습니다.</dd></div>
+    <div><dt>바꾼 것</dt><dd>여는 조건은 그대로 두고, <strong>왜 잠겼는지를 문 자체가 말하게</strong> 했습니다. 문을 마법진으로 막고, 다가가면 이유를 띄우고, 빛 통로로 수정구를 가리킵니다. 빛의 길은 처음 두 번만 보여 줍니다. 계속 보이면 길만 따라가게 되기 때문입니다.</dd></div>
+    <div><dt>설문 중 "문을 열고 나가는 과정을 알기 쉬웠다"</dt><dd>
+      <div class="score">
+        <div class="score__row"><span>M2</span><span class="score__bar"><i style="--v:3.23"></i></span><b>3.23</b></div>
+        <div class="score__row score__row--after"><span>M3</span><span class="score__bar"><i style="--v:3.93"></i></span><b>3.93</b></div>
+      </div>
+    </dd></div>
+  </dl>
+</div>
+
+<div class="case">
+  <img src="/portfolio/images/projects/ramp/lobby-practice.webp" alt="허수아비와 두루마리가 있는 수련장" loading="lazy" />
+  <dl>
+    <div><dt>막힌 곳</dt><dd>테스터들이 강공격이 있는 줄 몰랐습니다.</dd></div>
+    <div><dt>바꾼 것</dt><dd>화면에 힌트를 띄우는 대신 가는 길의 수련장에 두루마리를 세웠습니다. 허수아비로 따라 하면 도전과제를 해낸 것처럼 도장이 꽝 찍힙니다. 안내판은 세운 판, 바닥 그림, 두루마리 세 안을 플레이어 자리에서 비교해 정했습니다.</dd></div>
+    <div><dt>설문 중 "로비 튜토리얼로 플레이 방법을 잘 알 수 있었다"</dt><dd>
+      <div class="score">
+        <div class="score__row score__row--after"><span>M3</span><span class="score__bar"><i style="--v:4"></i></span><b>4.00</b></div>
+      </div>
+      3점 아래 응답 없음
+    </dd></div>
+  </dl>
+</div>
+
+### 유저 인식의 고려
+
+<p class="intent-tag">사용감</p>
+
+<p class="why">스킬 칸의 자리는 플레이어의 손과 눈에 맞아야 합니다. 누르는 손과 칸의 위치가 어긋나거나 칸이 흩어져 있으면 인지할 것이 늘어납니다.</p>
+
+<figure class="fig">
+  <img src="/portfolio/images/projects/ramp/skill-slots.webp" alt="R.A.M.P 2라운드 화면에서 오른쪽 아래 스킬 칸만 밝게 강조한 그림" loading="lazy" />
+  <figcaption>스킬 칸은 오른쪽 아래 한곳에 모았습니다. 왼쪽부터 Q(버프), 우클릭(마법), 다음 칸입니다.</figcaption>
+</figure>
+
+<ul class="change">
+  <li>
+    <div class="from"><small>처음 배치</small>Q(버프) 칸이 오른쪽, 우클릭(마법) 칸이 왼쪽에 있었다</div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="to"><small>바꾼 것</small>Q는 왼손, 우클릭은 오른손으로 누르므로 두 칸의 위치를 서로 바꿈</div>
+  </li>
+  <li>
+    <div class="from"><small>플레이테스트</small>"오른쪽이 스킬인지 가운데가 스킬인지" 헷갈린다</div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="to"><small>바꾼 것</small>스킬 칸을 오른쪽 아래 한곳에 모아 한눈에 보이게 한 뒤, 그 안에서도 Q는 왼쪽, 우클릭은 오른쪽에 둠. 버프 칸도 마법 칸과 같은 크기로, Tab 말풍선은 위치 대신 그림으로 짝을 찾게</div>
+  </li>
+</ul>
+
+## UI 밖에서 짚은 문제
+
+1R 점령지에는 바닥이 열려 플레이어를 떨어뜨리는 레벨 기믹이 있었습니다. UI 담당이었지만 M1 테스트 전에 이 기믹이 플레이어에게 불쾌감을 줄 것이라고 팀에 우려를 전했습니다. 점령지라는 목표를 플레이어가 통제할 수 없는 기믹이 빼앗는 구조였기 때문입니다.
+
+M1 설문에서 같은 문제가 나왔습니다. "싸우고 싶은데 자꾸 떨어져서 아쉬움" 같은 응답처럼 주관식 대부분이 바닥 기믹을 꼽았습니다. 바닥이 열리는 빈도를 최소화하고 예고를 강화한 뒤, M2에서는 불쾌하다는 응답이 크게 줄었습니다.
+
+<div class="predict">
+  <div class="predict__step">
+    <p class="predict__when">M1 전</p>
+    <p class="predict__big">예측</p>
+    <p class="predict__text">열리는 바닥은 불쾌감을 줄 것</p>
+  </div>
+  <div class="predict__step">
+    <p class="predict__when">M1</p>
+    <p class="predict__big">불쾌 79%</p>
+    <span class="predict__bar"><i style="--v:0.786"></i></span>
+  </div>
+  <div class="predict__step is-after">
+    <p class="predict__when">고친 뒤 M2</p>
+    <p class="predict__big">불쾌 31%</p>
+    <span class="predict__bar"><i style="--v:0.308"></i></span>
+  </div>
+</div>
+<p class="predict__note">설문 중 "맵 기믹이 불쾌할 정도로 불편했다"에 4~5점을 준 비율. M2 문항은 1R과 3R을 함께 물었고, 바닥 기믹을 꼽은 응답은 없었습니다.</p>
 
 ## 세부 UI 기획서
 

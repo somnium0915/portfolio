@@ -457,7 +457,7 @@ body {
 /* 슬로건: 이름 다음으로 큰 글자. 04 기획 철학의 큰 슬로건과 같은 가는 300으로 맞춘다 */
 .hero__line {
   margin: 1.75rem 0 0;
-  font-size: clamp(1.55rem, 1rem + 1.25vw, 2.2rem);
+  font-size: clamp(1.35rem, 0.85rem + 0.95vw, 1.9rem);
   font-weight: 300;
   line-height: 1.3;
   letter-spacing: -0.03em;
@@ -2587,6 +2587,194 @@ body {
   font-size: 0.92rem;
   line-height: 1.6;
   color: var(--text);
+}
+
+/* UI 설계 기준: 기준 이름 → 정의 → 그 기준으로 세운 의도(구현 절로 이동).
+   칸 위쪽 파란 선이 기준 하나를 묶는다. 의도는 링크 목록 */
+/* 세 칸의 이름, 정의, 의도 목록이 같은 높이에서 시작하도록 줄을 공유한다(subgrid) */
+.prose .criteria {
+  margin-top: 1.75rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto auto auto;
+  column-gap: 1.25rem;
+}
+
+.prose .criteria__item {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  align-content: start;
+  padding-top: 1rem;
+  border-top: 2px solid var(--accent);
+}
+
+.prose .criteria__item > * + * {
+  margin-top: 0;
+}
+
+.prose .criteria__name {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--white);
+}
+
+.prose .criteria__def {
+  margin: 0.45rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--sub);
+  word-break: keep-all;
+}
+
+.prose .criteria ul {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.prose .criteria li {
+  margin: 0;
+}
+
+.prose .criteria li::before {
+  content: none;
+}
+
+.prose .criteria a {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 4px;
+}
+
+.prose .criteria a:hover {
+  color: var(--warm);
+  text-decoration-color: var(--warm);
+}
+
+/* 구현 절의 의도 제목 아래 기준 표시 */
+.prose[data-section='projects'] > .intent-tag {
+  margin-top: 0.45rem;
+  padding-left: 1.05rem;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.prose[data-section='projects'] > .intent-tag + .why {
+  margin-top: 0.3rem;
+  padding-left: 1.05rem;
+  font-size: 1rem;
+  color: var(--sub);
+}
+
+/* 예측 → 결과 → 고친 뒤: 세 칸 도식 */
+.prose .predict {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+.prose .predict__step {
+  position: relative;
+  padding: 1rem 1.1rem 1.1rem;
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.prose .predict__step > * + * {
+  margin-top: 0;
+}
+
+.prose .predict__step:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  top: 50%;
+  right: -1rem;
+  translate: 50% -50%;
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.prose .predict__step:first-child {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.prose .predict__when {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.prose .predict__big {
+  margin: 0.35rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+}
+
+.prose .predict__text {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text);
+  word-break: keep-all;
+}
+
+.prose .predict__bar {
+  position: relative;
+  display: block;
+  margin-top: 0.8rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: var(--line-soft);
+  overflow: hidden;
+}
+
+.prose .predict__bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--v) * 100%);
+  border-radius: 999px;
+  background: var(--sub);
+}
+
+.prose .predict__step.is-after .predict__bar i {
+  background: var(--accent);
+}
+
+.prose .predict__note {
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--faint);
+}
+
+@media (max-width: 760px) {
+  .prose .criteria,
+  .prose .predict {
+    grid-template-columns: 1fr;
+  }
+  .prose .criteria {
+    grid-template-rows: none;
+    row-gap: 1.75rem;
+  }
+  .prose .criteria__item {
+    display: block;
+  }
+  .prose .predict__step:not(:last-child)::after {
+    content: none;
+  }
 }
 
 /* 구현 방법 안의 의도 제목 (마크다운 ###). 목차 하위 항목으로도 나온다 */
