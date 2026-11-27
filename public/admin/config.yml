@@ -121,12 +121,12 @@ collections:
                   - { name: title, label: 항목, widget: string }
                   - { name: detail, label: 설명, widget: string, required: false }
           - name: principles
-            label: "'이 문장을 고른 이유' 블록"
+            label: "'기획 철학'과 '일하는 방식' 블록"
             widget: object
             required: false
             fields:
               - { name: title, label: 제목, widget: string }
-              - { name: reason, label: 이유 문단, widget: text, required: false }
+              - { name: reason, label: 이 문장을 고른 이유, widget: text, required: false }
               - name: items
                 label: 원칙
                 widget: list
@@ -144,6 +144,11 @@ collections:
                 fields:
                   - { name: title, label: 단계 이름, widget: string }
                   - { name: text, label: 설명, widget: text }
+                  - { name: image, label: 사례 그림, widget: image, required: false }
+                  - { name: alt, label: 그림 설명(대체 글), widget: string, required: false }
+                  - { name: data, label: 그림 위 수치, widget: string, required: false, hint: "예: 설문 3.23 → 3.93" }
+                  - { name: caption, label: 사례 이름, widget: string, required: false }
+                  - { name: href, label: 사례 링크, widget: string, required: false, hint: "예: projects/axis7/#만들기-전에-손맛부터-확인" }
           - name: featured
             label: "'대표 작업' 블록"
             widget: object

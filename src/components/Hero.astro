@@ -19,7 +19,11 @@ interface Props {
 const { projects } = Astro.props;
 const p = PROFILE ?? {};
 const email = p.email || CONTACT.email;
-const tagline = String(SITE.tagline).replace(/\s*\r?\n\s*/g, ' ');
+// 슬로건은 site.json 의 줄바꿈대로 두 줄로 보여 준다
+const taglineLines = String(SITE.tagline)
+  .split(/\r?\n/)
+  .map((l) => l.trim())
+  .filter(Boolean);
 
 type Item = { period?: string; title: string; detail?: string };
 
@@ -58,7 +62,7 @@ const tools =
     <div class="hero__who">
       <p class="hero__role">{p.position || '게임 기획자'}</p>
       <h1 class="hero__name" id="hero-name">{p.name || SITE.author}</h1>
-      <p class="hero__line">{tagline}</p>
+      <p class="hero__line">{taglineLines.map((l) => <span>{l}</span>)}</p>
       {SITE.intro && <p class="hero__intro">{SITE.intro}</p>}
 
       <div class="hero__contact">

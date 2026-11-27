@@ -5,6 +5,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ChapterIntro from '../components/ChapterIntro.astro';
+import ChapterMethod from '../components/ChapterMethod.astro';
 import Hero from '../components/Hero.astro';
 import DocTile from '../components/DocTile.astro';
 import FeatureCard from '../components/FeatureCard.astro';
@@ -30,7 +31,8 @@ const chapters = [
   ['01', 'intro', '소개와 이력'],
   ['02', 'featured', FEATURED.title],
   ['03', 'docs', '분석서'],
-  ['04', 'approach', '일하는 방식'],
+  ['04', 'philosophy', '기획 철학'],
+  ['05', 'approach', '일하는 방식'],
 ];
 ---
 
@@ -97,6 +99,7 @@ const chapters = [
   </section>
 
   <ChapterIntro />
+  <ChapterMethod />
 </BaseLayout>
 
 <script>

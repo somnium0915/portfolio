@@ -74,13 +74,15 @@ export const PROFILE = (site as { profile?: unknown }).profile as
 
 /** 홈 "이 문장을 고른 이유" 블록 (site.json 의 principles). 없으면 블록을 숨김 */
 type TitledText = { title: string; text: string; href?: string };
+/** 일하는 방식 한 단계: 그림(사례)과 사례로 가는 링크를 함께 둔다 */
+type MethodStep = TitledText & { image?: string; alt?: string; caption?: string; data?: string };
 export const PRINCIPLES = (site as { principles?: unknown }).principles as
   | {
       title: string;
       reason?: string;
       items?: TitledText[];
       methodTitle?: string;
-      method?: TitledText[];
+      method?: MethodStep[];
       casesTitle?: string;
       cases?: TitledText[];
     }

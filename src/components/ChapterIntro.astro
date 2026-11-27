@@ -1,44 +1,25 @@
 ---
 /**
- * 챕터 04 — 일하는 방식 + 연락 (마무리).
- * 윗줄: 슬로건과 고른 이유 | 일하는 방식 세 단계
- * 아랫줄: 연락 (메일, GitHub) | 인적 사항 (생년·거주지·연락처, 있을 때만)
- * 문구: site.json → hero (슬로건), principles (이유·일하는 방식), contact, profile
+ * 챕터 04 — 기획 철학.
+ * 왼쪽: 슬로건을 크게 두 줄 | 오른쪽: 이 문장을 고른 이유
+ * 이 챕터에서 힘을 주는 곳은 슬로건 글자 하나뿐이다. 나머지는 조용히 둔다.
+ * 문구: site.json → hero.tagline (슬로건), principles.reason (이유)
  */
 import { SITE, PRINCIPLES } from '../consts';
-import ContactBlock from './ContactBlock.astro';
 
 const lines = String(SITE.tagline)
   .split(/\r?\n/)
   .filter((l) => l.trim().length > 0);
 const p = PRINCIPLES;
-const steps = p?.method ?? [];
 ---
 
-<section class="chapter" id="approach" data-chapter="04" aria-labelledby="approach-title">
+<section class="chapter" id="philosophy" data-chapter="04" aria-labelledby="philosophy-title">
   <div class="chapter__inner">
-    <h2 class="chapter__title" id="approach-title">{p?.methodTitle ?? '일하는 방식'}</h2>
+    <h2 class="chapter__title" id="philosophy-title">{p?.title ?? '기획 철학'}</h2>
 
     <div class="approach">
-      <div class="approach__slogan">
-        <p class="approach__quote">{lines.map((l) => <span>{l}</span>)}</p>
-        {p?.reason && <p class="approach__why">{p.reason}</p>}
-      </div>
-
-      {
-        steps.length > 0 && (
-          <ol class="steps">
-            {steps.map((s) => (
-              <li>
-                <strong>{s.title}</strong>
-                <span>{s.text}</span>
-              </li>
-            ))}
-          </ol>
-        )
-      }
+      <p class="approach__quote">{lines.map((l) => <span>{l}</span>)}</p>
+      {p?.reason && <p class="approach__why">{p.reason}</p>}
     </div>
-
-    <ContactBlock id="contact-end" showFacts />
   </div>
 </section>

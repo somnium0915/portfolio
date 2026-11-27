@@ -1,0 +1,47 @@
+---
+/**
+ * 챕터 05 — 일하는 방식 + 연락 (마무리).
+ * 관찰 → 언어화 → 검증. 그림과 글 사이에 선을 두고, 선 아래 가운데 단계 이름끼리 화살표로 순서를 잇는다.
+ * 단계마다 사례 그림 한 장(증거)과 사례로 가는 링크. 상자·그림자 없이 그림과 글만.
+ * 아랫줄: 연락 (메일, GitHub) | 인적 사항
+ * 문구: site.json → principles.method, contact, profile
+ */
+import { PRINCIPLES } from '../consts';
+import { withBase, resolveMedia } from '../lib/path';
+import ContactBlock from './ContactBlock.astro';
+
+const p = PRINCIPLES;
+const steps = p?.method ?? [];
+---
+
+<section class="chapter" id="approach" data-chapter="05" aria-labelledby="approach-title">
+  <div class="chapter__inner">
+    <h2 class="chapter__title" id="approach-title">{p?.methodTitle ?? '일하는 방식'}</h2>
+
+    {
+      steps.length > 0 && (
+        <ol class="method">
+          {steps.map((s) => (
+            <li class="method__step">
+              {s.image && (
+                <figure class="method__fig">
+                  <img src={resolveMedia(s.image)} alt={s.alt ?? ''} loading="lazy" />
+                  {s.data && <span class="method__data">{s.data}</span>}
+                </figure>
+              )}
+              <h3 class="method__title">{s.title}</h3>
+              <p class="method__text">{s.text}</p>
+              {s.href && (
+                <a class="method__link" href={withBase(s.href)}>
+                  사례 보기{s.caption && <span class="method__case">{s.caption}</span>}
+                </a>
+              )}
+            </li>
+          ))}
+        </ol>
+      )
+    }
+
+    <ContactBlock id="contact-end" showFacts />
+  </div>
+</section>
